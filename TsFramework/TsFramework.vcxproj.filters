@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Sources\Entry.cpp">
+    <ClCompile Include="Sources\RenderPipline.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Sources\pch.cpp">
@@ -23,12 +23,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="PixelShader.hlsl">
-      <Filter>ソース ファイル</Filter>
-    </FxCompile>
-    <FxCompile Include="VertexShader.hlsl" />
-  </ItemGroup>
-  <ItemGroup>
+    <ClInclude Include="Sources\RenderPipline.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
     <ClInclude Include="Sources\pch.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>

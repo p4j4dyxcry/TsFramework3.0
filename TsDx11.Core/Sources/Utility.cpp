@@ -204,7 +204,7 @@ TS::ComputeShader TS::_createComputeShaderFromMemory(ID3D11Device* device, void*
 TS::InputLayout TS::_createInputLayout(ID3D11Device* pDevice,
                                                      void * pCompiledShader,
                                                      size_t binarySize,
-                                                     D3D11_INPUT_ELEMENT_DESC* desc ,
+                                                     InputElementDesc* desc ,
                                                      unsigned layoutCount)
 {
     ID3D11InputLayout * pInputLayout;
@@ -309,3 +309,5 @@ TS::HashCode TS::_getHashCode(const BlendStateDesc& desc)
 {
     return static_cast<HashCode>(desc.Mode);
 }
+
+

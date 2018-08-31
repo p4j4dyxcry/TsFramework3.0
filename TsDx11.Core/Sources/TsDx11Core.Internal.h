@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "Common.h"
+#include "ShaderReflection.h"
 #include "Buffers.h"
 #include "Utility.h"
 #include "ShaderResource.h"

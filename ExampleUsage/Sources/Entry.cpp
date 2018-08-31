@@ -1,7 +1,7 @@
 ﻿// Dx11SimpleFramework.cpp : アプリケーションのエントリ ポイントを定義します。
 //
 
-#include "stdafx.h"
+#include "pch.h"
 #include "../../TsDx11.Core/Sources/TsDx11Core.h"
 
 using namespace TS;
@@ -82,10 +82,12 @@ int main()
         Vector3(0.5f,0.5f,0.5f),
     };
 
-    D3D11_INPUT_ELEMENT_DESC desc[] =
+    InputElementDesc desc[] =
     {
-        { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+        ElementDescPosition3f(),
     };
+
+    MakeInputLayoutDescFromMemory(vertexShaderBinary).Delete();
 
     Dx11CoreInitializeData initialize;
     {
@@ -140,4 +142,3 @@ int main()
 
     return 0;
 }
-

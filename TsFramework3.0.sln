@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ExampleUsage", "ExampleUsag
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TsDx11.Core", "TsDx11.Core\TsDx11.Core.vcxproj", "{B94A98AA-1BDA-4344-988D-9C3EE3BED5BB}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TsFramework", "TsFramework\TsFramework.vcxproj", "{4CABBF5A-044D-4630-BEFC-536FFFFE80EB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -31,6 +33,14 @@ Global
 		{B94A98AA-1BDA-4344-988D-9C3EE3BED5BB}.Release|x64.Build.0 = Release|x64
 		{B94A98AA-1BDA-4344-988D-9C3EE3BED5BB}.Release|x86.ActiveCfg = Release|Win32
 		{B94A98AA-1BDA-4344-988D-9C3EE3BED5BB}.Release|x86.Build.0 = Release|Win32
+		{4CABBF5A-044D-4630-BEFC-536FFFFE80EB}.Debug|x64.ActiveCfg = Debug|x64
+		{4CABBF5A-044D-4630-BEFC-536FFFFE80EB}.Debug|x64.Build.0 = Debug|x64
+		{4CABBF5A-044D-4630-BEFC-536FFFFE80EB}.Debug|x86.ActiveCfg = Debug|Win32
+		{4CABBF5A-044D-4630-BEFC-536FFFFE80EB}.Debug|x86.Build.0 = Debug|Win32
+		{4CABBF5A-044D-4630-BEFC-536FFFFE80EB}.Release|x64.ActiveCfg = Release|x64
+		{4CABBF5A-044D-4630-BEFC-536FFFFE80EB}.Release|x64.Build.0 = Release|x64
+		{4CABBF5A-044D-4630-BEFC-536FFFFE80EB}.Release|x86.ActiveCfg = Release|Win32
+		{4CABBF5A-044D-4630-BEFC-536FFFFE80EB}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -26,13 +26,13 @@ namespace TS
     ComputeShader  _createComputeShaderFromMemory(ID3D11Device * device, void * pCompiledShader, size_t binarySize);
 
     InputLayout    _createInputLayout(ID3D11Device* pDevice,
-                                     void * pCompiledShader,
-                                     size_t binarySize,
-                                     D3D11_INPUT_ELEMENT_DESC* desc,
-                                     unsigned layoutCount);
+        void * pCompiledShader,
+        size_t binarySize,
+        InputElementDesc* desc,
+        unsigned layoutCount);
 
     bool _containShaderType(ShaderType shaderType, ShaderType targetShader);
-    
+
     D3D11_MAP DeviceContextMapModeToD3D(DeviceContextMapMode d3d11Map);
 
     //! Desc to hash

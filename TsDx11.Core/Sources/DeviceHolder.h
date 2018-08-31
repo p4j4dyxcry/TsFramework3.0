@@ -22,7 +22,7 @@ namespace TS
         DomainShader CreateDomainShader(const Binary& binary) const;
         ComputeShader CreateComputeShader(const Binary& binary) const;
 
-        InputLayout CreateInputLayout(Binary& binary, D3D11_INPUT_ELEMENT_DESC* desc, unsigned layoutCount) const;
+        InputLayout CreateInputLayout(Binary& binary, InputElementDesc* desc, unsigned layoutCount) const;
         Buffer CreateBuffer(Binary& binary, D3D11_CPU_ACCESS_FLAG cpuAccessFlag, D3D11_BIND_FLAG bindFlag) const;
         VertexBuffer CreateVertexBuffer(void* const &pVertex , unsigned count , size_t stride) const;
     private:

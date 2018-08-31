@@ -139,9 +139,11 @@ namespace TS
     {
         T* _data;
         size_t _size;
-        Array(T* data, size_t sz) :_data(data), _size(sz) {}
+        Array(T* data = nullptr, size_t sz = 0) :_data(data), _size(sz) {}
 
-        void Delete() { SAFE_DELETE(_data); }
+        inline T& operator[](unsigned i) { return _data[i]; }
+
+        void Delete() { SAFE_DELETE(_data); _size = 0; }
     };
 
     struct Binary : Array<unsigned char>
@@ -159,13 +161,14 @@ namespace TS
         Ts_Hull = 0x08,
         Ts_Domain = 0x0f,
         Ts_Compute = 0x10,
+        ShaderType_Unknown,
     };
 
     template<typename T>
     class D3DSharedWrapper
     {
     public:
-        D3DSharedWrapper(TsSharedPtr<T> shader){ _ptr = shader;}
+        D3DSharedWrapper(TsSharedPtr<T> shader = nullptr){ _ptr = shader;}
         TsSharedPtr<T> Get(){return _ptr;}
     private:
         TsSharedPtr<T> _ptr;
@@ -206,14 +209,14 @@ namespace TS
 
     enum class ComparisonFunc : unsigned
     {
-        NEVER = 1,        //&0 ��ɕs���i
-        LESS = 2,         //<= �\�[�X���Ώۂ�菬�����Ƃ��ɍ��i
-        EQUAL = 3,        //== ���������ɍ��i
-        LESS_EQUAL = 4,   //<=  �����������������ɍ��i
-        GREATER = 5,      //>  �\�[�X���Ώۂ��傫�����ɍ��i
-        NOT_EQUAL = 6,    //!= �������Ȃ��Ƃ��ɍ��i
-        GREATER_EQUAL = 7,//>= �傫���Ƃ������������ɍ��i
-        ALWAYS = 8,       //|1 ��ɍ��i
+        NEVER = 1,        //&0 
+        LESS = 2,         //<= 
+        EQUAL = 3,        //== 
+        LESS_EQUAL = 4,   //<= 
+        GREATER = 5,      //>  
+        NOT_EQUAL = 6,    //!= 
+        GREATER_EQUAL = 7,//>= 
+        ALWAYS = 8,       //|1 
     };
 
     enum class CullMode : unsigned
@@ -307,6 +310,8 @@ namespace TS
         float MinLOD = 0;
         float MaxLOD;
     };
+
+    using InputElementDesc = D3D11_INPUT_ELEMENT_DESC;
 
     struct BlendStateDesc 
     {

@@ -78,7 +78,7 @@ namespace TS
         return _createComputeShaderFromMemory(_d3d11Device.get(), binary._data, binary._size);
     }
 
-    InputLayout DeviceHolder::CreateInputLayout(Binary& binary, D3D11_INPUT_ELEMENT_DESC* desc, unsigned layoutCount) const
+    InputLayout DeviceHolder::CreateInputLayout(Binary& binary, InputElementDesc* desc, unsigned layoutCount) const
     {
         return _createInputLayout(_d3d11Device.get(), binary._data, binary._size, desc, layoutCount);
     }
