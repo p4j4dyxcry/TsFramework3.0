@@ -23,14 +23,12 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="PixelShader.hlsl">
-      <Filter>ソース ファイル</Filter>
-    </FxCompile>
-    <FxCompile Include="VertexShader.hlsl" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="Sources\pch.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Sources\VertexShader.hlsl" />
+    <FxCompile Include="Sources\PixelShader.hlsl" />
   </ItemGroup>
 </Project>
