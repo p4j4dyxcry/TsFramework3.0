@@ -44,7 +44,7 @@ TS::DeviceContext& TS::DeviceContext::SetVertexBuffer(VertexBuffer& vertexBuffer
 {
     Error::Assert(_deviceContext != nullptr);
     const unsigned ofset = 0;
-    const unsigned stride = vertexBuffer.GetStride();
+    const unsigned stride = (unsigned)vertexBuffer.GetStride();
     ID3D11Buffer* buffer = vertexBuffer.GetD3DBuffer().get();
     _deviceContext->IASetVertexBuffers(0, 1, &buffer, &stride, &ofset);
     return *this;

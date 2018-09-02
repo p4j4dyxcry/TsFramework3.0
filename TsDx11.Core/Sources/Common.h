@@ -134,22 +134,36 @@ namespace TS
 
     using HashCode = unsigned long long;
 
+	//! 配列クラス、メモリ管理の責任は負わない
     template<typename T>
     struct Array
     {
-        T* _data;
-        size_t _size;
+	public:
         Array(T* data = nullptr, size_t sz = 0) :_data(data), _size(sz) {}
 
-        inline T& operator[](unsigned i) { return _data[i]; }
+		operator T*() { return _data; }
+		operator const T*() const { return _data; }
 
         void Delete() { SAFE_DELETE(_data); _size = 0; }
+	public:
+		T* _data;
+		size_t _size;
     };
 
-    struct Binary : Array<unsigned char>
-    {
-        Binary(unsigned char* data, size_t sz) : Array<unsigned char>(data, sz){}
-    };
+	template<typename T>
+	struct LocalArray : public Array<T>
+	{
+	public:
+		~LocalArray() { Array<T>::Delete();};
+		LocalArray(T* data = nullptr, size_t sz = 0) :Array<T>(data, sz) {}
+		LocalArray(size_t sz = 0) :Array<T>(new T[sz], sz) {}
+		LocalArray(Array<T> array):Array<T>(array._data, array._size){}
+	private:
+		TS_CLASS_DISABLE_COPY(LocalArray<T>);	
+		TS_CLASS_DISABLE_MOVE(LocalArray<T>);
+	};
+
+	using Binary = Array<unsigned char>;
     
     //-------------------------------------------------------
     //! グラフィックス

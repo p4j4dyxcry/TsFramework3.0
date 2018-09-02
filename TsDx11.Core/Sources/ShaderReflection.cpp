@@ -17,7 +17,7 @@ namespace TS
             T data;
             size_t sz = sizeof(T);
             memcpy_s(&data, sz, &_binary[_current], sz);
-            _current += sz;
+            _current += (unsigned)sz;
             return data;
         }
 
@@ -26,7 +26,7 @@ namespace TS
         {
             size_t sz = sizeof(T) * dataCount;
             memcpy_s(datas, sz, &_binary[_current], sz);
-            _current += sz;
+            _current += (unsigned)sz;
             return datas;
         }
 
@@ -58,7 +58,7 @@ namespace TS
         BinaryReader SeekBinaryReader(unsigned offset, unsigned count = 0)
         {
             if (count == 0)
-                count = _binary._size - offset;
+                count = (unsigned)_binary._size - offset;
 
             return { Binary(&_binary[offset], count) };
         }
@@ -67,7 +67,7 @@ namespace TS
         Binary _binary;
     };
 
-    enum FormatType
+    enum class FormatType : unsigned
     {
         UNKNOWN = 0,
         UINT32 = 1,
@@ -76,23 +76,23 @@ namespace TS
         UNORM = 4,
     };
 
-    DXGI_FORMAT ConvertFormat(unsigned dataCount, unsigned type)
+    DXGI_FORMAT ConvertFormat(unsigned dataCount, FormatType type)
     {
-        if (type == FLOAT32)
+        if (type == FormatType::FLOAT32)
         {
             if (dataCount == 1) return DXGI_FORMAT_R32_FLOAT;
             if (dataCount == 2) return DXGI_FORMAT_R32G32_FLOAT;
             if (dataCount == 3) return DXGI_FORMAT_R32G32B32_FLOAT;
             if (dataCount == 4) return DXGI_FORMAT_R32G32B32A32_FLOAT;
         }
-        if (type == UINT32)
+        if (type == FormatType::UINT32)
         {
             if (dataCount == 1) return DXGI_FORMAT_R32_UINT;
             if (dataCount == 2) return DXGI_FORMAT_R32G32_UINT;
             if (dataCount == 3) return DXGI_FORMAT_R32G32B32_UINT;
             if (dataCount == 4) return DXGI_FORMAT_R32G32B32A32_UINT;
         }
-        if (type == SINT32)
+        if (type == FormatType::SINT32)
         {
             if (dataCount == 1) return DXGI_FORMAT_R32_SINT;
             if (dataCount == 2) return DXGI_FORMAT_R32G32_SINT;
@@ -100,7 +100,7 @@ namespace TS
             if (dataCount == 4) return DXGI_FORMAT_R32G32B32A32_SINT;
         }
 
-        if (type == UNORM)
+        if (type == FormatType::UNORM)
         {
             if (dataCount == 1) return DXGI_FORMAT_R8_UNORM;
             if (dataCount == 2) return DXGI_FORMAT_R8G8_UNORM;
@@ -116,7 +116,7 @@ namespace TS
         return{
             name
             , semanticIndex
-            , ConvertFormat(dataCount,FLOAT32)
+            , ConvertFormat(dataCount,FormatType::FLOAT32)
             , 0
             , D3D11_APPEND_ALIGNED_ELEMENT
             , D3D11_INPUT_PER_VERTEX_DATA
@@ -129,7 +129,7 @@ namespace TS
         return{
             name
             , semanticIndex
-            , ConvertFormat(dataCount,UINT32)
+            , ConvertFormat(dataCount,FormatType::UINT32)
             , 0
             , D3D11_APPEND_ALIGNED_ELEMENT
             , D3D11_INPUT_PER_VERTEX_DATA
@@ -142,7 +142,7 @@ namespace TS
         return{
             name
             , semanticIndex
-            , ConvertFormat(dataCount,UNORM)
+            , ConvertFormat(dataCount,FormatType::UNORM)
             , 0
             , D3D11_APPEND_ALIGNED_ELEMENT
             , D3D11_INPUT_PER_VERTEX_DATA
@@ -155,7 +155,7 @@ namespace TS
         return{
             name
             , semanticIndex
-            , ConvertFormat(dataCount,SINT32)
+            , ConvertFormat(dataCount,FormatType::SINT32)
             , 0
             , D3D11_APPEND_ALIGNED_ELEMENT
             , D3D11_INPUT_PER_VERTEX_DATA
@@ -742,11 +742,36 @@ namespace TS
         return result;
     }
 
-    void Test(Binary& binary)
+	struct IsgnChunk
+	{
+		void Delete()
+		{
+
+		}
+	};
+
+	struct ShaderReflectionData
+	{
+		RdefChunk rdefChunk;
+		IsgnChunk isgnChunk;
+		void Delete()
+		{
+			rdefChunk.Delete();
+			isgnChunk.Delete();
+		}
+	};
+
+	IsgnChunk ReadIsgnChunk(BinaryReader& reader)
+	{
+		return IsgnChunk();
+	}
+
+	ShaderReflectionData GetReflectionData(Binary& binary)
     {
         BinaryReader reader(binary);
         const HlslBinaryHeader header = reader.ReadDeta<HlslBinaryHeader>();
 
+		ShaderReflectionData result;
         for (unsigned i = 0; i < header.ChunkCount; ++i)
         {
             const unsigned chunkOffset = reader.ReadDeta<unsigned>();
@@ -764,15 +789,20 @@ namespace TS
             if (type == Rdef)
             {
                 BinaryReader reader = chukReader.SubBinaryReader(chunkSize);
-                ReadRdef(reader);
+				result.rdefChunk = ReadRdef(reader);
             }
+
+			if (type == Isgn)
+			{
+				BinaryReader reader = chukReader.SubBinaryReader(chunkSize);
+				result.isgnChunk = ReadIsgnChunk(reader);
+			}
         }
+		return result;
     }
 
     Array<InputElementDesc> MakeInputLayoutDescFromMemory(Binary& binary)
     {
-        Test(binary);
-
         unsigned char *pInputElementEntry = nullptr;
         for (size_t i = 0L; i < binary._size - 4; ++i)
         {
@@ -805,10 +835,11 @@ namespace TS
 
         int cntvariable = pInputElementEntry[8];
         int systemSemantices = 0;
-        Array<char*> names(new char*[cntvariable], cntvariable);
-        Array<unsigned> index(new unsigned[cntvariable], cntvariable);
-        Array<DXGI_FORMAT> format(new DXGI_FORMAT[cntvariable], cntvariable);
+        LocalArray<char*> names(cntvariable);
+		LocalArray<unsigned> index(cntvariable);
+		LocalArray<DXGI_FORMAT> format(cntvariable);
         unsigned char *str = &pInputElementEntry[16];
+
         for (int i = 0; i < cntvariable; i++)
         {
             names[i] = reinterpret_cast<char*>(str[i * 24] + pInputElementEntry + 8);
@@ -830,7 +861,7 @@ namespace TS
             if (bitMask & 0x2) dataCount++;
             if (bitMask & 0x1) dataCount++;
 
-            format[i] = ConvertFormat(dataCount, type);
+            format[i] = ConvertFormat(dataCount, (FormatType)(type));
         }
         cntvariable -= systemSemantices;
 
@@ -847,12 +878,7 @@ namespace TS
                 0
             };
         }
-        index.Delete();
-        names.Delete();
-        format.Delete();
 
         return descs;
     }
-
-
 }

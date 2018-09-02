@@ -122,7 +122,7 @@ DXGI_SWAP_CHAIN_DESC TS::_makeSwapChainDesc(HWND hwnd, unsigned w, unsigned h)
 TsSharedPtr<ID3D11Buffer> TS::_createD3DBuffer(ID3D11Device * device, void * pMemory, size_t pMemorySize, D3D11_CPU_ACCESS_FLAG cpuAccessFlag, D3D11_BIND_FLAG bindFlag)
 {
     D3D11_BUFFER_DESC bufferDesc;
-    bufferDesc.ByteWidth = pMemorySize;
+    bufferDesc.ByteWidth = (unsigned )pMemorySize;
     bufferDesc.BindFlags = bindFlag;
     bufferDesc.Usage =
         (cpuAccessFlag & D3D11_CPU_ACCESS_WRITE) ?

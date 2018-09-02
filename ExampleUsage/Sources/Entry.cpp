@@ -55,10 +55,8 @@ HWND GenerateWindow(const TS::TsChar * title, unsigned width, unsigned height)
         , nullptr
     );
 }
-
 int main()
 {
-
     const auto hwnd = GenerateWindow(_T("Sample"), 1024, 768);
 
     if (hwnd == nullptr)
@@ -82,12 +80,7 @@ int main()
         Vector3(0.5f,0.5f,0.5f),
     };
 
-    InputElementDesc desc[] =
-    {
-        ElementDescPosition3f(),
-    };
-
-    MakeInputLayoutDescFromMemory(vertexShaderBinary).Delete();
+	LocalArray<InputElementDesc> descs = MakeInputLayoutDescFromMemory(vertexShaderBinary);
 
     Dx11CoreInitializeData initialize;
     {
@@ -103,7 +96,7 @@ int main()
     auto vertexShader = holder.CreateVertexShader(vertexShaderBinary);
     auto pixelShader  = holder.CreatePixelShader(pixelShaderBinary);
 
-    auto inputLayout  = holder.CreateInputLayout(vertexShaderBinary, desc, 1);
+    auto inputLayout  = holder.CreateInputLayout(vertexShaderBinary, descs, 1);
     auto vertexBuffer = holder.CreateVertexBuffer(&points, ARRAYSIZE(points), sizeof(Vector3));
 
     holder.ImmediateContext()
