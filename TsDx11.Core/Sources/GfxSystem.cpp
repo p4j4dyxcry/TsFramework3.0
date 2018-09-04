@@ -63,23 +63,6 @@ namespace TS
         try
         {
             _resourceFactory.Initialize(_device);
-
-            auto depthStencilTextureDesc= TextureDesc(initializeData.Width, initializeData.Height, DXGI_FORMAT_D24_UNORM_S8_UINT);
-            auto depthStencilStateDesc = DepthStencilStateDesc();
-            auto rasterizerStateDesc = RasterizerStateDesc(initializeData.Width, initializeData.Height);
-
-            auto rtv = _resourceFactory.CreateBackBufferRenderTarget();
-            auto dsv        = _resourceFactory.CreateDepthStencilTarget(depthStencilTextureDesc);
-            auto rasterizer = _resourceFactory.CreateRasterizerState(rasterizerStateDesc);
-            auto dss        = _resourceFactory.CreateDepthStencilState(depthStencilStateDesc);
-
-            _device.ImmediateContext()
-                .SetRenderTarget(rtv)
-                .SetDepthStencilTarget(dsv)
-                .ApplyBufferTargets()
-                .SetRasterizerState(rasterizer)
-                .SetDepthStencilState(dss);
-
         }
         catch (...)
         {

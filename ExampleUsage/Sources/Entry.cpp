@@ -3,6 +3,7 @@
 
 #include "pch.h"
 #include "../../TsDx11.Core/Sources/TsDx11Core.h"
+#include "../../TsFramework/Sources/RenderPipline.h"
 
 using namespace TS;
 
@@ -64,14 +65,7 @@ int main()
 
     ShowWindow(hwnd, SW_SHOW);
     UpdateWindow(hwnd);
-    
-#ifdef _DEBUG
-    auto vertexShaderBinary = DeviceHolder::LoadCompiledShader(_T("../Debug/VertexShader.cso"));
-    auto pixelShaderBinary = DeviceHolder::LoadCompiledShader(_T("../Debug/PixelShader.cso"));
-#else
-    auto vertexShaderBinary = DeviceHolder::LoadCompiledShader(_T("../Release/VertexShader.cso"));
-    auto pixelShaderBinary = DeviceHolder::LoadCompiledShader(_T("../Release/PixelShader.cso"));
-#endif
+
     Vector3 points[]
     {
         Vector3(-0.5f,-0.5f,0.5f),
@@ -79,8 +73,6 @@ int main()
         Vector3(0.5f,-0.5f,0.5f),
         Vector3(0.5f,0.5f,0.5f),
     };
-
-	LocalArray<InputElementDesc> descs = MakeInputLayoutDescFromMemory(vertexShaderBinary);
 
     Dx11CoreInitializeData initialize;
     {
@@ -91,21 +83,12 @@ int main()
 
     GfxSystem core;
     core.Initialize(initialize);
-    auto holder = core.Holder();
+    auto _vertexBuffer = core.Holder().CreateVertexBuffer(points, ARRAYSIZE(points), sizeof(Vector3));
 
-    auto vertexShader = holder.CreateVertexShader(vertexShaderBinary);
-    auto pixelShader  = holder.CreatePixelShader(pixelShaderBinary);
-
-    auto inputLayout  = holder.CreateInputLayout(vertexShaderBinary, descs, 1);
-    auto vertexBuffer = holder.CreateVertexBuffer(&points, ARRAYSIZE(points), sizeof(Vector3));
-
-    holder.ImmediateContext()
-        .SetVertxShader(vertexShader)
-        .SetPixelShader(pixelShader)
-        .SetVertexBuffer(vertexBuffer)
-        .SetInputLayout(inputLayout)
-        .SetTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
-
+    GfxPipline pipline(core.Holder(),core.ResourceFactory());
+    pipline.LoadVertexShader(L"../Debug/VertexShader.cso");
+    pipline.LoadPixelShader(L"../Debug/PixelShader.cso");
+    pipline.SetupDefault();
     MSG tMsg;
 
     while (true)
@@ -123,10 +106,11 @@ int main()
         }
         else
         {
-            holder
+            pipline.Apply();
+            core.Holder()
                 .ImmediateContext()
-                .ClearColorToRenderTaegets(.5, .5, 0, 1)
-                .ClearDepth()
+                .SetVertexBuffer(_vertexBuffer)
+                .SetTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP)
                 .Draw(4);
 
             core.Holder().Present();

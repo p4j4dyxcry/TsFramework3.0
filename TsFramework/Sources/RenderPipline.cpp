@@ -3,14 +3,15 @@
 
 using namespace TS;
 
-TS::GfxPipline::GfxPipline(DeviceHolder& device_context, ShaderResourceFactory& factory)
-    :_deviceHolder(device_context),_shaderResourceFactory(factory)
+TS::GfxPipline::GfxPipline(DeviceHolder& holder, ShaderResourceFactory& factory)
+    :_deviceHolder(holder),_shaderResourceFactory(factory)
 {
+
 }
 TS::GfxPipline& TS::GfxPipline::LoadVertexShader(const TsChar* filename)
 {
-	LocalArray<unsigned char> binary = _loadCompiledShader(filename);
-	LocalArray<InputElementDesc> elementDescs = MakeInputLayoutDescFromMemory(binary);
+	auto binary = _loadCompiledShader(filename);
+	auto&& elementDescs = MakeInputLayoutDescFromMemory(binary);
 	_vertexShader = _deviceHolder.CreateVertexShader(binary);
 	_inputLayout = _deviceHolder.CreateInputLayout(binary, elementDescs, elementDescs._size);
     return *this;
@@ -18,7 +19,7 @@ TS::GfxPipline& TS::GfxPipline::LoadVertexShader(const TsChar* filename)
 
 TS::GfxPipline& TS::GfxPipline::LoadPixelShader(const TsChar* filename)
 {
-	LocalArray<unsigned char> binary = _loadCompiledShader(filename);
+    auto binary = _loadCompiledShader(filename);
 	_pixelShader = _deviceHolder.CreatePixelShader(binary);
     return *this;
 }
@@ -26,7 +27,7 @@ TS::GfxPipline& TS::GfxPipline::LoadPixelShader(const TsChar* filename)
 GfxPipline & TS::GfxPipline::SetRasterizerState(RasterizerStateDesc & desc)
 {
 	_shaderResourceFactory.CreateRasterizerState(desc);
-	_blendState = _getHashCode(desc);
+	_rasterizerState = _getHashCode(desc);
 	return *this;
 }
 
@@ -40,7 +41,7 @@ GfxPipline & TS::GfxPipline::SetDepthStencilState(DepthStencilStateDesc & desc)
 GfxPipline & TS::GfxPipline::SetBlendState(BlendStateDesc & desc)
 {
 	_shaderResourceFactory.CreateBlendState(desc);
-	_depthStencilState = _getHashCode(desc);
+	_blendState = _getHashCode(desc);
 	return *this;
 }
 
@@ -60,7 +61,7 @@ GfxPipline & TS::GfxPipline::SetDepthStencilTarget(TextureDesc & desc)
 
 GfxPipline & TS::GfxPipline::SetClearColor(float r, float g, float b, float a)
 {
-	_clearColor = { r,g,b,a };
+	_clearColor ={ r,g,b,a };
 	return *this;
 }
 
@@ -69,14 +70,16 @@ GfxPipline & TS::GfxPipline::Apply()
 	auto& deviceContext = _deviceHolder.ImmediateContext();
 	static const Handle invalid_Hash = 0;
 
-	unsigned _index;
+	unsigned _index = 0;
 	for (auto rt : _renderTargets)
 		if(rt != invalid_Hash)
 			deviceContext.SetRenderTarget(_shaderResourceFactory.GetRenderTarget(rt), _index++);
 	if (_depthStencilView != invalid_Hash)
 		deviceContext.SetDepthStencilTarget(_shaderResourceFactory.GetDepthStencilTarget(_depthStencilView));
 
-	deviceContext.ClearColorToRenderTaegets(_clearColor.x, _clearColor.y, _clearColor.z, _clearColor.w);
+    deviceContext.ApplyBufferTargets();
+
+    deviceContext.ClearColorToRenderTaegets(_clearColor.x, _clearColor.y, _clearColor.z, _clearColor.w);
 	deviceContext.ClearDepth();
 
 	if (_blendState != invalid_Hash)
@@ -86,8 +89,25 @@ GfxPipline & TS::GfxPipline::Apply()
 	if (_depthStencilState != invalid_Hash)
 		deviceContext.SetDepthStencilState(_shaderResourceFactory.GetDepthStencilState(_depthStencilState));
 	
-	deviceContext.SetVertxShader(_vertexShader)
+	deviceContext.SetInputLayout(_inputLayout)
+                 .SetVertxShader(_vertexShader)
 				 .SetPixelShader(_pixelShader);
 
 	return *this;
+}
+
+GfxPipline& GfxPipline::SetupDefault()
+{
+    auto renderTargetDesc = _shaderResourceFactory.CreateBackBufferRenderTarget().GetDesc();
+
+    auto depthStencilTextureDesc = TextureDesc(renderTargetDesc.Width, renderTargetDesc.Height, DXGI_FORMAT_D24_UNORM_S8_UINT);
+    auto depthStencilStateDesc = DepthStencilStateDesc();
+    auto rasterizerStateDesc = RasterizerStateDesc(renderTargetDesc.Width, renderTargetDesc.Height);
+
+    SetRenderTarget(renderTargetDesc, 0);
+    SetDepthStencilTarget(depthStencilTextureDesc);
+    SetDepthStencilState(depthStencilStateDesc);
+    SetRasterizerState(rasterizerStateDesc);
+    SetClearColor(0, 0, 0, 1);
+    return *this;
 }

@@ -167,6 +167,9 @@
     <ProjectReference Include="..\TsDx11.Core\TsDx11.Core.vcxproj">
       <Project>{b94a98aa-1bda-4344-988d-9c3ee3bed5bb}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\TsFramework\TsFramework.vcxproj">
+      <Project>{4cabbf5a-044d-4630-befc-536ffffe80eb}</Project>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Sources\PixelShader.hlsl">
