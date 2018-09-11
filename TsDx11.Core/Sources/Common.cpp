@@ -6,7 +6,7 @@
 
 bool TS::ErrorResult::IsError() const
 {
-    return _errorLevel != Ts_Success;
+    return _errorLevel != ErrorLevel::Success;
 }
 
 const TS::TsChar* TS::ErrorResult::GetErrorMessage() const
@@ -38,7 +38,7 @@ bool TS::ErrorResult::DoError(bool isThrow) const
     if (IsError())
     {
         Log();
-        if(isThrow)
+        if (isThrow) 
             throw _message;
         return true;
     }
@@ -58,7 +58,7 @@ TS::ErrorResult TS::ErrorResult::Do() const
 //------------------------------------------------------------------------------------------------------------------------
 //! Error
 
-TS::ErrorResult TS::Error::Success = TS::ErrorResult(_T(""), TS::ErrorLevel::Ts_Success, nullptr);
+TS::ErrorResult TS::Error::Success = TS::ErrorResult(_T(""), TS::ErrorLevel::Success, nullptr);
 TS::ILogger* TS::Error::_loger = nullptr;
 
 TS::ErrorResult TS::Error::Make(HRESULT hResult)
@@ -86,7 +86,7 @@ TS::ErrorResult TS::Error::Make(const TS::TsChar* message, const ErrorLevel erro
 TS::ErrorResult TS::Error::Assert(bool _true, const TS::TsChar* message)
 {
 #ifdef _DEBUG
-    return _true ? Success : Make(message, Ts_Develop).Do();
+    return _true ? Success : Make(message, ErrorLevel::Develop).Do();
 #else
     return Success;
 #endif

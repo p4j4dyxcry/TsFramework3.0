@@ -24,8 +24,8 @@ namespace TS
         DeviceContext& SetRasterizerState(RasterizerState& rasterizerState);
         DeviceContext& SetDepthStencilState(DepthStencilState& depthStencilState);
         DeviceContext& SetBlendState(BlendState& blendState);
-        DeviceContext& SetSamplerState(SamplerState& samplerState , unsigned id,ShaderType shaderType = Ts_Pixel);
-        DeviceContext& SetTexture(ShaderResourceView& srv , unsigned id, ShaderType shaderType = Ts_Pixel);
+        DeviceContext& SetSamplerState(SamplerState& samplerState , unsigned id,ShaderType shaderType = ShaderType::Pixel);
+        DeviceContext& SetTexture(ShaderResourceView& srv , unsigned id, ShaderType shaderType = ShaderType::Pixel);
 
         DeviceContext& ApplyBufferTargets();
         DeviceContext& SetVertxShader(VertexShader& shader);

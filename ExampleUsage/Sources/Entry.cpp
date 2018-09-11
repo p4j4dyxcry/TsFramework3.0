@@ -4,6 +4,8 @@
 #include "pch.h"
 #include "../../TsDx11.Core/Sources/TsDx11Core.h"
 #include "../../TsFramework/Sources/RenderPipline.h"
+#include "../../TsFramework/Sources/StructureResources.hlsli"
+#include "../../TsFramework/Sources/ConstantBffuerFactory.h"
 
 using namespace TS;
 
@@ -89,8 +91,15 @@ int main()
     pipline.LoadVertexShader(L"../Debug/VertexShader.cso");
     pipline.LoadPixelShader(L"../Debug/PixelShader.cso");
     pipline.SetupDefault();
-    MSG tMsg;
 
+
+    ConstantBffuerFactory cBufferFactor(core.Holder());
+    auto cbuffer = cBufferFactor.CreateConstantBuffer<TransformCBuffer>(ShaderType::Pixel);
+    MSG tMsg;
+    cbuffer.UpdateBuffer(core.Holder().ImmediateContext());
+    core.Holder()
+        .ImmediateContext()
+        .SetConstantBuffer(cbuffer);
     while (true)
     {
         if (PeekMessage(&tMsg, nullptr, 0, 0, PM_NOREMOVE))
@@ -111,7 +120,7 @@ int main()
                 .ImmediateContext()
                 .SetVertexBuffer(_vertexBuffer)
                 .SetTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP)
-                .Draw(4);
+                .Draw(3);
 
             core.Holder().Present();
         }

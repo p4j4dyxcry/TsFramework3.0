@@ -1,5 +1,8 @@
 ﻿#pragma once
 
+#define TS_FRAMEWORK
+#define TS_FRAMEWORK_VERSION 3.0
+
 #include "Common.h"
 #include "Array.h"
 #include "ShaderReflection.h"

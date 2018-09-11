@@ -117,8 +117,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Sources\ConstantBffuerFactory.h" />
+    <ClInclude Include="Sources\HlslType.hlsli" />
     <ClInclude Include="Sources\pch.h" />
     <ClInclude Include="Sources\RenderPipline.h" />
+    <ClInclude Include="Sources\StructureResources.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sources\pch.cpp">
@@ -136,6 +139,9 @@
     <ProjectReference Include="..\TsDx11.Core\TsDx11.Core.vcxproj">
       <Project>{b94a98aa-1bda-4344-988d-9c3ee3bed5bb}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Sources\Utility.hlsli" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

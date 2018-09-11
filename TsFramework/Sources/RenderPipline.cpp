@@ -6,7 +6,6 @@ using namespace TS;
 TS::GfxPipline::GfxPipline(DeviceHolder& holder, ShaderResourceFactory& factory)
     :_deviceHolder(holder),_shaderResourceFactory(factory)
 {
-
 }
 TS::GfxPipline& TS::GfxPipline::LoadVertexShader(const TsChar* filename)
 {
@@ -19,7 +18,7 @@ TS::GfxPipline& TS::GfxPipline::LoadVertexShader(const TsChar* filename)
 
 TS::GfxPipline& TS::GfxPipline::LoadPixelShader(const TsChar* filename)
 {
-    auto binary = _loadCompiledShader(filename);
+    const auto binary = _loadCompiledShader(filename);
 	_pixelShader = _deviceHolder.CreatePixelShader(binary);
     return *this;
 }
@@ -61,7 +60,7 @@ GfxPipline & TS::GfxPipline::SetDepthStencilTarget(TextureDesc & desc)
 
 GfxPipline & TS::GfxPipline::SetClearColor(float r, float g, float b, float a)
 {
-	_clearColor ={ r,g,b,a };
+	_clearColor = Vector4(r,g,b,a);
 	return *this;
 }
 

@@ -62,13 +62,13 @@ namespace TS
 #define TS_CLASS_DISABLE_COPY(name) name(const name&) = delete;name& operator =(const name&) = delete
 #define TS_CLASS_DISABLE_MOVE(name) name(const name&&) = delete;name& operator =(const name&&) = delete
 
-    enum ErrorLevel : unsigned
+    enum class ErrorLevel : unsigned
     {
-        Ts_Unknown,
-        Ts_Success,
-        Ts_Develop,
-        Ts_Warning,
-        Ts_Error,
+        Unknown,
+        Success,
+        Develop,
+        Warning,
+        Error,
     };
 
     class ILogger
@@ -96,7 +96,7 @@ namespace TS
         ErrorResult Do()const;
 
     private:
-        ErrorResult(const TS::TsChar* message = _T(""), const ErrorLevel error_level = ErrorLevel::Ts_Error, ILogger* logger = nullptr);
+        ErrorResult(const TS::TsChar* message = _T(""), const ErrorLevel error_level = ErrorLevel::Error, ILogger* logger = nullptr);
 
     private:
         const TS::TsChar * _message;
@@ -111,7 +111,7 @@ namespace TS
 
         static ErrorResult Make(HRESULT hResult);
 
-        static ErrorResult Make(const TS::TsChar* message = _T(""), const ErrorLevel error_level = ErrorLevel::Ts_Error);
+        static ErrorResult Make(const TS::TsChar* message = _T(""), const ErrorLevel error_level = ErrorLevel::Error);
 
         static ErrorResult Assert(bool _true, const TS::TsChar* message = _T("Assert に失敗しました"));
         static void SetLogger(ILogger* logger);
@@ -136,16 +136,26 @@ namespace TS
 
     //-------------------------------------------------------
     //! グラフィックス
-    enum ShaderType
+    enum class ShaderType : unsigned
     {
-        Ts_Vertex = 0x01,
-        Ts_Pixel = 0x02,
-        Ts_Geometry = 0x04,
-        Ts_Hull = 0x08,
-        Ts_Domain = 0x0f,
-        Ts_Compute = 0x10,
-        ShaderType_Unknown,
+        Unknown,
+        Vertex   = 0x01,
+        Pixel    = 0x02,
+        Geometry = 0x04,
+        Hull     = 0x08,
+        Domain   = 0x0f,
+        Compute  = 0x10,
     };
+
+    inline bool operator&(const TS::ShaderType& lhs, const TS::ShaderType& rhs)
+    {
+        return static_cast<unsigned>(lhs) & static_cast<unsigned>(rhs);
+    }
+    inline bool operator|(const TS::ShaderType& lhs, const TS::ShaderType& rhs)
+    {
+        return static_cast<unsigned>(lhs) | static_cast<unsigned>(rhs);
+    }
+
 
     template<typename T>
     class D3DSharedWrapper

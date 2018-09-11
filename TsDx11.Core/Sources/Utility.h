@@ -18,6 +18,16 @@ namespace TS
     TsSharedPtr<ID3D11Buffer> _createVertexBuffer(ID3D11Device* device, void *pVertex, unsigned vertexCount, size_t stride);
     TsSharedPtr<ID3D11Buffer> _createIndexBuffer(ID3D11Device* device, void *pMemory, unsigned indexCount);
 
+    template<typename T>
+    TsSharedPtr<ID3D11Buffer> _createConstantBuffer(ID3D11Device * device , T* pMemory)
+    {
+        return _createD3DBuffer(
+            device,
+            pMemory,
+            sizeof(T),
+            D3D11_CPU_ACCESS_WRITE, D3D11_BIND_CONSTANT_BUFFER);
+    }
+
     VertexShader   _createVertexShaderFromMemory(ID3D11Device * device, void * pCompiledShader, size_t binarySize);
     PixelShader    _createPixelShaderFromMemory(ID3D11Device * device, void * pCompiledShader, size_t binarySize);
     GeometryShader _createGeometryShaderFromMemory(ID3D11Device * device, void * pCompiledShader, size_t binarySize);

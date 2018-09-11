@@ -18,17 +18,17 @@ TS::DeviceContext& TS::DeviceContext::SetConstantBuffer(IConstantBuffer& constan
     const auto shaderType = constantBuffer.GetShaderType();
     const auto slot = constantBuffer.GetSlot();
     auto buffer = constantBuffer.GetD3DBuffer().get();
-    if (_containShaderType(shaderType, Ts_Vertex))
+    if (_containShaderType(shaderType, ShaderType::Vertex))
         _deviceContext->VSSetConstantBuffers(slot, 1, &buffer);
-    if (_containShaderType(shaderType, Ts_Pixel))
+    if (_containShaderType(shaderType, ShaderType::Pixel))
         _deviceContext->PSSetConstantBuffers(slot, 1, &buffer);
-    if (_containShaderType(shaderType, Ts_Geometry))
+    if (_containShaderType(shaderType, ShaderType::Geometry))
         _deviceContext->GSSetConstantBuffers(slot, 1, &buffer);
-    if (_containShaderType(shaderType, Ts_Hull))
+    if (_containShaderType(shaderType, ShaderType::Hull))
         _deviceContext->HSSetConstantBuffers(slot, 1, &buffer);
-    if (_containShaderType(shaderType, Ts_Domain))
+    if (_containShaderType(shaderType, ShaderType::Domain))
         _deviceContext->DSSetConstantBuffers(slot, 1, &buffer);
-    if (_containShaderType(shaderType, Ts_Compute))
+    if (_containShaderType(shaderType, ShaderType::Compute))
         _deviceContext->CSSetConstantBuffers(slot, 1, &buffer);
     return *this;
 }
@@ -119,17 +119,17 @@ TS::DeviceContext& TS::DeviceContext::SetSamplerState(SamplerState& samplerState
     Error::Assert(_deviceContext != nullptr);
 
     auto pSamler = samplerState.GetD3DBlendState().get();
-    if (_containShaderType(shaderType, Ts_Vertex))
+    if (_containShaderType(shaderType, ShaderType::Vertex))
         _deviceContext->VSSetSamplers(id, 1, &pSamler);
-    if (_containShaderType(shaderType, Ts_Pixel))
+    if (_containShaderType(shaderType, ShaderType::Pixel))
         _deviceContext->PSSetSamplers(id, 1, &pSamler);
-    if (_containShaderType(shaderType, Ts_Geometry))
+    if (_containShaderType(shaderType, ShaderType::Geometry))
         _deviceContext->GSSetSamplers(id, 1, &pSamler);
-    if (_containShaderType(shaderType, Ts_Hull))
+    if (_containShaderType(shaderType, ShaderType::Hull))
         _deviceContext->HSSetSamplers(id, 1, &pSamler);
-    if (_containShaderType(shaderType, Ts_Domain))
+    if (_containShaderType(shaderType, ShaderType::Domain))
         _deviceContext->DSSetSamplers(id, 1, &pSamler);
-    if (_containShaderType(shaderType, Ts_Compute))
+    if (_containShaderType(shaderType, ShaderType::Compute))
         _deviceContext->CSSetSamplers(id, 1, &pSamler);
 
     return *this;
@@ -139,17 +139,17 @@ TS::DeviceContext& TS::DeviceContext::SetTexture(ShaderResourceView& srv, unsign
 {
     Error::Assert(_deviceContext != nullptr);
 
-    if (_containShaderType(shaderType, Ts_Vertex))
+    if (_containShaderType(shaderType, ShaderType::Vertex))
         _deviceContext->VSSetShaderResources(id, 1 ,&srv.Srv);
-    if (_containShaderType(shaderType, Ts_Pixel))
+    if (_containShaderType(shaderType, ShaderType::Pixel))
         _deviceContext->PSSetShaderResources(id, 1, &srv.Srv);
-    if (_containShaderType(shaderType, Ts_Geometry))
+    if (_containShaderType(shaderType, ShaderType::Geometry))
         _deviceContext->GSSetShaderResources(id, 1, &srv.Srv);
-    if (_containShaderType(shaderType, Ts_Hull))
+    if (_containShaderType(shaderType, ShaderType::Hull))
         _deviceContext->HSSetShaderResources(id, 1, &srv.Srv);
-    if (_containShaderType(shaderType, Ts_Domain))
+    if (_containShaderType(shaderType, ShaderType::Domain))
         _deviceContext->DSSetShaderResources(id, 1, &srv.Srv);
-    if (_containShaderType(shaderType, Ts_Compute))
+    if (_containShaderType(shaderType, ShaderType::Compute))
         _deviceContext->CSSetShaderResources(id, 1, &srv.Srv);
 
     return *this;
