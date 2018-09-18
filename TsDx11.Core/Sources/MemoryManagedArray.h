@@ -36,7 +36,7 @@ namespace TS
          * \brief —v‘f‚ðŽæ“¾‚·‚é
          * \return —v‘f
          */
-        T* Data()const;
+        T*& Data()const;
 
         MemoryManagedArray();
         MemoryManagedArray(const T* data , size_t sz , RefCounter* pRefCounter = nullptr);

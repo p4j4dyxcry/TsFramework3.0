@@ -27,7 +27,7 @@ namespace TS
         Vector4& operator*= (float Float);
         Vector4& operator/= (float Float);
 
-        Vector4  operator * (const Matrix4& mat);
+        Vector4  operator * (const Matrix4& mat) const;
         Vector4& operator *=(const Matrix4& mat);
 
         friend Vector4 operator * (float f, const class Vector4& v);

@@ -80,7 +80,7 @@ namespace TS
         return *this;
     }
 
-    Vector4  Vector4::operator*(const Matrix4& mat)
+    Vector4  Vector4::operator*(const Matrix4& mat) const
     {
         return Vector4(XMVector4Transform(ToXMVector(), mat.ToXMMATRIX()));
     }

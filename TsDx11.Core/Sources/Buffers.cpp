@@ -1,7 +1,7 @@
 ﻿#include "pch.h"
 #include "TsDx11Core.Internal.h"
 
-TS::Buffer::Buffer(TsSharedPtr<ID3D11Buffer> buffer) : _buffer(buffer)
+TS::Buffer::Buffer(TsSharedPtr<ID3D11Buffer> buffer) : _buffer(std::move(buffer))
 {
 }
 

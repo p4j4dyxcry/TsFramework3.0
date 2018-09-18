@@ -11,7 +11,7 @@ namespace TS
     {
         T data;
         const size_t sz = sizeof(T);
-        memcpy_s(&data, sz, &_binary[_current], sz);
+        memcpy_s(&data, sz, &_binary.Data()[_current], sz);
         _current += static_cast<unsigned>(sz);
         return data;
     }
@@ -21,7 +21,7 @@ namespace TS
     {
         const size_t sz = sizeof(T) * dataCount;
         MemoryManagedArray<T> datas(dataCount);
-        memcpy_s(datas, sz, &_binary[_current], sz);
+        memcpy_s(datas, sz, &_binary.Data()[_current], sz);
         _current += static_cast<unsigned>(sz);
         return datas;
     }

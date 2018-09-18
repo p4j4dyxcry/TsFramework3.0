@@ -2,9 +2,7 @@
 #include "TsDx11Core.Internal.h"
 namespace TS
 {
-    GfxSystem::GfxSystem()
-    {
-    }
+    GfxSystem::GfxSystem() = default;
 
     ErrorResult GfxSystem::Initialize(Dx11CoreInitializeData& initializeData)
     {
@@ -14,7 +12,7 @@ namespace TS
         if (error.IsError())
             return error;
 
-        error = SetupDefault(initializeData);
+        error = SetupDefault();
         if (error.IsError())
             return error;
 
@@ -58,7 +56,7 @@ namespace TS
         return Error::Make(hr);
     }
 
-    ErrorResult GfxSystem::SetupDefault(Dx11CoreInitializeData& initializeData)
+    ErrorResult GfxSystem::SetupDefault()
     {
         try
         {

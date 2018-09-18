@@ -3,10 +3,16 @@
 
 using namespace TS;
 
-TS::GfxPipline::GfxPipline(DeviceHolder& holder, ShaderResourceFactory& factory)
-    :_deviceHolder(holder),_shaderResourceFactory(factory)
+TS::GfxPipline::GfxPipline(DeviceHolder& holder,ShaderResourceFactory& factory)
+    : _deviceHolder(holder), 
+      _shaderResourceFactory(factory), 
+      _rasterizerState(0), 
+      _depthStencilState(0),
+      _depthStencilView(0), 
+      _blendState(0)
 {
 }
+
 TS::GfxPipline& TS::GfxPipline::LoadVertexShader(const TsChar* filename)
 {
 	auto binary = _loadCompiledShader(filename);

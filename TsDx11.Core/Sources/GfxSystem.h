@@ -22,7 +22,7 @@ namespace TS
         ShaderResourceFactory _resourceFactory;
     private:
         ErrorResult InitD3D(Dx11CoreInitializeData& initializeData);
-        ErrorResult SetupDefault(Dx11CoreInitializeData& initializeData);
+        ErrorResult SetupDefault();
     private:
         TS_CLASS_DISABLE_COPY(GfxSystem);
         TS_CLASS_DISABLE_MOVE(GfxSystem);

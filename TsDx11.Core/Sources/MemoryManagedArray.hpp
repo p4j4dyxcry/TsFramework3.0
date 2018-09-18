@@ -99,7 +99,7 @@ namespace TS
     }
 
     template <typename T>
-    T* MemoryManagedArray<T>::Data()const
+    T*& MemoryManagedArray<T>::Data()const
     {
         return _data;
     }

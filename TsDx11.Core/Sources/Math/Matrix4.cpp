@@ -68,9 +68,9 @@ namespace TS
             return Quaternion(); 
                                 
         Quaternion q;
-        float v = sqrtf(elem[biggestIndex]) * 0.5f;
+        const float v = sqrtf(elem[biggestIndex]) * 0.5f;
 
-        float mult = 0.25f / v;
+        const float mult = 0.25f / v;
         switch (biggestIndex) {
         case 0: // x
             q.x = v;
@@ -95,6 +95,8 @@ namespace TS
             q.y = (_13 - _31) * mult;
             q.z = (_21 - _12) * mult;
             q.w = v;
+            break;
+        default: 
             break;
         }
         return q;

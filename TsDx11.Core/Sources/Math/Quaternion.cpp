@@ -72,7 +72,8 @@ namespace TS
 
     Quaternion& Quaternion::operator=(Matrix4& matrix)
     {
-        return *this = matrix.ToQuaternion();
+        *this = matrix.ToQuaternion();;
+        return *this;
     }
 
     Quaternion  Quaternion::operator * (const Quaternion& quaternion)const
@@ -96,15 +97,15 @@ namespace TS
 
         return
             CreateByAngleAxis(Vector3::right, x) *
-            CreateByAngleAxis(Vector3::up,    y) *
+            CreateByAngleAxis(Vector3::up   , y) *
             CreateByAngleAxis(Vector3::front, z);
     }
 
-    Quaternion Quaternion::CreateByEuler(const Vector3& Euler, UnitofAngle unit_of_angle)
+    Quaternion Quaternion::CreateByEuler(const Vector3& euler, UnitofAngle unit_of_angle)
     {
-        float x = Euler.x;
-        float y = Euler.y;
-        float z = Euler.z;
+        const float x = euler.x;
+        const float y = euler.y;
+        const float z = euler.z;
         return CreateByEuler(x, y, z);
     }
 

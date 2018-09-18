@@ -2,13 +2,13 @@
 #include "TsDx11Core.Internal.h"
 
 TS::DeviceContext::DeviceContext(TsSharedPtr<ID3D11DeviceContext> id3_d11_device_context)
-    : _deviceContext(id3_d11_device_context),_mapCount(0)
+    : _deviceContext(std::move(id3_d11_device_context)),_mapCount(0)
 {
 }
 
 TS::DeviceContext& TS::DeviceContext::SetD3DDeviceContext(TsSharedPtr<ID3D11DeviceContext> pDeviceContext)
 {
-    _deviceContext = pDeviceContext;
+    _deviceContext = std::move(pDeviceContext);
     return *this;
 }
 
@@ -38,7 +38,7 @@ TS::DeviceContext& TS::DeviceContext::SetVertexBuffer(VertexBuffer& vertexBuffer
 {
     Error::Assert(_deviceContext != nullptr);
     const unsigned ofset = 0;
-    const unsigned stride = (unsigned)vertexBuffer.GetStride();
+    const auto stride = static_cast<unsigned>(vertexBuffer.GetStride());
     ID3D11Buffer* buffer = vertexBuffer.GetD3DBuffer().get();
     _deviceContext->IASetVertexBuffers(0, 1, &buffer, &stride, &ofset);
     return *this;
@@ -60,9 +60,9 @@ TS::DeviceContext& TS::DeviceContext::ClearColorToRenderTaegets(float r, float g
 {
     Error::Assert(_deviceContext != nullptr);
     float colors[4] = { r,g,b,a };
-    for (int i = 0; i < RenderTargetCount; ++i)
+    for (const auto& _renderTaeget : _renderTaegets)
     {
-        auto rtv = _renderTaegets[i].GetD3DRenderTargetView().get();
+        auto rtv = _renderTaeget.GetD3DRenderTargetView().get();
         if ( rtv != nullptr)
             _deviceContext->ClearRenderTargetView(rtv, colors);
     }
@@ -144,7 +144,7 @@ TS::DeviceContext& TS::DeviceContext::ApplyBufferTargets()
     ID3D11RenderTargetView * renderTargets[RenderTargetCount]{};
     ID3D11DepthStencilView * dsv = _depthStencilTarget.GetD3DDepthStencilView().get();
 
-    int rtNum = 0;
+    unsigned rtNum = 0;
     for (; rtNum < RenderTargetCount; ++rtNum)
     {
         const auto rtv = _renderTaegets[rtNum].GetD3DRenderTargetView();

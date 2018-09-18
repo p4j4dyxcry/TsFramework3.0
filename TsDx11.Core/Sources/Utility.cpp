@@ -8,14 +8,13 @@ TS::ErrorResult TS::_getRefreshRato(unsigned& outNumerator, unsigned& outDenomin
     outNumerator = 1;
     outDenominator = 60;
 
-    HRESULT hr = S_OK;
     IDXGIFactory* factory; // factory
     IDXGIAdapter* adapter; // videocard
     IDXGIOutput* adapterOutput; // monitor
     UINT numModes;
 
     // Create a DirectX graphics interface factory
-    hr = CreateDXGIFactory(__uuidof(IDXGIFactory), (void**)&factory);
+    auto hr = CreateDXGIFactory(__uuidof(IDXGIFactory), reinterpret_cast<void**>(&factory));
     auto erroData = Error::Make(hr);
     if (erroData.IsError())
     {
@@ -57,7 +56,7 @@ TS::ErrorResult TS::_getRefreshRato(unsigned& outNumerator, unsigned& outDenomin
     }
 
     // create alist to hold all possible display modes for this monitor/video card combination
-    auto displayModeList = new (DXGI_MODE_DESC[numModes]);
+    auto displayModeList = MemoryManagedArray<DXGI_MODE_DESC>(numModes);
 
     // now fill the display mode list structures
     hr = adapterOutput->GetDisplayModeList(DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_ENUM_MODES_INTERLACED, &numModes,
@@ -65,7 +64,6 @@ TS::ErrorResult TS::_getRefreshRato(unsigned& outNumerator, unsigned& outDenomin
     erroData = Error::Make(hr);
     if (erroData.IsError())
     {
-        SAFE_DELETE(displayModeList);
         SAFE_RELEASE(adapterOutput);
         SAFE_RELEASE(adapter);
         SAFE_RELEASE(factory);
@@ -86,7 +84,6 @@ TS::ErrorResult TS::_getRefreshRato(unsigned& outNumerator, unsigned& outDenomin
         }
     }
 
-    SAFE_DELETE(displayModeList);
     SAFE_RELEASE(adapterOutput);
     SAFE_RELEASE(adapter);
     SAFE_RELEASE(factory);

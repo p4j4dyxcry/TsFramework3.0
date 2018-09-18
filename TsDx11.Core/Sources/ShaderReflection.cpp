@@ -234,7 +234,7 @@ namespace TS
             if (bitMask & 0x2) dataCount++;
             if (bitMask & 0x1) dataCount++;
 
-            format[i] = ConvertFormat(dataCount, (FormatType)(type));
+            format[i] = ConvertFormat(dataCount, static_cast<FormatType>(type));
         }
         cntvariable -= systemSemantices;
 

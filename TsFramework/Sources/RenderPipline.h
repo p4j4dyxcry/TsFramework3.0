@@ -6,7 +6,7 @@ namespace TS
     {
         using Handle = HashCode;
     public:
-        GfxPipline(DeviceHolder& holder , ShaderResourceFactory& factory);
+        GfxPipline(DeviceHolder& holder ,ShaderResourceFactory& factory);
         GfxPipline& LoadVertexShader(const TsChar* filename);
         GfxPipline& LoadPixelShader(const TsChar* filename);
         GfxPipline& SetRasterizerState(RasterizerStateDesc& desc);
@@ -31,6 +31,6 @@ namespace TS
         Handle _depthStencilState;
         Handle _depthStencilView;
         Handle _blendState;
-        Handle _renderTargets[8];
+        Handle _renderTargets[8]{};
     };
 }
