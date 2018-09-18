@@ -11,15 +11,11 @@ namespace TS
 
     template <typename T>
     ManagedArray<T>::ManagedArray(T* data, size_t sz, RefCounter* pRefCounter)
+        : _refarenceConter(pRefCounter) , _data(data), _size(sz)
     {
-        _data = data;
-        _size = sz;
-        _refarenceConter = pRefCounter;
         if (_refarenceConter == nullptr)
             _refarenceConter = new RefCounter();
-
-        if (_refarenceConter != nullptr)
-            _refarenceConter->AddRef();
+        _refarenceConter->AddRef();
     }
 
     template <typename T>
