@@ -36,10 +36,10 @@ namespace TS
          * \brief —v‘f‚ðŽæ“¾‚·‚é
          * \return —v‘f
          */
-        T*& Data()const;
+        T*& Data();
 
         ManagedArray();
-        ManagedArray(const T* data , size_t sz , RefCounter* pRefCounter = nullptr);
+        ManagedArray(T* data , size_t sz , RefCounter* pRefCounter = nullptr);
         ManagedArray(size_t sz);
         ManagedArray(const ManagedArray<T>& ref);
         ManagedArray(const ManagedArray<T>&& ref) noexcept;
@@ -47,6 +47,8 @@ namespace TS
         ManagedArray<T>& operator =(const ManagedArray<T>& ref);
         ManagedArray<T>& operator =(ManagedArray<T>&& ref) noexcept;
 
+        operator void*()const;
+        operator const void *() const;
         operator T*();
         operator const T*() const;
     protected:

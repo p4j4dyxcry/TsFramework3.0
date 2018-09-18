@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "Common.h"
-#include "MemoryManagedArray.h"
+#include "ManagedArray.h"
 #include "Sring.h"
 
 //! ボイヤー-ムーア法による文字列検索アルゴリズム

@@ -10,7 +10,7 @@ namespace TS
     }
 
     template <typename T>
-    ManagedArray<T>::ManagedArray(const T* data, size_t sz, RefCounter* pRefCounter)
+    ManagedArray<T>::ManagedArray(T* data, size_t sz, RefCounter* pRefCounter)
     {
         _data = data;
         _size = sz;
@@ -68,6 +68,18 @@ namespace TS
     }
 
     template <typename T>
+    ManagedArray<T>::operator void*()const
+    {
+        return _data;
+    }
+
+    template <typename T>
+    ManagedArray<T>::operator const void*() const
+    {
+        return _data;
+    }
+
+    template <typename T>
     ManagedArray<T>::operator T*()
     {
         return _data;
@@ -99,7 +111,7 @@ namespace TS
     }
 
     template <typename T>
-    T*& ManagedArray<T>::Data()const
+    T*& ManagedArray<T>::Data()
     {
         return _data;
     }
