@@ -21,7 +21,7 @@ TS::GfxPipline::GfxPipline(DeviceHolder& holder,ShaderResourceFactory& factory)
 TS::GfxPipline& TS::GfxPipline::LoadVertexShader(const TsChar* filename)
 {
     auto binary = _loadCompiledShader(filename);
-    auto&& elementDescs = MakeInputLayoutDescFromMemory(binary);
+    auto&& elementDescs = MakeInputLayoutDescFromBinary(binary);
     _vertexShader = _deviceHolder.CreateVertexShader(binary);
     _inputLayout = _deviceHolder.CreateInputLayout(binary, elementDescs, elementDescs.Length());
     return *this;
@@ -77,7 +77,7 @@ GfxPipline & TS::GfxPipline::SetClearColor(float r, float g, float b, float a)
 
 GfxPipline & TS::GfxPipline::Apply()
 {
-    auto& deviceContext = _deviceHolder.ImmediateContext();
+    auto&& deviceContext = _deviceHolder.ImmediateContext();
 
     unsigned _index = 0;
     for (auto rt : _renderTargets)

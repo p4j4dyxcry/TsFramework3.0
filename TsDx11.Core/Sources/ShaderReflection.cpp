@@ -174,7 +174,7 @@ namespace TS
         return MakeElementDescUInt("SV_PrimitiveID", 1, 0);
     }
 
-    ManagedArray<InputElementDesc> MakeInputLayoutDescFromMemory(Binary& binary)
+    ManagedArray<InputElementDesc> MakeInputLayoutDescFromBinary(Binary& binary)
     {
         unsigned char *pInputElementEntry = nullptr;
         for (size_t i = 0L; i < binary.Length() - 4; ++i)
