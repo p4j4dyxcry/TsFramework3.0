@@ -7,7 +7,7 @@
 #include "LruCache.h"
 #include "GfxCommon.h"
 #include "MemoryManagedArray.h"
-#include "TsSring.h"
+#include "Sring.h"
 #include "BinaryReader.h"
 #include "ShaderReflection.h"
 #include "Buffers.h"

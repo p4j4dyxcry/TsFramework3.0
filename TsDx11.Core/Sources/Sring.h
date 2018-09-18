@@ -4,9 +4,9 @@ namespace TS
 {
 
     /**
-     * \brief 文字列クラス、メモリ管理は参照カウンタ式になっているので不要
+     * \brief 文字列クラス
      */
-    class TsString : public MemoryManagedArray<TsChar>
+    class String : public MemoryManagedArray<TsChar>
     {
     public:
         
@@ -14,7 +14,7 @@ namespace TS
          * \brief コンストラクタ
          * \param str 初期文字列
          */
-        TsString(const TsChar* str = _T(""));
+        String(const TsChar* str = _T(""));
 
         /**
          * \brief 分割されたサブ文字列の作成
@@ -22,7 +22,7 @@ namespace TS
          * \param npos  pos からの カウント , 0の場合は終端までとして扱う
          * \return 分割されたサブ文字列
          */
-        TsString SubString(unsigned pos, unsigned npos = 0) const;
+        String SubString(unsigned pos, unsigned npos = 0) const;
 
         /**
          * \brief 文字列検索
@@ -37,7 +37,7 @@ namespace TS
          * \param _new 置換される文字 
          * \return 置換された文字列
          */
-        TsString Replace(TsChar original, TsChar _new) const;
+        String Replace(TsChar original, TsChar _new) const;
 
         /**
          * \brief 文字列置換
@@ -46,7 +46,7 @@ namespace TS
          * \param str 置換後の文字列 sizeを超える文字列も許容される
          * \return 置換された文字列
          */
-        TsString Replace(unsigned start, unsigned size, const TsString& str) const;
+        String Replace(unsigned start, unsigned size, const String& str) const;
 
         /**
          * \brief 文字列置換
@@ -54,7 +54,7 @@ namespace TS
          * \param _new 置換される文字
          * \return 置換された文字列
          */
-        TsString Replace(const TsChar* original, const TsChar* _new) const;
+        String Replace(const TsChar* original, const TsChar* _new) const;
         
         /**
          * \brief 対象の文字列が含まれるか調べる
@@ -83,17 +83,17 @@ namespace TS
          * \param ... 
          * \return 生成された文字列
          */
-        static TsString Format(const TsChar* format, ...) ;
+        static String Format(const TsChar* format, ...) ;
 
         // operator
     public:
         using MemoryManagedArray<TsChar>::MemoryManagedArray;
         using MemoryManagedArray<TsChar>::operator=;
-        bool operator ==(const TsString& string) const;
-        bool operator !=(const TsString& string) const;
-        TsString& operator =(const TsChar* str);
-        TsString operator  +(const TsChar* str) const;
-        TsString& operator +=(const TsChar* str);
+        bool operator ==(const String& string) const;
+        bool operator !=(const String& string) const;
+        String& operator =(const TsChar* str);
+        String operator  +(const TsChar* str) const;
+        String& operator +=(const TsChar* str);
     };
 }
 

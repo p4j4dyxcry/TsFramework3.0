@@ -39,7 +39,7 @@
     <ClCompile Include="Sources\ShaderReflection.cpp" />
     <ClCompile Include="Sources\ShaderResource.cpp" />
     <ClCompile Include="Sources\ShaderResourceFactory.cpp" />
-    <ClCompile Include="Sources\TsString.cpp" />
+    <ClCompile Include="Sources\String.cpp" />
     <ClCompile Include="Sources\Utility.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -54,6 +54,7 @@
     <ClInclude Include="Sources\ID3DResourcesHolder.h" />
     <ClInclude Include="Sources\DeviceHolder.h" />
     <ClInclude Include="Sources\LruCache.h" />
+    <ClInclude Include="Sources\LruCache.hpp" />
     <ClInclude Include="Sources\Math\TsMath.h" />
     <ClInclude Include="Sources\Math\Matrix4.h" />
     <ClInclude Include="Sources\Math\Quaternion.h" />
@@ -68,7 +69,7 @@
     <ClInclude Include="Sources\ShaderResourceFactory.h" />
     <ClInclude Include="Sources\TsDx11Core.h" />
     <ClInclude Include="Sources\TsDx11Core.Internal.h" />
-    <ClInclude Include="Sources\TsSring.h" />
+    <ClInclude Include="Sources\Sring.h" />
     <ClInclude Include="Sources\Utility.h" />
   </ItemGroup>
   <ItemGroup>

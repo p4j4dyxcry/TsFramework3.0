@@ -37,7 +37,7 @@ namespace TS
          * \brief 最初に見つかった'\0'までを文字列として読み込み、読み込んだ分カレントを進める
          * \return 読み込んだString
          */
-        TsString ReadString();
+        String ReadString();
 
         /**
          * \brief カレント位置を移動させます
@@ -51,7 +51,7 @@ namespace TS
          * \param current_to_offset 現在位置からのサイズ
          * \return 作成されたバイナリリーダ
          */
-        BinaryReader MakeSubReaderFromCurrent(unsigned current_to_offset);
+        BinaryReader MakeSubReaderFromCurrent(unsigned current_to_offset) const;
 
         /**
          * \brief 先頭から数えてhead_to_offeset から count までの新しいバイナリリーダを作成する
@@ -59,7 +59,7 @@ namespace TS
          * \param count head_to_offesetから読み込むサイズ , 0 の場合はhead_to_offesetから最後まで読み込む
          * \return 作成されたバイナリリーダ
          */
-        BinaryReader MakeSubReaderFromHead(unsigned head_to_offeset, unsigned count = 0);
+        BinaryReader MakeSubReaderFromHead(unsigned head_to_offeset, unsigned count = 0) const;
     private:
         unsigned _current;
         Binary _binary;

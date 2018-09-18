@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Common.h"
 #include "MemoryManagedArray.h"
-#include "TsSring.h"
+#include "Sring.h"
 
 //! ボイヤー-ムーア法による文字列検索アルゴリズム
 inline int BoyerMooreStringSearch(const TS::TsChar* origin, int origin_length, const TS::TsChar * pattern, int pattern_length)
@@ -45,12 +45,12 @@ inline int BoyerMooreStringSearch(const TS::TsChar* origin, int origin_length, c
     return idx;
 }
 
-TS::TsString::TsString(const TsChar* str)
+TS::String::String(const TsChar* str)
 {
     *this = str;
 }
 
-TS::TsString& TS::TsString::operator=(const TsChar* str)
+TS::String& TS::String::operator=(const TsChar* str)
 {
     Release();
     _size = Length(str);
@@ -66,12 +66,12 @@ TS::TsString& TS::TsString::operator=(const TsChar* str)
     return *this;
 }
 
-TS::TsString TS::TsString::operator+(const TsChar* str) const
+TS::String TS::String::operator+(const TsChar* str) const
 {
     const unsigned str_size = Length(str);
     const unsigned sz = (_size + str_size) - 1;
 
-    TsString result(sz);
+    String result(sz);
     unsigned i = 0;
     for (; _data[i] != '\0'; ++i)
         result[i] = _data[i];
@@ -82,18 +82,18 @@ TS::TsString TS::TsString::operator+(const TsChar* str) const
     return result;
 }
 
-TS::TsString& TS::TsString::operator+=(const TsChar* str)
+TS::String& TS::String::operator+=(const TsChar* str)
 {
     *this = *this + str;
     return *this;
 }
 
-TS::TsString TS::TsString::SubString(unsigned pos, unsigned npos) const
+TS::String TS::String::SubString(unsigned pos, unsigned npos) const
 {
     if (npos == 0)
         npos = static_cast<unsigned>(_size) - pos - 1;
 
-    TsString result(npos + 1);
+    String result(npos + 1);
 
     unsigned i = 0;
     for (; i < npos; ++i)
@@ -103,16 +103,16 @@ TS::TsString TS::TsString::SubString(unsigned pos, unsigned npos) const
     return result;
 }
 
-int TS::TsString::Find(const TsChar* _pattern) const
+int TS::String::Find(const TsChar* _pattern) const
 {
     const int pattern_length = Length(_pattern) - 1;
 
     return BoyerMooreStringSearch(_data, _size, _pattern, pattern_length);
 }
 
-TS::TsString TS::TsString::Replace(const TsChar original, const TsChar _new) const
+TS::String TS::String::Replace(const TsChar original, const TsChar _new) const
 {
-    TsString result(_size);
+    String result(_size);
     for (unsigned i = 0; i < _size; ++i)
     {
         if (_data[i] == original)
@@ -124,7 +124,7 @@ TS::TsString TS::TsString::Replace(const TsChar original, const TsChar _new) con
     return result;
 }
 
-TS::TsString TS::TsString::Replace(unsigned start, unsigned size, const TsString& str) const
+TS::String TS::String::Replace(unsigned start, unsigned size, const String& str) const
 {
     if (start == 0)
         return str + SubString(size, _size - size);
@@ -132,7 +132,7 @@ TS::TsString TS::TsString::Replace(unsigned start, unsigned size, const TsString
     return SubString(0, start + 1) + str + SubString(start + size, _size - start - size);
 }
 
-TS::TsString TS::TsString::Replace(const TsChar* original, const TsChar* _new) const
+TS::String TS::String::Replace(const TsChar* original, const TsChar* _new) const
 {
     const int sz = Length(original);
 
@@ -150,12 +150,12 @@ TS::TsString TS::TsString::Replace(const TsChar* original, const TsChar* _new) c
     return result;
 }
 
-bool TS::TsString::Contain(const TsChar* str) const
+bool TS::String::Contain(const TsChar* str) const
 {
     return Find(str) != -1;
 }
 
-size_t TS::TsString::Length(const TsChar* str)
+size_t TS::String::Length(const TsChar* str)
 {
     size_t sz = 0;
     while (str[sz++] != '\0')
@@ -165,7 +165,7 @@ size_t TS::TsString::Length(const TsChar* str)
     return sz;
 }
 
-bool TS::TsString::operator==(const TsString& string) const
+bool TS::String::operator==(const String& string) const
 {
     if (_size != string._size)
         return false;
@@ -178,17 +178,17 @@ bool TS::TsString::operator==(const TsString& string) const
     return true;
 }
 
-bool TS::TsString::operator!=(const TsString& string) const
+bool TS::String::operator!=(const String& string) const
 {
     return !(*this == string);
 }
 
-inline bool TS::TsString::IsNullOrEmpty() const
+inline bool TS::String::IsNullOrEmpty() const
 {
     return _data == nullptr || _size == 0;
 }
 
-TS::TsString TS::TsString::Format(const TsChar* pcFormat, ...)
+TS::String TS::String::Format(const TsChar* pcFormat, ...)
 {
     va_list valist; 
     

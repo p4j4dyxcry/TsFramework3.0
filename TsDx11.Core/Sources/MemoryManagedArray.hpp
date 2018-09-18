@@ -10,7 +10,7 @@ namespace TS
     }
 
     template <typename T>
-    MemoryManagedArray<T>::MemoryManagedArray(T* data, size_t sz, RefCounter* pRefCounter)
+    MemoryManagedArray<T>::MemoryManagedArray(const T* data, size_t sz, RefCounter* pRefCounter)
     {
         _data = data;
         _size = sz;
@@ -102,6 +102,11 @@ namespace TS
     T* MemoryManagedArray<T>::Data()const
     {
         return _data;
+    }
+
+    template <typename T>
+    MemoryManagedArray<T>::MemoryManagedArray(): _data(nullptr), _size(0), _refarenceConter(nullptr)
+    {
     }
 
     template <typename T>

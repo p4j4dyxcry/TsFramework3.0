@@ -26,14 +26,14 @@ namespace TS
         return datas;
     }
 
-    inline TsString BinaryReader::ReadString()
+    inline String BinaryReader::ReadString()
     {
         unsigned counter = _current;
         while (counter < _binary.Length() && _binary[counter++] != '\0')
         {
         }
 
-        TsString string(counter);
+        String string(counter);
         for (unsigned i = 0; i < counter; ++i)
             string[i] = _binary[_current++];
         return string;
@@ -45,17 +45,17 @@ namespace TS
         return *this;
     }
 
-    inline BinaryReader BinaryReader::MakeSubReaderFromCurrent(unsigned current_to_offset)
+    inline BinaryReader BinaryReader::MakeSubReaderFromCurrent(unsigned current_to_offset) const
     {
-        return { Binary(&_binary[_current], current_to_offset) };
+        return { Binary(const_cast<unsigned char*>(&_binary[_current]), current_to_offset)};
     }
 
-    inline BinaryReader BinaryReader::MakeSubReaderFromHead(unsigned head_to_offeset, unsigned count)
+    inline BinaryReader BinaryReader::MakeSubReaderFromHead(unsigned head_to_offeset, unsigned count) const
     {
         if (count == 0)
             count = static_cast<unsigned>(_binary.Length()) - head_to_offeset;
 
-        return { Binary(&_binary[head_to_offeset], count) };
+        return { Binary(const_cast<unsigned char*>(&_binary[_current]), count) };
     }
 }
 

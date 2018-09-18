@@ -1,66 +1,61 @@
 ﻿#pragma once
-//---------------------------------------------------------------
-//! Lruキャッシュ
 
-template<typename TKey, typename TValue>
-class LruCache 
+
+namespace TS
 {
-public:
-    using Pair = std::pair<TKey, TValue>;
-    using Iterator = typename std::list<Pair>::iterator;
-
-    LruCache(size_t max_size) :_capacity(max_size) {}
-
-    //! 登録
-    void Register(const TKey& key, const TValue& value) 
+    /**
+    * \brief キャッシュクラス、
+    * \tparam TKey
+    * \tparam TValue
+    */
+    template<typename TKey, typename TValue>
+    class LruCache
     {
-        auto it = _cache.find(key);
+    private:
+        using Pair = std::pair<TKey, TValue>;
+        using Iterator = typename std::list<Pair>::iterator;
 
-        _list.push_front(Pair(key, value));
-        if (it != _cache.end()) 
-        {
-            _list.erase(it->second);
-            _cache.erase(it);
-        }
+    public:
 
-        _cache[key] = _list.begin();
-        if (_cache.size() > _capacity) 
-        {
-            auto last = _list.end();
-            last--;
-            _cache.erase(last->first);
-            _list.pop_back();
-        }
-    }
+        /**
+         * \brief コンストラクタ
+         * \param capcity キャッシュの容量
+         */
+        LruCache(size_t capcity);
 
-    //! 取得
-    TValue& operator[](const TKey & key)
-    {
-        return Get(key);
-    }
+        
+        /**
+         * \brief キャッシュに登録
+         * \param key 
+         * \param value 
+         * \result 自身の参照
+         */
+        LruCache<TKey,TValue>& Register(const TKey& key, const TValue& value);
 
-    TValue& Get(const TKey& key) 
-    {
-        auto it = _cache.find(key);
-        if (it == _cache.end()) 
-            Error::Assert(false,_T("キャッシュに存在しない"));
+        /**
+         * \brief キャッシュから取得
+         * \param key 
+         */
+        TValue& Get(const TKey& key);
 
-        _list.splice(_list.begin(), _list, it->second);
-        return it->second->second;
-    }
+        /**
+         * \brief キャッシュにキーが存在するか
+         * \param key 
+         * \return 存在するならtrue
+         */
+        bool Contains(const TKey& key) const;
 
-    bool Contains(const TKey& key) const 
-    {
-        return _cache.find(key) != _cache.end();
-    }
+        /**
+         * \brief キャッシュの容量を取得
+         */
+        size_t Size() const;
 
-    size_t size() const 
-    {
-        return _cache.size();
-    }
+        TValue& operator[](const TKey& key);
 
-private:
-    TsList<Pair> _list;
-    TsMap<TKey, Iterator> _cache;
-    size_t _capacity;
-};
+    private:
+        TsList<Pair> _list;
+        TsMap<TKey, Iterator> _dictionary;
+        size_t _capacity;
+    };
+}
+#include "LruCache.hpp"

@@ -38,11 +38,8 @@ namespace TS
          */
         T* Data()const;
 
-        MemoryManagedArray():_data(nullptr),_size(0),_refarenceConter(nullptr)
-        {
-        }
-
-        MemoryManagedArray(T* data , size_t sz , RefCounter* pRefCounter = nullptr);
+        MemoryManagedArray();
+        MemoryManagedArray(const T* data , size_t sz , RefCounter* pRefCounter = nullptr);
         MemoryManagedArray(size_t sz);
         MemoryManagedArray(const MemoryManagedArray<T>& ref);
         MemoryManagedArray(const MemoryManagedArray<T>&& ref) noexcept;

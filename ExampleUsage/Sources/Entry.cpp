@@ -92,7 +92,7 @@ int main()
     pipline.LoadPixelShader(L"../Debug/PixelShader.cso");
     pipline.SetupDefault();
 
-    TsString a;
+    String a;
 
     a = L"a";
 
@@ -102,7 +102,7 @@ int main()
     a += L"a";
     a += L"a";
 
-    TsString str(L"abc012abc012abc012");
+    String str(L"abc012abc012abc012");
 
     str = str.Replace(L"012", L"defg");
     str = str.Replace('a', '*');
@@ -112,7 +112,7 @@ int main()
     auto _true = a.Contain(L"ba");
     auto _false = a.Contain(L"c");
 
-    auto bbb = TsString::Format(L"こんにちは%sおはよう", "aaaaaaaa");
+    auto bbb = String::Format(L"こんにちは%sおはよう", "aaaaaaaa");
     
     ConstantBffuerFactory cBufferFactor(core.Holder());
     auto cbuffer = cBufferFactor.CreateConstantBuffer<TransformCBuffer>(ShaderType::Pixel);
