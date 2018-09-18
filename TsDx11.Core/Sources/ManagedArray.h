@@ -53,6 +53,9 @@ namespace TS
         operator const T*() const;
     protected:
         void Release();
+
+        void AddRef(RefCounter*);
+
     protected:
         T * _data;
         size_t _size;

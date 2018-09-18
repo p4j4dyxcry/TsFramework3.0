@@ -5,7 +5,7 @@ using namespace TS;
 
 namespace
 {
-    const HashCode invalid_Hash = -1;
+    const HashCode invalid_Hash = 0;
 }
 
 TS::GfxPipline::GfxPipline(DeviceHolder& holder,ShaderResourceFactory& factory)

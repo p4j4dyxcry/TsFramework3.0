@@ -60,8 +60,7 @@ TS::String& TS::String::operator=(const TsChar* str)
     for (; i < _size; ++i)
         _data[i] = str[i];
 
-    _refarenceConter = new RefCounter();
-    _refarenceConter->AddRef();
+    AddRef(_refarenceConter);
 
     return *this;
 }

@@ -1,8 +1,7 @@
+#include "ManagedArray.h"
 #pragma once
 namespace TS
-{
-
-
+{    
     template <typename T>
     ManagedArray<T>::~ManagedArray()
     {
@@ -13,13 +12,11 @@ namespace TS
     ManagedArray<T>::ManagedArray(T* data, size_t sz, RefCounter* pRefCounter)
         : _refarenceConter(pRefCounter) , _data(data), _size(sz)
     {
-        if (_refarenceConter == nullptr)
-            _refarenceConter = new RefCounter();
-        _refarenceConter->AddRef();
+        AddRef(_refarenceConter);
     }
 
     template <typename T>
-    ManagedArray<T>::ManagedArray(size_t sz) : ManagedArray(new T[sz], sz)
+    ManagedArray<T>::ManagedArray(size_t sz) : ManagedArray(new T[sz], sz , nullptr)
     {
     }
 
@@ -43,9 +40,7 @@ namespace TS
         this->_data = ref._data;
         this->_size = ref._size;
 
-        _refarenceConter = ref._refarenceConter;
-        if (_refarenceConter != nullptr)
-            _refarenceConter->AddRef();
+        AddRef(ref._refarenceConter);
         return *this;
     }
 
@@ -57,9 +52,7 @@ namespace TS
         this->_data = ref._data;
         this->_size = ref._size;
 
-        _refarenceConter = ref._refarenceConter;
-        if (_refarenceConter != nullptr)
-            _refarenceConter->AddRef();
+        AddRef(ref._refarenceConter);
         return *this;
     }
 
@@ -104,6 +97,15 @@ namespace TS
         }
         delete _refarenceConter;
         _refarenceConter = nullptr;
+    }
+
+    template<typename T>
+    void ManagedArray<T>::AddRef(RefCounter* pRefConter)
+    {
+        _refarenceConter = pRefConter;
+        if (_refarenceConter == nullptr)
+            _refarenceConter = new RefCounter();
+        _refarenceConter->AddRef();
     }
 
     template <typename T>
