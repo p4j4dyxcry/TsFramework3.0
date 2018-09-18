@@ -7,7 +7,7 @@ namespace TS
     * \tparam T
     */
     template<typename T>
-    struct MemoryManagedArray 
+    struct ManagedArray 
     {
     protected:
 
@@ -38,14 +38,14 @@ namespace TS
          */
         T*& Data()const;
 
-        MemoryManagedArray();
-        MemoryManagedArray(const T* data , size_t sz , RefCounter* pRefCounter = nullptr);
-        MemoryManagedArray(size_t sz);
-        MemoryManagedArray(const MemoryManagedArray<T>& ref);
-        MemoryManagedArray(const MemoryManagedArray<T>&& ref) noexcept;
-        virtual ~MemoryManagedArray();
-        MemoryManagedArray<T>& operator =(const MemoryManagedArray<T>& ref);
-        MemoryManagedArray<T>& operator =(MemoryManagedArray<T>&& ref) noexcept;
+        ManagedArray();
+        ManagedArray(const T* data , size_t sz , RefCounter* pRefCounter = nullptr);
+        ManagedArray(size_t sz);
+        ManagedArray(const ManagedArray<T>& ref);
+        ManagedArray(const ManagedArray<T>&& ref) noexcept;
+        virtual ~ManagedArray();
+        ManagedArray<T>& operator =(const ManagedArray<T>& ref);
+        ManagedArray<T>& operator =(ManagedArray<T>&& ref) noexcept;
 
         operator T*();
         operator const T*() const;
@@ -56,4 +56,4 @@ namespace TS
         size_t _size;
     };
 }
-#include "MemoryManagedArray.hpp"
+#include "ManagedArray.hpp"

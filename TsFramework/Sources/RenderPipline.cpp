@@ -3,13 +3,18 @@
 
 using namespace TS;
 
+namespace
+{
+    const HashCode invalid_Hash = -1;
+}
+
 TS::GfxPipline::GfxPipline(DeviceHolder& holder,ShaderResourceFactory& factory)
     : _deviceHolder(holder), 
       _shaderResourceFactory(factory), 
-      _rasterizerState(0), 
-      _depthStencilState(0),
-      _depthStencilView(0), 
-      _blendState(0)
+      _rasterizerState(invalid_Hash),
+      _depthStencilState(invalid_Hash),
+      _depthStencilView(invalid_Hash),
+      _blendState(invalid_Hash)
 {
 }
 
@@ -73,7 +78,6 @@ GfxPipline & TS::GfxPipline::SetClearColor(float r, float g, float b, float a)
 GfxPipline & TS::GfxPipline::Apply()
 {
 	auto& deviceContext = _deviceHolder.ImmediateContext();
-	static const Handle invalid_Hash = 0;
 
 	unsigned _index = 0;
 	for (auto rt : _renderTargets)

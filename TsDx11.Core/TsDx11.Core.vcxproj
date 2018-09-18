@@ -61,8 +61,8 @@
     <ClInclude Include="Sources\Math\Vector2.h" />
     <ClInclude Include="Sources\Math\Vector3.h" />
     <ClInclude Include="Sources\Math\Vector4.h" />
-    <ClInclude Include="Sources\MemoryManagedArray.h" />
-    <ClInclude Include="Sources\MemoryManagedArray.hpp" />
+    <ClInclude Include="Sources\ManagedArray.h" />
+    <ClInclude Include="Sources\ManagedArray.hpp" />
     <ClInclude Include="Sources\pch.h" />
     <ClInclude Include="Sources\ShaderReflection.h" />
     <ClInclude Include="Sources\ShaderResource.h" />

@@ -6,7 +6,7 @@ namespace TS
     /**
      * \brief •¶Žš—ñƒNƒ‰ƒX
      */
-    class String : public MemoryManagedArray<TsChar>
+    class String : public ManagedArray<TsChar>
     {
     public:
         
@@ -87,8 +87,8 @@ namespace TS
 
         // operator
     public:
-        using MemoryManagedArray<TsChar>::MemoryManagedArray;
-        using MemoryManagedArray<TsChar>::operator=;
+        using ManagedArray<TsChar>::ManagedArray;
+        using ManagedArray<TsChar>::operator=;
         bool operator ==(const String& string) const;
         bool operator !=(const String& string) const;
         String& operator =(const TsChar* str);

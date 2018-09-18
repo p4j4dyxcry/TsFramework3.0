@@ -56,7 +56,7 @@ TS::ErrorResult TS::_getRefreshRato(unsigned& outNumerator, unsigned& outDenomin
     }
 
     // create alist to hold all possible display modes for this monitor/video card combination
-    auto displayModeList = MemoryManagedArray<DXGI_MODE_DESC>(numModes);
+    auto displayModeList = ManagedArray<DXGI_MODE_DESC>(numModes);
 
     // now fill the display mode list structures
     hr = adapterOutput->GetDisplayModeList(DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_ENUM_MODES_INTERLACED, &numModes,

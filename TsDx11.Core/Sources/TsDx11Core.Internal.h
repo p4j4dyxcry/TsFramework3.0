@@ -6,7 +6,7 @@
 #include "Common.h"
 #include "LruCache.h"
 #include "GfxCommon.h"
-#include "MemoryManagedArray.h"
+#include "ManagedArray.h"
 #include "Sring.h"
 #include "BinaryReader.h"
 #include "ShaderReflection.h"

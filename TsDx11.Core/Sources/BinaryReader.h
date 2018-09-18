@@ -2,7 +2,7 @@
 
 namespace TS
 {
-    using Binary = MemoryManagedArray<unsigned char>;
+    using Binary = ManagedArray<unsigned char>;
 
     /**
      * \brief バイナリ読み込みのためのユーティリティ
@@ -31,7 +31,7 @@ namespace TS
          * \return 読み込んだデータ配列
          */
         template<typename T>
-        MemoryManagedArray<T> ReadArray(unsigned dataCount);
+        ManagedArray<T> ReadArray(unsigned dataCount);
 
         /**
          * \brief 最初に見つかった'\0'までを文字列として読み込み、読み込んだ分カレントを進める

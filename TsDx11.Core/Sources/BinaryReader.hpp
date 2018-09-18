@@ -17,10 +17,10 @@ namespace TS
     }
 
     template <typename T>
-    MemoryManagedArray<T> BinaryReader::ReadArray(unsigned dataCount)
+    ManagedArray<T> BinaryReader::ReadArray(unsigned dataCount)
     {
         const size_t sz = sizeof(T) * dataCount;
-        MemoryManagedArray<T> datas(dataCount);
+        ManagedArray<T> datas(dataCount);
         memcpy_s(datas, sz, &_binary.Data()[_current], sz);
         _current += static_cast<unsigned>(sz);
         return datas;
