@@ -18,4 +18,3 @@ namespace TS
         DeviceHolder & _holder;
     };
 }
-
