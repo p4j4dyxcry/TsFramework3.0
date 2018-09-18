@@ -1,4 +1,3 @@
-#include "ManagedArray.h"
 #pragma once
 namespace TS
 {    
