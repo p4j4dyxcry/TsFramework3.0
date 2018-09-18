@@ -79,8 +79,8 @@ int main()
     Dx11CoreInitializeData initialize;
     {
         initialize.WindowHandle = hwnd;
-        initialize.Width = 1024;
-        initialize.Height = 768;
+        initialize.Width        = 1024;
+        initialize.Height       = 768;
     }
 
     GfxSystem core;
@@ -92,7 +92,28 @@ int main()
     pipline.LoadPixelShader(L"../Debug/PixelShader.cso");
     pipline.SetupDefault();
 
+    TsString a;
 
+    a = L"a";
+
+    a = a + L"b";
+
+    a += L"a";
+    a += L"a";
+    a += L"a";
+
+    TsString str(L"abc012abc012abc012");
+
+    str = str.Replace(L"012", L"defg");
+    str = str.Replace('a', '*');
+
+    printf("%ls", str.Data());
+
+    auto _true = a.Contain(L"ba");
+    auto _false = a.Contain(L"c");
+
+    auto bbb = TsString::Format(L"こんにちは%sおはよう", "aaaaaaaa");
+    
     ConstantBffuerFactory cBufferFactor(core.Holder());
     auto cbuffer = cBufferFactor.CreateConstantBuffer<TransformCBuffer>(ShaderType::Pixel);
     MSG tMsg;
@@ -100,6 +121,7 @@ int main()
     core.Holder()
         .ImmediateContext()
         .SetConstantBuffer(cbuffer);
+
     while (true)
     {
         if (PeekMessage(&tMsg, nullptr, 0, 0, PM_NOREMOVE))

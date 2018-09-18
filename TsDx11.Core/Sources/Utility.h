@@ -7,10 +7,7 @@ namespace TS
     Binary _loadCompiledShader(const TsChar* filepath);
 
     template<class T>
-    TsSharedPtr<T> _makeD3DShared(T*& _ptr)
-    {
-        return TsSharedPtr<T>(_ptr, ReleaseDeleter<T>());
-    }
+    TsSharedPtr<T> _makeD3DShared(T*& _ptr) { return TsSharedPtr<T>(_ptr, ReleaseDeleter<T>()); }
 
     DXGI_SWAP_CHAIN_DESC _makeSwapChainDesc(HWND hwnd, unsigned w, unsigned h);
 
@@ -21,11 +18,7 @@ namespace TS
     template<typename T>
     TsSharedPtr<ID3D11Buffer> _createConstantBuffer(ID3D11Device * device , T* pMemory)
     {
-        return _createD3DBuffer(
-            device,
-            pMemory,
-            sizeof(T),
-            D3D11_CPU_ACCESS_WRITE, D3D11_BIND_CONSTANT_BUFFER);
+        return _createD3DBuffer(device, pMemory, sizeof(T), D3D11_CPU_ACCESS_WRITE, D3D11_BIND_CONSTANT_BUFFER);
     }
 
     VertexShader   _createVertexShaderFromMemory(ID3D11Device * device, void * pCompiledShader, size_t binarySize);
@@ -35,11 +28,7 @@ namespace TS
     DomainShader   _createDomainShaderFromMemory(ID3D11Device * device, void * pCompiledShader, size_t binarySize);
     ComputeShader  _createComputeShaderFromMemory(ID3D11Device * device, void * pCompiledShader, size_t binarySize);
 
-    InputLayout    _createInputLayout(ID3D11Device* pDevice,
-        void * pCompiledShader,
-        size_t binarySize,
-        InputElementDesc* desc,
-        unsigned layoutCount);
+    InputLayout    _createInputLayout(ID3D11Device* pDevice, void * pCompiledShader, size_t binarySize, InputElementDesc* desc, unsigned layoutCount);
 
     bool _containShaderType(ShaderType shaderType, ShaderType targetShader);
 

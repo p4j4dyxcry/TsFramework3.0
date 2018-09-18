@@ -23,5 +23,5 @@ namespace TS
     InputElementDesc ElementDescInstanceId();
     InputElementDesc ElementDescPrimitiveId();
 
-    SmartArray<InputElementDesc> MakeInputLayoutDescFromMemory(Binary& binary);
+    MemoryManagedArray<InputElementDesc> MakeInputLayoutDescFromMemory(Binary& binary);
 }

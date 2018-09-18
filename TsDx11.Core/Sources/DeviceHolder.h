@@ -31,5 +31,4 @@ namespace TS
         DeviceContext  _immediateContext;    
         DeviceContext  _defferedContext;      
     };
-
 }

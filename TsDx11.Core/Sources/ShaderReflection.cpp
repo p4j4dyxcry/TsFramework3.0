@@ -174,10 +174,10 @@ namespace TS
         return MakeElementDescUInt("SV_PrimitiveID", 1, 0);
     }
 
-    SmartArray<InputElementDesc> MakeInputLayoutDescFromMemory(Binary& binary)
+    MemoryManagedArray<InputElementDesc> MakeInputLayoutDescFromMemory(Binary& binary)
     {
         unsigned char *pInputElementEntry = nullptr;
-        for (size_t i = 0L; i < binary._size - 4; ++i)
+        for (size_t i = 0L; i < binary.Length() - 4; ++i)
         {
             if (memcmp(&binary[i], "ISGN", 4) == 0)
             {
@@ -208,9 +208,9 @@ namespace TS
 
         int cntvariable = pInputElementEntry[8];
         int systemSemantices = 0;
-        SmartArray<char*> names(cntvariable);
-		SmartArray<unsigned> index(cntvariable);
-		SmartArray<DXGI_FORMAT> format(cntvariable);
+        MemoryManagedArray<char*> names(cntvariable);
+		MemoryManagedArray<unsigned> index(cntvariable);
+		MemoryManagedArray<DXGI_FORMAT> format(cntvariable);
         unsigned char *str = &pInputElementEntry[16];
 
         for (int i = 0; i < cntvariable; i++)
@@ -238,7 +238,7 @@ namespace TS
         }
         cntvariable -= systemSemantices;
 
-        SmartArray<TS::InputElementDesc> descs(new TS::InputElementDesc[cntvariable], cntvariable);
+        MemoryManagedArray<TS::InputElementDesc> descs(new TS::InputElementDesc[cntvariable], cntvariable);
         for (int i = 0; i < cntvariable; i++)
         {
             descs[i] = {

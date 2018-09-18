@@ -4,7 +4,11 @@
 #define TS_FRAMEWORK_VERSION 3.0
 
 #include "Common.h"
-#include "Array.h"
+#include "LruCache.h"
+#include "GfxCommon.h"
+#include "MemoryManagedArray.h"
+#include "TsSring.h"
+#include "BinaryReader.h"
 #include "ShaderReflection.h"
 #include "Buffers.h"
 #include "Utility.h"

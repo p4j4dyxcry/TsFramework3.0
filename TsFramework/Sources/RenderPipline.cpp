@@ -12,7 +12,7 @@ TS::GfxPipline& TS::GfxPipline::LoadVertexShader(const TsChar* filename)
 	auto binary = _loadCompiledShader(filename);
 	auto&& elementDescs = MakeInputLayoutDescFromMemory(binary);
 	_vertexShader = _deviceHolder.CreateVertexShader(binary);
-	_inputLayout = _deviceHolder.CreateInputLayout(binary, elementDescs, elementDescs._size);
+	_inputLayout = _deviceHolder.CreateInputLayout(binary, elementDescs, elementDescs.Length());
     return *this;
 }
 
