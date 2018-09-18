@@ -4,10 +4,13 @@
 #define TS_FRAMEWORK_VERSION 3.0
 
 #include "Common.h"
+#include "IAllocator.h"
+#include "MemorySystem.h"
+#include "New.h"
 #include "LruCache.h"
 #include "GfxCommon.h"
 #include "ManagedArray.h"
-#include "Sring.h"
+#include "String.h"
 #include "BinaryReader.h"
 #include "ShaderReflection.h"
 #include "Buffers.h"

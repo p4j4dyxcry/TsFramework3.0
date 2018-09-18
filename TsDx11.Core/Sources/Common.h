@@ -37,7 +37,7 @@ namespace TS
         {\
 	        if( ptr != nullptr )\
 	        {\
-		        delete ptr;\
+		        TS_DELETE(ptr);\
 		        ptr = nullptr;\
 	        }\
         }
@@ -71,11 +71,37 @@ namespace TS
         Error,
     };
 
+    /**
+    * \brief ログを出力するためのメタデータを定義します
+    */
+    struct LogMetaData
+    {
+        int line;                   //! ソースコード内での行番号
+        const char* fileName;       //! ソースコードのファイル名
+        const char* functionName;   //! 関数名
+        ErrorLevel logLevel;          //! 重大性
+    };
+
     class ILogger
     {
     public:
         virtual ~ILogger() = default;
-        virtual void Log(const TsChar* message, ErrorLevel errorLevel) = 0;
+
+        virtual void Log(const char* message, LogMetaData errorLevel) = 0;
+        static ILogger* GetDefault();
+
+        static const char* Format(const char * format, ...)
+        {
+            static char logBuffer[4096] = "\0";
+
+            char* ap;
+            va_start(ap, format);
+            vsprintf_s(logBuffer, format, ap);
+            return logBuffer;
+        }
+    protected:
+        virtual void PreLog(LogMetaData& logMetaData) = 0;
+        virtual void EndLog(LogMetaData& logMetaData) = 0;
     };
 
     struct ErrorResult
@@ -103,6 +129,55 @@ namespace TS
         TS::ErrorLevel _errorLevel;
         ILogger* _logger;
     };
+
+    //! ログを出力
+#define TS_LOG(...)\
+    {\
+        TS::LogMetaData metadata; \
+        metadata.line = __LINE__; \
+        metadata.fileName = __FILE__; \
+        metadata.functionName = __FUNCTION__; \
+        metadata.logLevel = TS::ErrorLevel::Develop; \
+        TS::ILogger::GetDefault()->Log(TS::ILogger::Format(__VA_ARGS__),metadata);\
+    }
+
+    //! デバッグログを出力
+#ifdef _DEBUG
+#define TS_LOG_DEBUG(...)\
+        {\
+            TS::LogMetaData metadata; \
+            metadata.line = __LINE__; \
+            metadata.fileName = __FILE__; \
+            metadata.functionName = __FUNCTION__; \
+            metadata.logLevel = TS::ErrorLevel::Develop; \
+            TS::ILogger::GetDefault()->Log(TS::ILogger::Format(__VA_ARGS__),metadata);\
+        }
+#else
+#define TS_LOG_DEBUG(...);
+#endif
+
+
+    //! ワーニングログ
+#define TS_LOG_WARNING(...)\
+    {\
+        TS::LogMetaData metadata; \
+        metadata.line = __LINE__; \
+        metadata.fileName = __FILE__; \
+        metadata.functionName = __FUNCTION__; \
+        metadata.logLevel = TS::ErrorLevel::Warning; \
+        TS::ILogger::GetDefault()->Log(TS::ILogger::Format(__VA_ARGS__),metadata);\
+    }
+
+    //! エラーログを出力
+#define TS_LOG_ERROR(...)\
+    {\
+        TS::LogMetaData metadata; \
+        metadata.line = __LINE__; \
+        metadata.fileName = __FILE__; \
+        metadata.functionName = __FUNCTION__; \
+        metadata.logLevel = TS::ErrorLevel::Error; \
+        TS::ILogger::GetDefault()->Log(TS::ILogger::Format(__VA_ARGS__),metadata);\
+    }
 
     class Error
     {

@@ -238,7 +238,7 @@ namespace TS
         }
         cntvariable -= systemSemantices;
 
-        ManagedArray<TS::InputElementDesc> descs(new TS::InputElementDesc[cntvariable], cntvariable);
+        ManagedArray<TS::InputElementDesc> descs(TS_NEWARRAY(TS::InputElementDesc, cntvariable) , cntvariable);
         for (int i = 0; i < cntvariable; i++)
         {
             descs[i] = {

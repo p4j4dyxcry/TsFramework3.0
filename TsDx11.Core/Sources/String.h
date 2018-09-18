@@ -6,7 +6,8 @@ namespace TS
     /**
      * \brief 文字列クラス
      */
-    class String : public ManagedArray<TsChar>
+    template<typename T>
+    class String : public ManagedArray<T>
     {
     public:
         
@@ -14,7 +15,7 @@ namespace TS
          * \brief コンストラクタ
          * \param str 初期文字列
          */
-        String(const TsChar* str = _T(""));
+        String(const T* str );
 
         /**
          * \brief 分割されたサブ文字列の作成
@@ -22,14 +23,14 @@ namespace TS
          * \param npos  pos からの カウント , 0の場合は終端までとして扱う
          * \return 分割されたサブ文字列
          */
-        String SubString(unsigned pos, unsigned npos = 0) const;
+        String<T> SubString(unsigned pos, unsigned npos = 0) const;
 
         /**
          * \brief 文字列検索
          * \param _pattern 検索文字列
          * \return 見つかった文字列へのIndex、見つからなかった場合は -1
          */
-        int Find(const TsChar* _pattern) const;
+        int Find(const T* _pattern) const;
 
         /**
          * \brief 文字置換
@@ -37,7 +38,7 @@ namespace TS
          * \param _new 置換される文字 
          * \return 置換された文字列
          */
-        String Replace(TsChar original, TsChar _new) const;
+        String<T> Replace(T original, T _new) const;
 
         /**
          * \brief 文字列置換
@@ -46,7 +47,7 @@ namespace TS
          * \param str 置換後の文字列 sizeを超える文字列も許容される
          * \return 置換された文字列
          */
-        String Replace(unsigned start, unsigned size, const String& str) const;
+        String<T> Replace(unsigned start, unsigned size, const String<T>& str) const;
 
         /**
          * \brief 文字列置換
@@ -54,14 +55,14 @@ namespace TS
          * \param _new 置換される文字
          * \return 置換された文字列
          */
-        String Replace(const TsChar* original, const TsChar* _new) const;
+        String<T> Replace(const T* original, const T* _new) const;
         
         /**
          * \brief 対象の文字列が含まれるか調べる
          * \param str 対象の文字列
          * \return 含まれる場合はtrue
          */
-        bool Contain(const TsChar* str) const;
+        bool Contain(const T* str) const;
                
         /**
          * \brief 文字列が空かnullを判定
@@ -75,7 +76,7 @@ namespace TS
         * \param str 対象の文字列
         * \return 文字数
         */
-        static size_t Length(const TsChar* str);
+        static size_t Length(const T* str);
         
         /**
          * \brief 書式から文字列を作成する
@@ -83,17 +84,28 @@ namespace TS
          * \param ... 
          * \return 生成された文字列
          */
-        static String Format(const TsChar* format, ...) ;
+        static String<T> Format(const T* format, ...) ;
 
         // operator
     public:
-        using ManagedArray<TsChar>::ManagedArray;
-        using ManagedArray<TsChar>::operator=;
-        bool operator ==(const String& string) const;
-        bool operator !=(const String& string) const;
-        String& operator =(const TsChar* str);
-        String operator  +(const TsChar* str) const;
-        String& operator +=(const TsChar* str);
-    };
-}
+        using ManagedArray<T>::ManagedArray;
 
+        bool operator ==(const String<T>& string) const;
+        bool operator !=(const String<T>& string) const;
+
+        String<T>& operator =(const T* str);
+        String<T> operator  +(const T* str) const;
+        String<T>& operator +=(const T* str);
+
+        String(const String<T>& ref);
+        String(const String<T>&& ref) noexcept;
+
+        String<T>& operator =(const String<T>& ref);
+        String<T>& operator =(String<T>&& ref) noexcept;
+        
+    };
+
+    using StringA = String<char>;
+    using StringW = String<wchar_t>;
+}
+#include "String.hpp"

@@ -38,6 +38,18 @@ namespace TS
          */
         T*& Data();
 
+        ManagedArray<T> Join(const T& data)
+        {
+            ManagedArray<T> result(_size + 1);
+            for(size_t i = 0 ; i < _size; ++i)
+            {
+                result[i] = _data[i];
+            }
+            result[_size] = data;
+            return result;
+        }
+
+
         ManagedArray();
         ManagedArray(T* data , size_t sz , RefCounter* pRefCounter = nullptr);
         ManagedArray(size_t sz);

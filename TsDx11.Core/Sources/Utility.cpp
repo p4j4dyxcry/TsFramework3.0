@@ -233,7 +233,7 @@ TS::Binary TS::_loadCompiledShader(const TsChar* filepath )
     size_t binarySize = (end - begin);
     ifs.clear();
     ifs.seekg(0, ifs.beg);
-    void* pCompiledShader = new(unsigned char[binarySize]);
+    void* pCompiledShader = TS_NEWARRAY(unsigned char, binarySize);
     ifs.read(static_cast<char*>(pCompiledShader), binarySize);
 
     return {static_cast<unsigned char*>(pCompiledShader),binarySize};

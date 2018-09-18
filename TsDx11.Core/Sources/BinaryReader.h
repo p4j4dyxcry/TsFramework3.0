@@ -37,7 +37,7 @@ namespace TS
          * \brief 最初に見つかった'\0'までを文字列として読み込み、読み込んだ分カレントを進める
          * \return 読み込んだString
          */
-        String ReadString();
+        String<TsChar> ReadString();
 
         /**
          * \brief カレント位置を移動させます

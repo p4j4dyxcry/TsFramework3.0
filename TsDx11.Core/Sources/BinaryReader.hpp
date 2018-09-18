@@ -26,14 +26,14 @@ namespace TS
         return datas;
     }
 
-    inline String BinaryReader::ReadString()
+    inline String<TsChar> BinaryReader::ReadString()
     {
         unsigned counter = _current;
         while (counter < _binary.Length() && _binary[counter++] != '\0')
         {
         }
 
-        String string(counter);
+        String<TsChar> string(counter);
         for (unsigned i = 0; i < counter; ++i)
             string[i] = _binary[_current++];
         return string;

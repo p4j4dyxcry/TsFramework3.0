@@ -15,7 +15,7 @@ namespace TS
     }
 
     template <typename T>
-    ManagedArray<T>::ManagedArray(size_t sz) : ManagedArray(new T[sz], sz , nullptr)
+    ManagedArray<T>::ManagedArray(size_t sz) : ManagedArray( TS_NEWARRAY(T,sz), sz , nullptr)
     {
     }
 
@@ -90,11 +90,11 @@ namespace TS
 
         if(this->_data != nullptr)
         {
-            delete _data;
+            TS_DELETE(_data);
             _data = nullptr;
             _size = 0;
         }
-        delete _refarenceConter;
+        TS_DELETE(_refarenceConter);
         _refarenceConter = nullptr;
     }
 
@@ -103,7 +103,7 @@ namespace TS
     {
         _refarenceConter = pRefConter;
         if (_refarenceConter == nullptr)
-            _refarenceConter = new RefCounter();
+            _refarenceConter = TS_NEW(RefCounter)();
         _refarenceConter->AddRef();
     }
 

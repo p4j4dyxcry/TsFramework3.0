@@ -19,17 +19,63 @@ TS::ErrorLevel TS::ErrorResult::GetErrorLevel() const
     return _errorLevel;
 }
 
+
+class PrintfLogger : TS::ILogger
+{
+public:
+    void Log(const char* message, TS::LogMetaData errorLevel)
+    {
+        printf(message);
+    };
+    static ILogger* Get()
+    {
+        static PrintfLogger logger;
+        return &logger;
+    }
+
+    void PreLog(TS::LogMetaData& logMetaData)override
+    {
+        const HANDLE hCons = GetStdHandle(STD_OUTPUT_HANDLE);
+        WORD attr = 0;
+        attr |= FOREGROUND_INTENSITY;
+
+        switch (logMetaData.logLevel)
+        {
+            case TS::ErrorLevel::Error:	    attr |= (FOREGROUND_RED); break;
+            case TS::ErrorLevel::Success:   attr |= (FOREGROUND_GREEN); break;
+            case TS::ErrorLevel::Warning:	attr |= (FOREGROUND_RED | FOREGROUND_GREEN); break;
+        default:
+            attr |= (FOREGROUND_BLUE | FOREGROUND_RED | FOREGROUND_GREEN); break;
+        }
+
+        SetConsoleTextAttribute(hCons, attr);
+    }
+    void EndLog(TS::LogMetaData& logMetaData)override
+    {
+        const HANDLE hCons = GetStdHandle(STD_OUTPUT_HANDLE);
+        const WORD attr = (FOREGROUND_BLUE | FOREGROUND_RED | FOREGROUND_GREEN);
+        SetConsoleTextAttribute(hCons, attr);
+    }
+
+};
+
+TS::ILogger* TS::ILogger::GetDefault()
+{
+    return PrintfLogger::Get();
+}
+
+
 TS::ErrorResult::ErrorResult(const TS::TsChar* message, const ErrorLevel error_level, ILogger* logger)
 {
     _errorLevel = error_level;
     _message = message;
-    _logger = logger;
+    _logger = logger != nullptr ? logger : PrintfLogger::Get();
 }
 
 TS::ErrorResult TS::ErrorResult::Log() const
 {
-    if(_logger != nullptr)
-        _logger->Log(_message, _errorLevel);
+//    if(_logger != nullptr)
+//        _logger->Log(_message);
     return *this;
 }
 
