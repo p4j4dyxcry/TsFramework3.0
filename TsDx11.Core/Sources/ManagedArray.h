@@ -38,17 +38,13 @@ namespace TS
          */
         T*& Data();
 
-        ManagedArray<T> Join(const T& data)
-        {
-            ManagedArray<T> result(_size + 1);
-            for(size_t i = 0 ; i < _size; ++i)
-            {
-                result[i] = _data[i];
-            }
-            result[_size] = data;
-            return result;
-        }
 
+        /**
+         * \brief 要素を結合した新しい配列を作成する
+         * \param data 新しい要素
+         * \return 作成された新しい配列
+         */
+        ManagedArray<T> Join(const T& data);
 
         ManagedArray();
         ManagedArray(T* data , size_t sz , RefCounter* pRefCounter = nullptr);

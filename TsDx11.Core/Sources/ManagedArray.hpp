@@ -114,6 +114,18 @@ namespace TS
     }
 
     template <typename T>
+    ManagedArray<T> ManagedArray<T>::Join(const T& data)
+    {
+        ManagedArray<T> result(_size + 1);
+        for (size_t i = 0; i < _size; ++i)
+        {
+            result[i] = _data[i];
+        }
+        result[_size] = data;
+        return result;
+    }
+
+    template <typename T>
     ManagedArray<T>::ManagedArray(): _data(nullptr), _size(0), _refarenceConter(nullptr)
     {
     }

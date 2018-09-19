@@ -41,9 +41,9 @@ public:
 
         switch (logMetaData.logLevel)
         {
-            case TS::ErrorLevel::Error:	    attr |= (FOREGROUND_RED); break;
-            case TS::ErrorLevel::Success:   attr |= (FOREGROUND_GREEN); break;
-            case TS::ErrorLevel::Warning:	attr |= (FOREGROUND_RED | FOREGROUND_GREEN); break;
+        case TS::ErrorLevel::Error:	    attr |= (FOREGROUND_RED); break;
+        case TS::ErrorLevel::Success:   attr |= (FOREGROUND_GREEN); break;
+        case TS::ErrorLevel::Warning:	attr |= (FOREGROUND_RED | FOREGROUND_GREEN); break;
         default:
             attr |= (FOREGROUND_BLUE | FOREGROUND_RED | FOREGROUND_GREEN); break;
         }
@@ -74,8 +74,8 @@ TS::ErrorResult::ErrorResult(const TS::TsChar* message, const ErrorLevel error_l
 
 TS::ErrorResult TS::ErrorResult::Log() const
 {
-//    if(_logger != nullptr)
-//        _logger->Log(_message);
+    //    if(_logger != nullptr)
+    //        _logger->Log(_message);
     return *this;
 }
 
@@ -84,7 +84,7 @@ bool TS::ErrorResult::DoError(bool isThrow) const
     if (IsError())
     {
         Log();
-        if (isThrow) 
+        if (isThrow)
             throw _message;
         return true;
     }
@@ -109,7 +109,7 @@ TS::ILogger* TS::Error::_loger = nullptr;
 
 TS::ErrorResult TS::Error::Make(HRESULT hResult)
 {
-    if(FAILED(hResult))
+    if (FAILED(hResult))
     {
         static TsChar message[1024];
         FormatMessage(

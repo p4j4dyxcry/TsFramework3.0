@@ -6,6 +6,7 @@
 #include "../../TsFramework/Sources/RenderPipline.h"
 #include "../../TsFramework/Sources/StructureResources.hlsli"
 #include "../../TsFramework/Sources/ConstantBffuerFactory.h"
+#include "../../TsDx11.Core/Sources/New.h"
 
 using namespace TS;
 
@@ -58,8 +59,9 @@ HWND GenerateWindow(const TS::TsChar * title, unsigned width, unsigned height)
         , nullptr
     );
 }
+
 int main()
-{
+{    
     const auto hwnd = GenerateWindow(_T("Sample"), 1024, 768);
 
     if (hwnd == nullptr)
@@ -99,7 +101,7 @@ int main()
     core.Holder()
         .ImmediateContext()
         .SetConstantBuffer(cbuffer);
-
+    
     while (true)
     {
         if (PeekMessage(&tMsg, nullptr, 0, 0, PM_NOREMOVE))
@@ -120,7 +122,7 @@ int main()
                 .ImmediateContext()
                 .SetVertexBuffer(_vertexBuffer)
                 .SetTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP)
-                .Draw(3);
+                .Draw(4);
 
             core.Holder().Present();
         }

@@ -5,6 +5,7 @@
 
 #include "Common.h"
 #include "IAllocator.h"
+#include "Allocator.h"
 #include "MemorySystem.h"
 #include "New.h"
 #include "LruCache.h"

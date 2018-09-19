@@ -1,4 +1,3 @@
-#include "String.h"
 #pragma once
 //! ボイヤー-ムーア法による文字列検索アルゴリズム
 namespace TS
