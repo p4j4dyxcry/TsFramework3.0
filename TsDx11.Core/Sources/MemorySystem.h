@@ -36,25 +36,16 @@ namespace TS
         const char* typeData;       //! タイプ情報
     };
     
-    /**
-    * \brief メモリのメタデータを取得します。
-    * \param pointer メモリを開放するポインタ
-    */
-    inline MemoryMetaData& GetMemoryMetaDeta(void* pointer)
-    {
-        return *reinterpret_cast<MemoryMetaData*>(static_cast<char*>(pointer) - sizeof(MemoryMetaData));
-    }
-
     class MemorySystem
     {
     public:
         MemorySystem(IAllocator * pAllocator, bool _isMemoryLeakCheck);
 
         /**
-        * \brief メモリリークチェックが有効か取得する
+        * \brief デバッグモードかどうか
         * \return
         */
-        bool IsEnableMemoryLeak() const;
+        bool IsDebugMode() const;
 
         /**
         * \brief デフォルトアロケータを取得する
@@ -75,26 +66,26 @@ namespace TS
         void RemoveMemoryMetaData(MemoryMetaData * pMetaData);
 
         /**
-        * \brief デバッグ情報を設定する、 Alloc の前に呼び出す
+        * \brief デバッグ情報を設定する、 Construct の前に呼び出す
         * \param debugInfo
         */
         MemorySystem& SetDebugInfo(const DebugInfo& debugInfo);
 
         template<typename T, typename... Params>
-        T* Alloc(Params ... params);
+        T* Construct(Params ... params);
 
         /**
         * \brief 配列のメモリを確保する
         */
         template<typename T>
-        T* AllocArray(size_t itemCount = 0);
+        T* Constructs(size_t itemCount = 0);
 
         /**
         * \brief メモリを開放する
         * \param ptr メモリを開放するポインタ
         */
         template <typename T>
-        void Delete(T*& ptr);
+        void Destruct(T*& ptr);
 
         /**
          * \brief 現在確保されているメモリチャンクの数を取得する
@@ -102,7 +93,7 @@ namespace TS
          */
         unsigned GetAllocatedChunkCount()const;
     private:
-        bool _isLeakChek;
+        bool _debugFlag;
         DebugInfo   _debugInfo;
         IAllocator* _pAllocator;
         MemoryMetaData* _pHeadMetaData;

@@ -3,7 +3,7 @@
 namespace TS
 {
     template <typename T, typename ... Params>
-    T* MemorySystem::Alloc(Params ... params)
+    T* MemorySystem::Construct(Params ... params)
     {
         const size_t memorySize = sizeof(T) + sizeof(MemoryMetaData);
 
@@ -18,15 +18,20 @@ namespace TS
         //! 引数付コンストラクタを呼び出す
         T* pObject = new(pMemory)T(params ...);
 
-        if (IsEnableMemoryLeak())
+        // ! メタ情報を埋め込んでおく
+        if (IsDebugMode())
+        {
+            block->objectSize = sizeof(T);
+            block->typeData = typeid(T).name();
             RegisterMemoryMetaData(block);
+        }
 
 
         return pObject;
     }
 
     template <typename T>
-    T* MemorySystem::AllocArray(size_t itemCount)
+    T* MemorySystem::Constructs(size_t itemCount)
     {
         const size_t memorySize = sizeof(T) * itemCount + sizeof(MemoryMetaData);
 
@@ -34,9 +39,7 @@ namespace TS
         MemoryMetaData* block = new(pMemory)MemoryMetaData;
         pMemory += sizeof(MemoryMetaData);
         
-        block->objectSize = sizeof(T);
         block->arrayCount = itemCount;
-        block->typeData = typeid(T).name();
 
         T* pCurrent = reinterpret_cast<T*>(pMemory);
 
@@ -48,31 +51,35 @@ namespace TS
         }
 
         // ! メタ情報を埋め込んでおく
-        if (IsEnableMemoryLeak())
+        if (IsDebugMode())
+        {
+            block->objectSize = sizeof(T);
+            block->typeData = typeid(T).name();
             RegisterMemoryMetaData(block);
+        }
 
         return reinterpret_cast<T*>(pMemory);
     }
 
     template <typename T>
-    void MemorySystem::Delete(T*& ptr)
+    void MemorySystem::Destruct(T*& ptr)
     {
         IAllocator* pAllocator = GetAllocator();
 
-        MemoryMetaData& meta = GetMemoryMetaDeta(ptr);
+        MemoryMetaData* meta = reinterpret_cast<MemoryMetaData*>(reinterpret_cast<char*>(ptr) - sizeof(MemoryMetaData));
 
-        void* pMemoryHead = &meta;
+        void* pMemoryHead = meta;
         
         T* pCurrent = ptr;
 
         // ! デストラクタを呼び出す
-        for (unsigned i = 0; i < meta.arrayCount; ++i)
+        for (unsigned i = 0; i < meta->arrayCount; ++i)
         {
             pCurrent[i].~T();
         }
 
-        if (IsEnableMemoryLeak())
-            RemoveMemoryMetaData(&meta);
+        if (IsDebugMode())
+            RemoveMemoryMetaData(meta);
 
         pAllocator->Free(pMemoryHead);
         ptr = nullptr;

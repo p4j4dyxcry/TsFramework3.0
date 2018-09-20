@@ -6,16 +6,16 @@
 namespace TS
 {
     MemorySystem::MemorySystem(IAllocator * pAllocator, bool _isMemoryLeakCheck) :
-        _isLeakChek(_isMemoryLeakCheck),
+        _debugFlag(_isMemoryLeakCheck),
         _pAllocator(pAllocator),
         _pHeadMetaData(nullptr),
         _pCurrentMetaData(nullptr)
     {
     }
 
-    bool MemorySystem::IsEnableMemoryLeak() const
+    bool MemorySystem::IsDebugMode() const
     {
-        return _isLeakChek;
+        return _debugFlag;
     }
 
     IAllocator* MemorySystem::GetAllocator()const
