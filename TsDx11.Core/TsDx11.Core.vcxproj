@@ -41,43 +41,43 @@
     <ClCompile Include="Sources\ShaderReflection.cpp" />
     <ClCompile Include="Sources\ShaderResource.cpp" />
     <ClCompile Include="Sources\ShaderResourceFactory.cpp" />
-    <ClInclude Include="Sources\Allocator.h" />
-    <ClInclude Include="Sources\MemorySystem.hpp" />
-    <ClInclude Include="Sources\String.hpp" />
+    <ClInclude Include="Include\Internals\Allocator.h" />
+    <ClInclude Include="Include\Internals\MemorySystem.hpp" />
     <ClCompile Include="Sources\Utility.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Sources\BinaryReader.h" />
-    <ClInclude Include="Sources\BinaryReader.hpp" />
-    <ClInclude Include="Sources\Buffers.h" />
-    <ClInclude Include="Sources\Common.h" />
-    <ClInclude Include="Sources\Buffers.Generic.h" />
-    <ClInclude Include="Sources\DeviceContext.h" />
-    <ClInclude Include="Sources\GfxCommon.h" />
-    <ClInclude Include="Sources\GfxSystem.h" />
-    <ClInclude Include="Sources\IAllocator.h" />
+    <ClInclude Include="Include\Internals\BinaryReader.h" />
+    <ClInclude Include="Include\Internals\BinaryReader.hpp" />
+    <ClInclude Include="Include\Internals\Buffers.h" />
+    <ClInclude Include="Include\Internals\Common.h" />
+    <ClInclude Include="Include\Internals\Buffers.Generic.h" />
+    <ClInclude Include="Include\Internals\DeviceContext.h" />
+    <ClInclude Include="Include\Internals\GfxCommon.h" />
+    <ClInclude Include="Include\Internals\GfxSystem.h" />
+    <ClInclude Include="Include\Internals\IAllocator.h" />
+    <ClInclude Include="Include\Internals\String_ts.h" />
+    <ClInclude Include="Include\Internals\String_ts.hpp" />
     <ClInclude Include="Sources\ID3DResourcesHolder.h" />
-    <ClInclude Include="Sources\DeviceHolder.h" />
-    <ClInclude Include="Sources\LruCache.h" />
-    <ClInclude Include="Sources\LruCache.hpp" />
-    <ClInclude Include="Sources\Math\TsMath.h" />
-    <ClInclude Include="Sources\Math\Matrix4.h" />
-    <ClInclude Include="Sources\Math\Quaternion.h" />
-    <ClInclude Include="Sources\Math\Vector2.h" />
-    <ClInclude Include="Sources\Math\Vector3.h" />
-    <ClInclude Include="Sources\Math\Vector4.h" />
-    <ClInclude Include="Sources\ManagedArray.h" />
-    <ClInclude Include="Sources\ManagedArray.hpp" />
-    <ClInclude Include="Sources\MemorySystem.h" />
-    <ClInclude Include="Sources\New.h" />
-    <ClInclude Include="Sources\pch.h" />
-    <ClInclude Include="Sources\ShaderReflection.h" />
-    <ClInclude Include="Sources\ShaderResource.h" />
-    <ClInclude Include="Sources\ShaderResourceFactory.h" />
-    <ClInclude Include="Sources\TsDx11Core.h" />
-    <ClInclude Include="Sources\TsDx11Core.Internal.h" />
-    <ClInclude Include="Sources\String.h" />
-    <ClInclude Include="Sources\Utility.h" />
+    <ClInclude Include="Include\Internals\DeviceHolder.h" />
+    <ClInclude Include="Include\Internals\LruCache.h" />
+    <ClInclude Include="Include\Internals\LruCache.hpp" />
+    <ClInclude Include="Include\Internals\TsMath.h" />
+    <ClInclude Include="Include\Internals\Matrix4.h" />
+    <ClInclude Include="Include\Internals\Quaternion.h" />
+    <ClInclude Include="Include\Internals\Vector2.h" />
+    <ClInclude Include="Include\Internals\Vector3.h" />
+    <ClInclude Include="Include\Internals\Vector4.h" />
+    <ClInclude Include="Include\Internals\ManagedArray.h" />
+    <ClInclude Include="Include\Internals\ManagedArray.hpp" />
+    <ClInclude Include="Include\Internals\MemorySystem.h" />
+    <ClInclude Include="Include\Internals\New.h" />
+    <ClInclude Include="Include\Internals\pch.h" />
+    <ClInclude Include="Include\Internals\ShaderReflection.h" />
+    <ClInclude Include="Include\Internals\ShaderResource.h" />
+    <ClInclude Include="Include\Internals\ShaderResourceFactory.h" />
+    <ClInclude Include="Include\TsDx11Core.h" />
+    <ClInclude Include="Include\Internals\TsDx11Core.Internal.h" />
+    <ClInclude Include="Include\Internals\Utility.h" />
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="NatvisFile.natvis">
@@ -142,15 +142,19 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>Include\\Internals;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>Include\\Internals;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>Include\\Internals;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>Include\\Internals;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

@@ -71,106 +71,106 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Sources\Common.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\DeviceContext.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Buffers.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Utility.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Sources\ID3DResourcesHolder.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\DeviceHolder.h">
+    <ClInclude Include="Include\TsDx11Core.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\ShaderResource.h">
+    <ClInclude Include="Include\Internals\Allocator.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\LruCache.h">
+    <ClInclude Include="Include\Internals\BinaryReader.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\ShaderResourceFactory.h">
+    <ClInclude Include="Include\Internals\BinaryReader.hpp">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\pch.h">
+    <ClInclude Include="Include\Internals\Buffers.Generic.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\GfxSystem.h">
+    <ClInclude Include="Include\Internals\Buffers.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\TsDx11Core.Internal.h">
+    <ClInclude Include="Include\Internals\Common.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Buffers.Generic.h">
+    <ClInclude Include="Include\Internals\DeviceContext.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\TsDx11Core.h">
+    <ClInclude Include="Include\Internals\DeviceHolder.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Math\Vector2.h">
+    <ClInclude Include="Include\Internals\GfxCommon.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Math\Vector3.h">
+    <ClInclude Include="Include\Internals\GfxSystem.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Math\Matrix4.h">
+    <ClInclude Include="Include\Internals\IAllocator.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Math\Quaternion.h">
+    <ClInclude Include="Include\Internals\LruCache.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Math\TsMath.h">
+    <ClInclude Include="Include\Internals\LruCache.hpp">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Math\Vector4.h">
+    <ClInclude Include="Include\Internals\ManagedArray.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\ShaderReflection.h">
+    <ClInclude Include="Include\Internals\ManagedArray.hpp">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\BinaryReader.h">
+    <ClInclude Include="Include\Internals\Matrix4.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\BinaryReader.hpp">
+    <ClInclude Include="Include\Internals\MemorySystem.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\GfxCommon.h">
+    <ClInclude Include="Include\Internals\MemorySystem.hpp">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\LruCache.hpp">
+    <ClInclude Include="Include\Internals\New.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\ManagedArray.h">
+    <ClInclude Include="Include\Internals\pch.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\ManagedArray.hpp">
+    <ClInclude Include="Include\Internals\Quaternion.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\IAllocator.h">
+    <ClInclude Include="Include\Internals\ShaderReflection.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\MemorySystem.h">
+    <ClInclude Include="Include\Internals\ShaderResource.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\New.h">
+    <ClInclude Include="Include\Internals\ShaderResourceFactory.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\String.h">
+    <ClInclude Include="Include\Internals\TsDx11Core.Internal.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\String.hpp">
+    <ClInclude Include="Include\Internals\TsMath.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\MemorySystem.hpp">
+    <ClInclude Include="Include\Internals\Utility.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Allocator.h">
+    <ClInclude Include="Include\Internals\Vector2.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Internals\Vector3.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Internals\Vector4.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Internals\String_ts.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Internals\String_ts.hpp">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

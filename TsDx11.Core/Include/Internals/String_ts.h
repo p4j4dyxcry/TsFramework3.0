@@ -108,4 +108,4 @@ namespace TS
     using StringA = String<char>;
     using StringW = String<wchar_t>;
 }
-#include "String.hpp"
+#include "String_ts.hpp"

@@ -2,11 +2,10 @@
 //
 
 #include "pch.h"
-#include "../../TsDx11.Core/Sources/TsDx11Core.h"
+#include "../../TsDx11.Core/Include//TsDx11Core.h"
 #include "../../TsFramework/Sources/RenderPipline.h"
 #include "../../TsFramework/Sources/StructureResources.hlsli"
 #include "../../TsFramework/Sources/ConstantBffuerFactory.h"
-#include "../../TsDx11.Core/Sources/New.h"
 
 using namespace TS;
 

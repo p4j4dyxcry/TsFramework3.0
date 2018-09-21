@@ -1,8 +1,5 @@
 ﻿#pragma once
 
-#define TS_FRAMEWORK
-#define TS_FRAMEWORK_VERSION 3.0
-
 #include "Common.h"
 #include "IAllocator.h"
 #include "Allocator.h"
@@ -11,7 +8,7 @@
 #include "LruCache.h"
 #include "GfxCommon.h"
 #include "ManagedArray.h"
-#include "String.h"
+#include "String_ts.h"
 #include "BinaryReader.h"
 #include "ShaderReflection.h"
 #include "Buffers.h"

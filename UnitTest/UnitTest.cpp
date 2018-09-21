@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
-#include "../TsDx11.Core/Sources/TsDx11Core.h"
+#include "../TsDx11.Core/Include/TsDx11Core.h"
 #pragma comment(lib,"winmm.lib")
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
