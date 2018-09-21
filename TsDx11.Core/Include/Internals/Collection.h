@@ -129,8 +129,10 @@ namespace TS
         const T& operator[](size_t index) const;
     private:
 
+        //! ‘O‹l‚ß
         void pack_front(size_t start, size_t end);
 
+        //! Œã‚ë‹l‚ß
         void pack_back(size_t start, size_t end);
 
         size_t _capacity;
