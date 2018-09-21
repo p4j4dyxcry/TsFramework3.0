@@ -42,6 +42,8 @@
     <ClCompile Include="Sources\ShaderResource.cpp" />
     <ClCompile Include="Sources\ShaderResourceFactory.cpp" />
     <ClInclude Include="Include\Internals\Allocator.h" />
+    <ClInclude Include="Include\Internals\Collection.h" />
+    <ClInclude Include="Include\Internals\Collection.hpp" />
     <ClInclude Include="Include\Internals\MemorySystem.hpp" />
     <ClCompile Include="Sources\Utility.cpp" />
   </ItemGroup>

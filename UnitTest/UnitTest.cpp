@@ -1,4 +1,5 @@
 #include "stdafx.h"
+//#include <initializer_list>
 #include "CppUnitTest.h"
 #include "../TsDx11.Core/Include/TsDx11Core.h"
 #pragma comment(lib,"winmm.lib")
@@ -6,7 +7,6 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace UnitTest
 {		
-
     void Log(const char* pcFormat, ...)
     {
         va_list valist;
@@ -18,6 +18,10 @@ namespace UnitTest
         va_end(valist);
         Logger::WriteMessage(message);
     }
+
+    #define RUN_ACTION(...) Log("RUN_ACTION = [%s]\n",#__VA_ARGS__);__VA_ARGS__
+    #define IS_TRUE(...) Log("%s\n",#__VA_ARGS__);Assert::IsTrue(__VA_ARGS__)
+
     TEST_CLASS(UnitTest1)
     {
     public:
@@ -49,12 +53,78 @@ namespace UnitTest
             //! 文字列置換テスト
             TS::StringA string = "abc012abc012abc012";
             const TS::StringA success = "fbcdefgfbcdefgfbcdefg";
-            string = string.Replace("012", "defg");
-            string = string.Replace('a', 'f');
+            RUN_ACTION(string = string.Replace("012", "defg"));
+            RUN_ACTION(string = string.Replace('a', 'f'));
             Log("%s \n", static_cast<char*>(string));
             Assert::IsTrue(string == success);            
         }
 
+        TEST_METHOD(collection_test)
+        {
+            TS::Collection<int> data;
 
+            RUN_ACTION(data.Add(1));
+            {
+                IS_TRUE(data[0] == 1);
+            }
+
+            RUN_ACTION(for (auto& i : data) { i = 2; });
+            {
+                IS_TRUE(data[0] == 2);
+            }
+
+            RUN_ACTION(data = { 6,7,8 });
+            {
+                IS_TRUE(data[0] == 6);
+                IS_TRUE(data[1] == 7);
+                IS_TRUE(data[2] == 8);
+            }
+
+
+            RUN_ACTION(data.Remove(7));
+            {
+                IS_TRUE(data[0] == 6);
+                IS_TRUE(data[1] == 8);
+            }
+
+            RUN_ACTION(data.RemoveAt(0));
+            {
+                IS_TRUE(data[0] == 8);
+            }
+
+            RUN_ACTION(data.Insert(0,10));
+            {
+                IS_TRUE(data.Size() == 2);
+                IS_TRUE(data[0] == 10);
+                IS_TRUE(data[1] == 8);
+            }
+
+            RUN_ACTION(data.RemoveRange(0, 2));
+            {
+                IS_TRUE(data.Size() == 0);
+            }
+
+            RUN_ACTION(data.AddRange({1,2}));
+            {
+                IS_TRUE(data[0] == 1);
+                IS_TRUE(data[1] == 2);
+            }
+
+            RUN_ACTION(data.Swap(0,1));
+            {
+                IS_TRUE(data[0] == 2);
+                IS_TRUE(data[1] == 1);
+            }
+
+            RUN_ACTION(data.Resize(0));
+            {
+                IS_TRUE(data.IsEmpty() == true);
+            }
+
+            RUN_ACTION(data.Resize(1024));
+            {
+                IS_TRUE(data.Size() == 1024);
+            }
+        }
     };
 }

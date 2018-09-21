@@ -7,6 +7,7 @@
 #include "New.h"
 #include "LruCache.h"
 #include "GfxCommon.h"
+#include "Collection.h"
 #include "ManagedArray.h"
 #include "String_ts.h"
 #include "BinaryReader.h"

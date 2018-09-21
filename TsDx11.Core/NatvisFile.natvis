@@ -11,6 +11,17 @@
     </Expand>
   </Type>
 
+  <Type Name="TS::Collection&lt;*&gt;">
+    <DisplayString>{{[size] = {_size}}}</DisplayString>
+    <Expand>
+      <ArrayItems>
+        <Size>_size</Size>
+        <ValuePointer>_data</ValuePointer>
+      </ArrayItems>
+      <Item Name="size">_size</Item>
+    </Expand>
+  </Type>
+
   <Type Name="TS::TsString">
     <DisplayString>{{[data] = {_data}}}</DisplayString>
     <Expand>

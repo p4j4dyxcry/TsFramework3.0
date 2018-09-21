@@ -12,7 +12,7 @@ namespace TS
     class LruCache
     {
     private:
-        using Pair = std::pair<TKey, TValue>;
+        using Pair     = std::pair<TKey, TValue>;
         using Iterator = typename std::list<Pair>::iterator;
 
     public:
