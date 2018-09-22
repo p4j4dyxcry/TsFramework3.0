@@ -94,14 +94,14 @@ namespace UnitTest
 
             RUN_ACTION(data.Insert(0,10));
             {
-                IS_TRUE(data.Size() == 2);
+                IS_TRUE(data.Length() == 2);
                 IS_TRUE(data[0] == 10);
                 IS_TRUE(data[1] == 8);
             }
 
             RUN_ACTION(data.RemoveRange(0, 2));
             {
-                IS_TRUE(data.Size() == 0);
+                IS_TRUE(data.Length() == 0);
             }
 
             RUN_ACTION(data.AddRange({1,2}));
@@ -123,7 +123,7 @@ namespace UnitTest
 
             RUN_ACTION(data.Resize(1024));
             {
-                IS_TRUE(data.Size() == 1024);
+                IS_TRUE(data.Length() == 1024);
             }
         }
 

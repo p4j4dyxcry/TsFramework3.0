@@ -159,7 +159,7 @@ namespace TS
     }
 
     template <typename T>
-    size_t Collection<T>::Size() const
+    size_t Collection<T>::Length() const
     {
         return _size;
     }
@@ -283,26 +283,26 @@ namespace TS
     }
 
     template<typename T>
-    PointerIterater<T> begin(Collection<T>& s)
+    T* begin(Collection<T>& s)
     {
         return { s.Data() };
     };
 
     template<typename T>
-    PointerIterater<T> end(Collection<T>& s)
+	T* end(Collection<T>& s)
     {
-        return { s.Data() + s.Size() };
+        return { s.Data() + s.Length() };
     };
 
     template<typename T>
-    PointerIterater<T> begin(const Collection<T>& s)
+	T* begin(const Collection<T>& s)
     {
         return { s.Data() };
     };
 
     template<typename T>
-    PointerIterater<T> end(const Collection<T>& s)
+	T* end(const Collection<T>& s)
     {
-        return { s.Data() + s.Size() };
+        return { s.Data() + s.Length() };
     };
 }

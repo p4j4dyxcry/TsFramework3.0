@@ -2,17 +2,6 @@
 
 namespace TS
 {
-    template<typename T>
-    struct PointerIterater
-    {
-        T* p;
-        const T& operator*() const { return *p; }
-        T& operator*() { return *p; }
-        PointerIterater& operator++() { ++p; return *this; }
-        PointerIterater& operator--() { --p; return *this; }
-        bool operator!=(const PointerIterater& v) { return p != v.p; }
-    };
-
     /**
      * \brief コレクションクラス
      */
@@ -100,7 +89,7 @@ namespace TS
          * \brief 要素数を取得する
          * \return 
          */
-        size_t Size() const;
+        size_t Length() const;
 
 
         /**
