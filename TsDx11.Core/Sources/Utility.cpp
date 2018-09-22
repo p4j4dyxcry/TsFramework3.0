@@ -218,25 +218,7 @@ TS::InputLayout TS::_createInputLayout(ID3D11Device* pDevice,
 
 TS::ManagedArray<unsigned char> TS::_loadCompiledShader(const TsChar* filepath )
 {
-    std::ifstream ifs(filepath, std::ifstream::in | std::ifstream::binary);
-
-    if (ifs.fail())
-    {
-        Error::Make(_T("File Read error")).Log();
-        return {nullptr, 0};
-    }
-
-    const unsigned begin = static_cast<unsigned>(ifs.tellg());
-    ifs.seekg(0, ifs.end);
-
-    const unsigned end = static_cast<unsigned>(ifs.tellg());
-    size_t binarySize = (end - begin);
-    ifs.clear();
-    ifs.seekg(0, ifs.beg);
-    void* pCompiledShader = TS_NEWARRAY(unsigned char, binarySize);
-    ifs.read(static_cast<char*>(pCompiledShader), binarySize);
-
-    return ManagedArray<unsigned char>(static_cast<unsigned char*>(pCompiledShader),binarySize);
+    return ReadBinary(filepath);
 }
 
 bool TS::_containShaderType(ShaderType shaderType, ShaderType targetShader)
@@ -305,6 +287,53 @@ TS::HashCode TS::_getHashCode(const SamplerStateDesc& desc)
 TS::HashCode TS::_getHashCode(const BlendStateDesc& desc)
 {
     return static_cast<HashCode>(desc.Mode);
+}
+
+TS::ManagedArray<unsigned char> TS::ReadBinary(const char * filepath)
+{
+	std::ifstream ifs(filepath, std::ifstream::in | std::ifstream::binary);
+
+	if (ifs.fail())
+	{
+		Error::Make(_T("File Read error")).Log();
+		return { nullptr, 0 };
+	}
+
+	const unsigned begin = static_cast<unsigned>(ifs.tellg());
+	ifs.seekg(0, ifs.end);
+
+	const unsigned end = static_cast<unsigned>(ifs.tellg());
+	size_t binarySize = (end - begin);
+	ifs.clear();
+	ifs.seekg(0, ifs.beg);
+	void* binary = TS_NEWARRAY(unsigned char, binarySize);
+	ifs.read(static_cast<char*>(binary), binarySize);
+
+	return ManagedArray<unsigned char>(static_cast<unsigned char*>(binary), binarySize);
+}
+
+TS::ManagedArray<unsigned char> TS::ReadBinary(const wchar_t * filepath)
+{
+	std::ifstream ifs(filepath, std::ifstream::in | std::ifstream::binary);
+
+	if (ifs.fail())
+	{
+		Error::Make(_T("File Read error")).Log();
+		return { nullptr, 0 };
+	}
+
+	const unsigned begin = static_cast<unsigned>(ifs.tellg());
+	ifs.seekg(0, ifs.end);
+
+	const unsigned end = static_cast<unsigned>(ifs.tellg());
+	size_t binarySize = (end - begin);
+	ifs.clear();
+	ifs.seekg(0, ifs.beg);
+	void* binary = TS_NEWARRAY(unsigned char, binarySize);
+	ifs.read(static_cast<char*>(binary), binarySize);
+
+	return ManagedArray<unsigned char>(static_cast<unsigned char*>(binary), binarySize);
+	return TS::ManagedArray<unsigned char>();
 }
 
 

@@ -6,7 +6,7 @@ namespace TS
 	struct Array
 	{
 	public:
-		Array(T* data, size_t sz) :_data(data), _size(sz) {  }
+		Array(const T* data, size_t sz) :_data(data), _size(sz) {  }
 
 		/**
 		* \brief —v‘f‚ðŽæ“¾‚·‚é
@@ -62,7 +62,7 @@ namespace TS
         ManagedArray<T> Join(const T& data);
 
         ManagedArray();
-        ManagedArray(T* data , size_t sz , RefCounter* pRefCounter = nullptr);
+        ManagedArray(const T* data , size_t sz , RefCounter* pRefCounter = nullptr);
         ManagedArray(size_t sz);
         ManagedArray(const ManagedArray<T>& ref);
         ManagedArray(const ManagedArray<T>&& ref) noexcept;

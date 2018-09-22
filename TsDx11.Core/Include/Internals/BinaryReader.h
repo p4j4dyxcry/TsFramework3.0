@@ -46,11 +46,6 @@ namespace TS
          */
         BinaryReader& Seek(unsigned offset);
 		
-		/**
-		 * \brief 最初に見つかったエレメントの位置まで進める
-		 */
-		BinaryReader& SeekElement(unsigned char element);
-
 		bool Eof() 
 		{
 			return _current == _binary.Length();

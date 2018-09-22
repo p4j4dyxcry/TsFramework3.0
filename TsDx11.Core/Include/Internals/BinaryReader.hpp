@@ -44,17 +44,5 @@ namespace TS
         _current = offset;
         return *this;
     }
-
-	inline BinaryReader& BinaryReader::SeekElement(unsigned char element)
-	{
-		while (true)
-		{
-			if (Eof())break;
-			if (_binary[_current] == element)break;
-
-			_current++;
-		}
-		return *this;
-	}
 }
 

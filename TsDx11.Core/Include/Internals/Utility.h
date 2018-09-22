@@ -40,4 +40,7 @@ namespace TS
     HashCode _getHashCode(const RasterizerStateDesc& desc);
     HashCode _getHashCode(const SamplerStateDesc& desc);
     HashCode _getHashCode(const BlendStateDesc& desc);
+
+	ManagedArray<unsigned char> ReadBinary(const char   * filepath);
+	ManagedArray<unsigned char> ReadBinary(const wchar_t * filepath);
 }

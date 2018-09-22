@@ -8,7 +8,7 @@ namespace TS
     }
 
     template <typename T>
-    ManagedArray<T>::ManagedArray(T* data, size_t sz, RefCounter* pRefCounter)
+    ManagedArray<T>::ManagedArray(const T* data, size_t sz, RefCounter* pRefCounter)
         : Array<T>(data,sz),_refarenceConter(pRefCounter)
     {
         AddRef(_refarenceConter);
