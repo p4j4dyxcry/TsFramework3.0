@@ -1,8 +1,6 @@
 #pragma once
 namespace TS
 {
-	class
-
 	namespace
 	{
 		static int skip_table[65535]{};
