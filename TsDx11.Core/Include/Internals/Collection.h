@@ -87,7 +87,6 @@ namespace TS
 
         /**
          * \brief —v‘f”‚ğæ“¾‚·‚é
-         * \return 
          */
         size_t Length() const;
 

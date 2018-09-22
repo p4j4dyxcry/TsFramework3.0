@@ -61,8 +61,8 @@ namespace TS
 	class ObjParser : public I3ModelParser
 	{
 	public:
-		bool Parse(Binary& binary)override;
-		bool Write(const char * output)override;
+		bool Parse (const char * filepath)override;
+		bool SaveAs(const char * filepath)override;
 	};
 }
 

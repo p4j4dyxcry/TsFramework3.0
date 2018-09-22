@@ -3,7 +3,7 @@
 namespace TS
 {
     /**
-    * \brief
+    * \brief　デバッグ用のメタ情報格納
     */
     struct DebugInfo
     {

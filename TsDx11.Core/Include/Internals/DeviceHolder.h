@@ -13,7 +13,7 @@ namespace TS
         DeviceContext& DefferedContext();
         DeviceHolder& Present(unsigned syncInterval = 0, unsigned flags = 0);
 
-        static Binary LoadCompiledShader(const TsChar* filename);
+        static ManagedArray<unsigned char> LoadCompiledShader(const TsChar* filename);
 
         VertexShader CreateVertexShader(const Binary& binary) const;
         PixelShader CreatePixelShader(const Binary& binary) const;

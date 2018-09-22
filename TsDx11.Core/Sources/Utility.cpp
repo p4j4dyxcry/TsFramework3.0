@@ -216,7 +216,7 @@ TS::InputLayout TS::_createInputLayout(ID3D11Device* pDevice,
 }
 
 
-TS::Binary TS::_loadCompiledShader(const TsChar* filepath )
+TS::ManagedArray<unsigned char> TS::_loadCompiledShader(const TsChar* filepath )
 {
     std::ifstream ifs(filepath, std::ifstream::in | std::ifstream::binary);
 
@@ -236,7 +236,7 @@ TS::Binary TS::_loadCompiledShader(const TsChar* filepath )
     void* pCompiledShader = TS_NEWARRAY(unsigned char, binarySize);
     ifs.read(static_cast<char*>(pCompiledShader), binarySize);
 
-    return {static_cast<unsigned char*>(pCompiledShader),binarySize};
+    return ManagedArray<unsigned char>(static_cast<unsigned char*>(pCompiledShader),binarySize);
 }
 
 bool TS::_containShaderType(ShaderType shaderType, ShaderType targetShader)

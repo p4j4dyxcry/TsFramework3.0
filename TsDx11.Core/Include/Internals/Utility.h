@@ -4,7 +4,7 @@ namespace TS
 {
     ErrorResult _getRefreshRato(unsigned& outNumerator, unsigned& outDenominator, const unsigned width, const unsigned height);
 
-    Binary _loadCompiledShader(const TsChar* filepath);
+	ManagedArray<unsigned char> _loadCompiledShader(const TsChar* filepath);
 
     template<class T>
     TsSharedPtr<T> _makeD3DShared(T*& _ptr) { return TsSharedPtr<T>(_ptr, ReleaseDeleter<T>()); }

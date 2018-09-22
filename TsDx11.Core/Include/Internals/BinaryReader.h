@@ -2,7 +2,7 @@
 
 namespace TS
 {
-    using Binary = ManagedArray<unsigned char>;
+    using Binary = Array<unsigned char>;
 
     /**
      * \brief バイナリ読み込みのためのユーティリティ
@@ -45,22 +45,17 @@ namespace TS
          * \return 自身が戻り値として返却される
          */
         BinaryReader& Seek(unsigned offset);
+		
+		/**
+		 * \brief 最初に見つかったエレメントの位置まで進める
+		 */
+		BinaryReader& SeekElement(unsigned char element);
 
-        /**
-         * \brief カレントからcurrent_to_offsetまでの新しいバイナリリーダを作成する
-         * \param current_to_offset 現在位置からのサイズ
-         * \return 作成されたバイナリリーダ
-         */
-        BinaryReader MakeSubReaderFromCurrent(unsigned current_to_offset) const;
-
-        /**
-         * \brief 先頭から数えてhead_to_offeset から count までの新しいバイナリリーダを作成する
-         * \param head_to_offeset 先頭からの開始インデックス
-         * \param count head_to_offesetから読み込むサイズ , 0 の場合はhead_to_offesetから最後まで読み込む
-         * \return 作成されたバイナリリーダ
-         */
-        BinaryReader MakeSubReaderFromHead(unsigned head_to_offeset, unsigned count = 0) const;
-    private:
+		bool Eof() 
+		{
+			return _current == _binary.Length();
+		}
+    protected:
         unsigned _current;
         Binary _binary;
     };

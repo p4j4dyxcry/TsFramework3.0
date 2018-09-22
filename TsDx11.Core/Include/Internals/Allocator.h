@@ -13,6 +13,9 @@ namespace TS
         }
     };
 
+	/**
+	 * \brief アロケータ
+	 */
     class Allocator : public IAllocator
     {
     public:

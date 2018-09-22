@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Include\Internals\FileReader.h" />
     <ClInclude Include="Include\Internals\Directory.h" />
     <ClInclude Include="Include\Internals\FilePathAnalizer.h" />
     <ClInclude Include="Include\Internals\I3DModelParser.h" />

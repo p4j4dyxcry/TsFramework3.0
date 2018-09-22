@@ -9,7 +9,7 @@ namespace TS
 
     template <typename T>
     ManagedArray<T>::ManagedArray(T* data, size_t sz, RefCounter* pRefCounter)
-        : _refarenceConter(pRefCounter) , _data(data), _size(sz)
+        : Array<T>(data,sz),_refarenceConter(pRefCounter)
     {
         AddRef(_refarenceConter);
     }
@@ -54,31 +54,6 @@ namespace TS
         AddRef(ref._refarenceConter);
         return *this;
     }
-
-    template <typename T>
-    ManagedArray<T>::operator void*()const
-    {
-        return _data;
-    }
-
-    template <typename T>
-    ManagedArray<T>::operator const void*() const
-    {
-        return _data;
-    }
-
-    template <typename T>
-    ManagedArray<T>::operator T*()
-    {
-        return _data;
-    }
-
-    template <typename T>
-    ManagedArray<T>::operator const T*() const
-    {
-        return _data;
-    }
-
     template <typename T>
     void ManagedArray<T>::Release()
     {
@@ -90,9 +65,9 @@ namespace TS
 
         if(this->_data != nullptr)
         {
-            TS_DELETE(_data);
-            _data = nullptr;
-            _size = 0;
+            TS_DELETE(this->_data);
+            this->_data = nullptr;
+            this->_size = 0;
         }
         TS_DELETE(_refarenceConter);
         _refarenceConter = nullptr;
@@ -106,33 +81,20 @@ namespace TS
             _refarenceConter = TS_NEW(RefCounter)();
         _refarenceConter->AddRef();
     }
-
-    template <typename T>
-    T*& ManagedArray<T>::Data()
-    {
-        return _data;
-    }
-
     template <typename T>
     ManagedArray<T> ManagedArray<T>::Join(const T& data)
     {
-        ManagedArray<T> result(_size + 1);
-        for (size_t i = 0; i < _size; ++i)
+        ManagedArray<T> result(this->_size + 1);
+        for (size_t i = 0; i < this->_size; ++i)
         {
-            result[i] = _data[i];
+            result[i] = this->_data[i];
         }
-        result[_size] = data;
+        result[this->_size] = data;
         return result;
     }
 
     template <typename T>
-    ManagedArray<T>::ManagedArray(): _data(nullptr), _size(0), _refarenceConter(nullptr)
+    ManagedArray<T>::ManagedArray():Array<T>(nullptr,0), _refarenceConter(nullptr)
     {
-    }
-
-    template <typename T>
-    size_t ManagedArray<T>::Length() const
-    {
-        return _size;
     }
 }

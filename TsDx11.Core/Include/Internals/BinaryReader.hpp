@@ -45,17 +45,16 @@ namespace TS
         return *this;
     }
 
-    inline BinaryReader BinaryReader::MakeSubReaderFromCurrent(unsigned current_to_offset) const
-    {
-        return { Binary(const_cast<unsigned char*>(&_binary[_current]), current_to_offset)};
-    }
+	inline BinaryReader& BinaryReader::SeekElement(unsigned char element)
+	{
+		while (true)
+		{
+			if (Eof())break;
+			if (_binary[_current] == element)break;
 
-    inline BinaryReader BinaryReader::MakeSubReaderFromHead(unsigned head_to_offeset, unsigned count) const
-    {
-        if (count == 0)
-            count = static_cast<unsigned>(_binary.Length()) - head_to_offeset;
-
-        return { Binary(const_cast<unsigned char*>(&_binary[_current]), count) };
-    }
+			_current++;
+		}
+		return *this;
+	}
 }
 

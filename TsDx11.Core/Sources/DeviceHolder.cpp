@@ -43,7 +43,7 @@ namespace TS
         return *this;
     }
 
-    Binary DeviceHolder::LoadCompiledShader(const TsChar* filename)
+	ManagedArray<unsigned char> DeviceHolder::LoadCompiledShader(const TsChar* filename)
     {
         return _loadCompiledShader(filename);
     }

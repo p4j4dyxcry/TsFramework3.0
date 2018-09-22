@@ -11,10 +11,6 @@ namespace TS
     template<typename TKey, typename TValue>
     class LruCache
     {
-    private:
-        using Pair     = std::pair<TKey, TValue>;
-        using Iterator = typename std::list<Pair>::iterator;
-
     public:
 
         /**
@@ -51,6 +47,9 @@ namespace TS
         size_t Size() const;
 
         TValue& operator[](const TKey& key);
+	private:
+		using Pair = std::pair<TKey, TValue>;
+		using Iterator = typename std::list<Pair>::iterator;
 
     private:
         TsList<Pair> _list;
