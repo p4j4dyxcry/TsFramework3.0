@@ -70,23 +70,23 @@ namespace TS
     template <typename T>
     Collection<T>& Collection<T>::AddRange(const std::initializer_list<T>& items)
     {
-        if (items.Size() == 0)
+        if (items.size() == 0)
             return *this;
-        if (_size + items.Size() <= _capacity)
+        if (_size + items.size() <= _capacity)
         {
-            memcpy_s(&_data[_size], sizeof(T) * items.Size(), items.begin(), sizeof(T) * items.Size());
-            _size += items.Size();
+            memcpy_s(&_data[_size], sizeof(T) * items.size(), items.begin(), sizeof(T) * items.size());
+            _size += items.size();
         }
         else
         {
             size_t newCapacity = _capacity == 0 ? 1 : _capacity;
 
-            while (newCapacity < _size + items.Size())
+            while (newCapacity < _size + items.size())
                 newCapacity *= 2;
             Reserve(newCapacity);
 
-            memcpy_s(&_data[_size], sizeof(T) * items.Size(), items.begin(), sizeof(T) * items.Size());
-            _size += items.Size();
+            memcpy_s(&_data[_size], sizeof(T) * items.size(), items.begin(), sizeof(T) * items.size());
+            _size += items.size();
         }
         return *this;
     }

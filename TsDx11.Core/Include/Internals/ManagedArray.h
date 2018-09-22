@@ -59,6 +59,9 @@ namespace TS
         operator const void *() const;
         operator T*();
         operator const T*() const;
+
+		using iterator = T*;
+
     protected:
         void Release();
 
@@ -68,5 +71,31 @@ namespace TS
         T * _data;
         size_t _size;
     };
+
+    template<typename T>
+    T* begin(ManagedArray<T>& s)
+    {
+        return { s.Data() };
+    };
+
+    template<typename T>
+    T* end(ManagedArray<T>& s)
+    {
+        return { s.Data() + s.Length() };
+    };
+
+    template<typename T>
+    T* begin(const ManagedArray<T>& s)
+    {
+        return { s.Data() };
+    };
+
+    template<typename T>
+    T* end(const ManagedArray<T>& s)
+    {
+        return { s.Data() + s.Length() };
+    };
+
+
 }
 #include "ManagedArray.hpp"

@@ -19,13 +19,21 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Include\Internals\Directory.h" />
+    <ClInclude Include="Include\Internals\FilePathAnalizer.h" />
+    <ClInclude Include="Include\Internals\I3DModelParser.h" />
+    <ClInclude Include="Include\Internals\ObjParser.h" />
     <ClInclude Include="Include\Internals\pch.h" />
     <ClInclude Include="Include\Internals\structs.h" />
+    <ClInclude Include="Include\Internals\Path.h" />
     <ClInclude Include="Include\TsAssetInterface.h" />
     <ClInclude Include="Sources\Utility.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Sources\MqoLoader.cpp" />
+    <ClCompile Include="Sources\Directory.cpp" />
+    <ClCompile Include="Sources\FilePathAnalizer.cpp" />
+    <ClCompile Include="Sources\ObjParser.cpp" />
+    <ClCompile Include="Sources\Path.cpp" />
     <ClCompile Include="Sources\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>

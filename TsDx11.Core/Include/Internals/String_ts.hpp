@@ -2,47 +2,78 @@
 //! ボイヤー-ムーア法による文字列検索アルゴリズム
 namespace TS
 {
-    template<typename T>
-    inline int BoyerMooreStringSearch(const T* origin, int origin_length, const T * pattern, int pattern_length)
-    {
-        if (pattern_length > origin_length)
-            return -1;
+	namespace
+	{
+		static int skip_table[65535]{};
+	}
 
-#ifdef UNICODE // 16 byte ( ushort max)
-        static int skipTable[65535];
-#else          // 8  byte ( uchar  max)
-        static int skipTable[255];
-#endif        
-        for (int& cell : skipTable)
-            cell = pattern_length - 1;
+	template <typename T>
+	int BoyerMooreStringSearch(const T * original , int original_length, const T * pattern, int pattern_length)
+	{
+		int original_current_index = pattern_length - 1;		
 
-        for (int i = 0; i < pattern_length; ++i)
-            skipTable[static_cast<int>(pattern[i])] = pattern_length - i - 1;
+		for (int i = 0; i < pattern_length; i++)
+			skip_table[static_cast<int>(pattern[i])] = (pattern_length - 1) - i;
 
-        int j;
-        int idx = j = pattern_length - 1;
+		while(original_current_index < original_length)
+		{
+			int pattern_current_index = pattern_length - 1;
 
-        while (true)
-        {
-            if (idx >= static_cast<int>(origin_length)) break;
-            if (j < 0) break;
+			while (0 <= pattern_current_index)
+			{
+				if (original[original_current_index] ==
+					pattern [pattern_current_index])
+				{
+					--original_current_index;
+					--pattern_current_index;
+				}
+				else break;
+			}
+			if (pattern_current_index < 0)
+				return original_current_index + 1;
 
-            if (origin[idx] != pattern[j])
-            {
-                idx += max(skipTable[static_cast <int>(origin[idx])], pattern_length - j);
-                j = pattern_length - 1;
-            }
-            else
-            {
-                j--;
-                idx--;
-            }
-        }
-        if (idx == origin_length)
-            return -1;
+			original_current_index +=
+				max(skip_table[static_cast<int>(pattern[pattern_current_index])],
+					pattern_length - pattern_current_index);
 
-        return idx;
-    }
+		}
+		//! not found
+		return -1;
+	}
+
+	template <typename T>
+	int ReversBoyerMooreStringSearch(const T * original, int original_length, const T * pattern, int pattern_length)
+	{
+		int original_current_index = (original_length - 2) - (pattern_length - 1);	
+
+		for (int i = 0; i < pattern_length; i++)
+			skip_table[static_cast<int>(pattern[i])] = i + 1;
+
+		while ( 0 <= original_current_index)
+		{
+			int pattern_current_index = 0;
+
+			for (; pattern_current_index < pattern_length;)
+			{
+				if (original[original_current_index] ==
+					pattern[pattern_current_index])
+				{
+					++original_current_index;
+					++pattern_current_index;
+				}
+				else break;
+			}
+			if (pattern_current_index == pattern_length)
+				return original_current_index - pattern_length;
+
+			original_current_index -=
+				max(skip_table[static_cast<int>(pattern[pattern_current_index])],
+					pattern_current_index + 1);
+		}
+		//! not found
+		return -1;
+	}
+
 
     template <typename T>
     String<T>::String(const T* str)
@@ -66,7 +97,7 @@ namespace TS
     TS::String<T>& TS::String<T>::operator=(const T* str)
     {
         this->Release();
-        this->_size = Length(str);
+        this->_size = StringLength(str);
 
         this->_data = TS_NEWARRAY(T, this->_size);
         unsigned i = 0;
@@ -81,7 +112,7 @@ namespace TS
     template<typename T>
     TS::String<T> TS::String<T>::operator+(const T* str) const
     {
-        const unsigned str_size =  Length(str);
+        const unsigned str_size =  StringLength(str);
         const unsigned sz = (this->_size + str_size) - 1;
 
         String result(sz);
@@ -145,10 +176,36 @@ namespace TS
     template<typename T>
     int TS::String<T>::Find(const T* _pattern) const
     {
-        const int pattern_length = Length(_pattern) - 1;
+        const int pattern_length = StringLength(_pattern) - 1;
 
         return BoyerMooreStringSearch(this->_data, this->_size, _pattern, pattern_length);
     }
+
+	template<typename T>
+	int TS::String<T>::Find(const T& _pattern) const
+	{
+		for (size_t i = 0; i < this->_size; ++i)
+			if (this->_data[i] == _pattern)
+				return i;
+		return -1;
+	}
+
+	template<typename T>
+	int TS::String<T>::Rfind(const T* _pattern) const
+	{
+		const int pattern_length = StringLength(_pattern) - 1;
+
+		return ReversBoyerMooreStringSearch(this->_data, this->_size, _pattern, pattern_length);
+	}
+
+	template<typename T>
+	int TS::String<T>::Rfind(const T& _pattern) const
+	{
+		for (size_t i = 0; i < this->_size; ++i)
+			if (this->_data[(this->_size - 1) - i] == _pattern)
+				return (this->_size - 1) - i;
+		return -1;
+	}
 
     template<typename T>
     TS::String<T> TS::String<T>::Replace(const T original, const T _new) const
@@ -168,16 +225,19 @@ namespace TS
     template<typename T>
     TS::String<T> TS::String<T>::Replace(unsigned start, unsigned size, const String<T>& str) const
     {
-        if (start == 0)
-            return str + SubString(size, this->_size - size);
+		if (size > this->_size)
+			throw;
 
-        return SubString(0, start + 1) + str + SubString(start + size, this->_size - start - size);
+        if (start == 0)
+            return str + SubString(size);
+
+        return SubString(0, start) + str + SubString(start + size);
     }
 
     template<typename T>
     TS::String<T> TS::String<T>::Replace(const T* original, const T* _new) const
     {
-        const int sz = Length(original);
+        const int sz = StringLength(original) - 1;
 
         int _index = Find(original);
 
@@ -200,7 +260,7 @@ namespace TS
     }
 
     template<typename T>
-    size_t TS::String<T>::Length(const T* str)
+    size_t TS::String<T>::StringLength(const T* str)
     {
         size_t sz = 0;
         while (str[sz++] != '\0')
@@ -229,6 +289,27 @@ namespace TS
     {
         return !(*this == string);
     }
+
+	template<typename T>
+	bool TS::String<T>::operator==(const T* string) const
+	{
+		size_t sz = StringLength(string);
+		if (this->_size != StringLength(string))
+			return false;
+
+		for (size_t i = 0; i < this->_size; ++i)
+		{
+			if (this->_data[i] != string[i])
+				return false;
+		}
+		return true;
+	}
+
+	template<typename T>
+	bool TS::String<T>::operator!=(const T* string) const
+	{
+		return !(*this == string);
+	}
 
     template<typename T>
     inline bool TS::String<T>::IsNullOrEmpty() const

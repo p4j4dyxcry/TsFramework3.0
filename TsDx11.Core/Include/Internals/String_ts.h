@@ -10,7 +10,6 @@ namespace TS
     class String : public ManagedArray<T>
     {
     public:
-        
         /**
          * \brief コンストラクタ
          * \param str 初期文字列
@@ -31,6 +30,27 @@ namespace TS
          * \return 見つかった文字列へのIndex、見つからなかった場合は -1
          */
         int Find(const T* _pattern) const;
+
+		/**
+		 * \brief 文字検索
+		 * \param _pattern 検索文字列
+		 * \return 見つかった文字列へのIndex、見つからなかった場合は -1
+		 */
+		int Find(const T& _pattern) const;
+
+		/**
+		 * \brief 文字列検索
+		 * \param _pattern 検索文字列
+		 * \return 見つかった文字列への最後のIndex、見つからなかった場合は -1
+		 */
+		int Rfind(const T* _pattern) const;
+
+		/**
+		 * \brief 文字検索
+		 * \param _pattern 検索文字列
+		 * \return 見つかった文字列へのIndex、見つからなかった場合は -1
+		 */
+		int Rfind(const T& _pattern) const;
 
         /**
          * \brief 文字置換
@@ -76,7 +96,7 @@ namespace TS
         * \param str 対象の文字列
         * \return 文字数
         */
-        static size_t Length(const T* str);
+        static size_t StringLength(const T* str);
         
         /**
          * \brief 書式から文字列を作成する
@@ -93,19 +113,23 @@ namespace TS
         bool operator ==(const String<T>& string) const;
         bool operator !=(const String<T>& string) const;
 
+		bool operator ==(const T* string) const;
+		bool operator !=(const T* string) const;
+
         String<T>& operator =(const T* str);
         String<T> operator  +(const T* str) const;
         String<T>& operator +=(const T* str);
 
+		String():ManagedArray<T>(){}
         String(const String<T>& ref);
         String(const String<T>&& ref) noexcept;
 
         String<T>& operator =(const String<T>& ref);
         String<T>& operator =(String<T>&& ref) noexcept;
-        
     };
 
     using StringA = String<char>;
     using StringW = String<wchar_t>;
 }
+
 #include "String_ts.hpp"
