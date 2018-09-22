@@ -8,7 +8,7 @@ namespace TS
 		//! Constructor
 		Directory(const StringA& directory, bool enableSubgolder = true);
 
-		Directory& RegisterFilter(const Collection<StringA>& ignores);
+		Directory& RegisterFilter(const Collection<StringA>& filters);
 
 		Collection<StringA> GetFiles();
 	protected:

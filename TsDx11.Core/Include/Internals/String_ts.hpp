@@ -1,7 +1,8 @@
 #pragma once
-//! ボイヤー-ムーア法による文字列検索アルゴリズム
 namespace TS
 {
+	class
+
 	namespace
 	{
 		static int skip_table[65535]{};
