@@ -205,8 +205,9 @@ namespace TS
 		StringA use_material_name = "";
 		Collection<obj_mesh> meshes;
 		meshes.Reserve(16);
-		obj_mesh default_mesh;
-		obj_mesh& current_mesh = default_mesh;
+		meshes.Add(obj_mesh());
+
+		obj_mesh& current_mesh = meshes[0];
 		_file = obj_file();
 
 		Collection<unsigned> null_collection;
@@ -227,10 +228,11 @@ namespace TS
 				use_material_name = ReadString(line);
 			else if (FirstOf(line.ToArray(), "g "))
 			{
-				default_mesh = obj_mesh();
-				current_mesh = default_mesh;
+				meshes.Add(obj_mesh());
+				current_mesh = meshes[meshes.Length() - 1];
 				current_mesh.name = ReadString(line);
 				current_mesh.material_name = use_material_name;
+
 			}
 			else if (FirstOf(line.ToArray(), "f "))
 			{
@@ -311,10 +313,7 @@ namespace TS
 			}
 		}
 
-		if (meshes.IsEmpty())
-			_file.meshes.Add(current_mesh);
-		else
-			_file.meshes.AddRange(meshes);
+		_file.meshes.AddRange(meshes);
 
 		return true;
 	}
@@ -409,21 +408,24 @@ namespace TS
 			return false;
 		}
 
-		FileReader reader(binary);
+		FileReader stream(binary);
 
-		obj_material material;
-		material.file_path = material_file_path;
+		_file.materials.Add(obj_material());
+		obj_material& current_material = _file.materials[0];
+		current_material.file_path = material_file_path;
 
-		obj_material& current_material = material;
 
-		while (reader.Eof() == false)
+		while (stream.Eof() == false)
 		{
-			auto&& line = reader.ReadLine();
+			auto&& line = stream.ReadLine();
 			if (FirstOf(line.ToArray(), "newmtl "))
 			{
-				material.name = ReadString(line);
-				_file.materials.Add(material);
+				_file.materials.Add(obj_material());
 				current_material = _file.materials[_file.materials.Length() - 1];
+
+				current_material.name = ReadString(line);
+				current_material.file_path = material_file_path;
+				
 			}
 			else if (FirstOf(line.ToArray(), "Kd "))
 				current_material.diffuse = ReadVector3(line);
