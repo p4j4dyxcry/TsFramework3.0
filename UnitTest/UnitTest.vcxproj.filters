@@ -40,6 +40,7 @@
     <Object Include="test_data\diamond.obj">
       <Filter>test_data</Filter>
     </Object>
+    <Object Include="test_data\magnolia.obj" />
   </ItemGroup>
   <ItemGroup>
     <None Include="test_data\vp.mtl">
