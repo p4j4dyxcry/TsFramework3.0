@@ -4,43 +4,43 @@
 
 namespace TS 
 {
-	inline TS::FilePathAnalyzer::FilePathAnalyzer(const StringA & filePath)
+	TS::FilePathAnalyzer::FilePathAnalyzer(const StringA & filePath)
 	{
 		analize(filePath);
 	}
 
-	inline const StringA & TS::FilePathAnalyzer::GetFileName() const
+	const StringA & TS::FilePathAnalyzer::GetFileName() const
 	{
 		return _fileName;
 	}
 
-	inline const StringA & TS::FilePathAnalyzer::GetFullPath() const
+	const StringA & TS::FilePathAnalyzer::GetFullPath() const
 	{
 		return _fullPath;
 	}
 
-	inline const StringA & TS::FilePathAnalyzer::GetExtension() const
+	const StringA & TS::FilePathAnalyzer::GetExtension() const
 	{
 		return _extension;
 	}
 
-	inline const StringA & TS::FilePathAnalyzer::GetDirectory() const
+	const StringA & TS::FilePathAnalyzer::GetDirectory() const
 	{
 		return _fullDirectory;
 	}
 
-	inline FilePathAnalyzer & TS::FilePathAnalyzer::Rename(const StringA & newName)
+	FilePathAnalyzer & TS::FilePathAnalyzer::Rename(const StringA & newName)
 	{
 		analize(Path::Combine(_fullDirectory, newName));
 		return *this;
 	}
 
-	inline FilePathAnalyzer & TS::FilePathAnalyzer::ReExtencion(const StringA & extension)
+	FilePathAnalyzer & TS::FilePathAnalyzer::ReExtencion(const StringA & extension)
 	{
 		return Rename(Path::GetFileNameWithoutExtension(_fileName) + extension);
 	}
 
-	inline void TS::FilePathAnalyzer::analize(const StringA & filePath)
+	void TS::FilePathAnalyzer::analize(const StringA & filePath)
 	{
 		_filePath = filePath;
 		_extension = Path::GetExtension(filePath);

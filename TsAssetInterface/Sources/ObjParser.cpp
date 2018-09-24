@@ -13,7 +13,7 @@ namespace TS
 	bool FirstOf(const Binary& binary, const char * tag)
 	{
 		unsigned index = 0;
-		while (tag != '\0')
+		while (tag[index] != '\0')
 		{
 			if (binary[index] != (unsigned char)(tag[index]))
 				return false;
@@ -24,7 +24,18 @@ namespace TS
 
 	void SeekNextWhiteSpace(FileReader& reader)
 	{
-		while (reader.Read<char>() != ' '){}
+		auto data = reader.ToArray();
+		unsigned index = 0;
+		while(index < data.Length())
+		{
+			if (data[index++] == ' ')
+			{
+				while (data[index] == ' ') 
+					index++;
+				reader.Seek(reader.Current() + index);
+				break;
+			}
+		}
 	}
 
 	float ReadFloat(FileReader& source)
@@ -56,7 +67,7 @@ namespace TS
 		SeekNextWhiteSpace(source);
 		const char * data = (const char *)(source.ToArray().Data());
 		sscanf_s(data,
-			"%f %f",
+			"%f %f %f",
 			&vector.x,
 			&vector.y,
 			&vector.z);
@@ -71,16 +82,25 @@ namespace TS
 		return (const char *)data.Data();
 	}
 
-	unsigned CountOfFaceVertex(FileReader reader)
+	unsigned CountOfFaceVertex(FileReader& reader)
 	{
+		reader.Seek(0);
 		SeekNextWhiteSpace(reader);
 		auto data = reader.ToArray();
+		reader.Seek(0);
+
 		unsigned index = 1;
 
 		// space ‚Ì”‚ª–Ê‚ð\¬‚·‚é‚½‚ß‚Ì’¸“_”‚ð”»’f‚·‚é
-		for (auto i : data)
-			if (i == ' ')index++;
+		for (unsigned i = 0 ; i < data.Length() - 1 ; ++i)
+		{
+			if (data[i + 1] == '\n' || data[i + 1] == '\r' || data[i + 1] == '\r\n')
+				break;
 
+			if (data[i] == ' ' && data[i + 1] != ' ')
+				index++;
+		}
+		
 		return index;
 	}
 
@@ -133,13 +153,44 @@ namespace TS
 		return converted_indeces;
 	}
 
-	void WriteFloat1()
+	bool HasValue(float value)
 	{
+		return value >= 0;
+	}
 
+	bool HasValue(const Vector3& value)
+	{
+		return value.x >= 0;
+	}
+
+	bool HasValue(const StringA& value)
+	{
+		return value.IsNullOrEmpty() == false;
+	}
+
+	void WriteFloat(std::ofstream& ofs, const char* element, float param,bool no_check = false)
+	{
+		if(no_check | HasValue(param))
+			ofs << element << " " << param << std::endl;
+	}
+
+	void WriteVector3(std::ofstream& ofs, const char* element, const Vector3& param, bool no_check = false)
+	{
+		if (no_check | HasValue(param))
+			ofs << element << " " << param.x <<
+							  " " << param.y << 
+							  " " << param.z << std::endl;
+	}
+
+	void WriteString(std::ofstream& ofs, const char* element, const StringA& param)
+	{
+		if (HasValue(param))
+			ofs << element << " " << param.Data() << std::endl;
 	}
 
 	bool TS::ObjParser::Parse(const char * filepath)
 	{
+		FilePathAnalyzer analizer1(filepath);
 		ManagedArray<unsigned char> binary = ReadBinary(filepath);
 
 		if (binary == nullptr)
@@ -148,19 +199,21 @@ namespace TS
 			return false;
 		}
 
-		FileReader reader(binary);
+		FileReader stream(binary);
 		FilePathAnalyzer analizer(filepath);
 
 		StringA use_material_name = "";
+		Collection<obj_mesh> meshes;
+		meshes.Reserve(16);
 		obj_mesh default_mesh;
 		obj_mesh& current_mesh = default_mesh;
 		_file = obj_file();
 
 		Collection<unsigned> null_collection;
 
-		while (reader.Eof() == false)
+		while (stream.Eof() == false)
 		{
-			auto&& line = reader.ReadLine();
+			auto&& line = stream.ReadLine();
 
 			if (FirstOf(line.ToArray(), "v ")) 
 				_file.positions.Add(ReadVector3(line));
@@ -169,20 +222,19 @@ namespace TS
 			else if (FirstOf(line.ToArray(), "vt "))
 				_file.texcoords.Add(ReadVector2(line));
 			else if (FirstOf(line.ToArray(), "mtllib "))
-				ReadMaterial(Path::Combine(analizer.GetDirectory(), ReadString(reader)));
+				ReadMaterial(Path::Combine(analizer.GetDirectory(), ReadString(line)));
 			else if (FirstOf(line.ToArray(), "usemtl "))
-				use_material_name = ReadString(reader);
+				use_material_name = ReadString(line);
 			else if (FirstOf(line.ToArray(), "g "))
 			{
-				current_mesh.name = ReadString(reader);
-				current_mesh.material_name = use_material_name;
-				_file.meshes.Add(current_mesh);
 				default_mesh = obj_mesh();
 				current_mesh = default_mesh;
+				current_mesh.name = ReadString(line);
+				current_mesh.material_name = use_material_name;
 			}
 			else if (FirstOf(line.ToArray(), "f "))
 			{
-				unsigned face_count = CountOfFaceVertex(reader);
+				unsigned face_count = CountOfFaceVertex(line);
 
 				const unsigned max_face = 128;
 				if (face_count < 3 || max_face < face_count )throw;
@@ -192,19 +244,17 @@ namespace TS
 				unsigned texcoord_indeces[max_face];
 
 				bool using_pos       = _file.positions.IsEmpty() == false;
-				bool using_normal    = _file.positions.IsEmpty() == false;
-				bool using_texcoords = _file.positions.IsEmpty() == false;
+				bool using_normal    = _file.normals.IsEmpty() == false;
+				bool using_texcoords = _file.texcoords.IsEmpty() == false;
 
 				if (using_pos & using_normal & using_texcoords)
 				{
 					for (unsigned i = 0; i < face_count; ++i)
 					{
-						const char * data = (const char *)(reader.ToArray().Data());
-						if(i!=0)SeekNextWhiteSpace(reader);
-						sscanf_s(data,"%d/%d/%d",
-							&pos_indeces[i],
-							&normal_indeces[i],
-							&texcoord_indeces[i]);
+						SeekNextWhiteSpace(line);
+						const char * data = (const char *)(line.ToArray().Data());
+						if (sscanf_s(data, "%d/%d/%d", &pos_indeces[i], &normal_indeces[i], &texcoord_indeces[i]) != 3)
+							sscanf_s(data, "%d//%d//%d", &pos_indeces[i], &normal_indeces[i], &texcoord_indeces[i]);
 					}
 
 					BuildFace(current_mesh.face, face_count, 
@@ -216,11 +266,10 @@ namespace TS
 				{
 					for (unsigned i = 0; i < face_count; ++i)
 					{
-						const char * data = (const char *)(reader.ToArray().Data());
-						if (i != 0)SeekNextWhiteSpace(reader);
-						sscanf_s(data, "%d/%d",
-							&pos_indeces[i],
-							&normal_indeces[i]);
+						SeekNextWhiteSpace(line);
+						const char * data = (const char *)(line.ToArray().Data());
+						if (sscanf_s(data, "%d/%d", &pos_indeces[i], &normal_indeces[i]) != 2)
+							sscanf_s(data, "%d//%d", &pos_indeces[i], &normal_indeces[i]);
 					}
 
 					BuildFace(current_mesh.face, face_count,
@@ -232,11 +281,10 @@ namespace TS
 				{
 					for (unsigned i = 0; i < face_count; ++i)
 					{
-						const char * data = (const char *)(reader.ToArray().Data());
-						if (i != 0)SeekNextWhiteSpace(reader);
-						sscanf_s(data, "%d/%d",
-							&pos_indeces[i],
-							&texcoord_indeces[i]);
+						SeekNextWhiteSpace(line);
+						const char * data = (const char *)(line.ToArray().Data());
+						if (sscanf_s(data, "%d/%d", &pos_indeces[i], &texcoord_indeces[i]) == 0)
+							sscanf_s(data, "%d//%d", &pos_indeces[i], &texcoord_indeces[i]);
 					}
 
 					BuildFace(current_mesh.face, face_count,
@@ -248,10 +296,9 @@ namespace TS
 				{
 					for (unsigned i = 0; i < face_count; ++i)
 					{
-						const char * data = (const char *)(reader.ToArray().Data());
-						if (i != 0)SeekNextWhiteSpace(reader);
-						sscanf_s(data, "%d",
-							&pos_indeces[i]);
+						SeekNextWhiteSpace(line);
+						const char * data = (const char *)(line.ToArray().Data());
+						sscanf_s(data, "%d",&pos_indeces[i]);
 					}
 
 					BuildFace(current_mesh.face, face_count,
@@ -264,15 +311,93 @@ namespace TS
 			}
 		}
 
-		if (_file.meshes.IsEmpty)
+		if (meshes.IsEmpty())
 			_file.meshes.Add(current_mesh);
+		else
+			_file.meshes.AddRange(meshes);
 
-		return false;
+		return true;
 	}
 
 	bool TS::ObjParser::SaveAs(const char * filepath)
 	{
-		return false;
+		std::ofstream ofs(filepath);
+
+		FilePathAnalyzer analizer(filepath);
+
+		FilePathAnalyzer materialAnalizer(filepath);
+		materialAnalizer.ReExtencion(".mtl");
+		if (_file.materials.Length() > 0) 
+		{
+			WriteString(ofs, "mtlib", materialAnalizer.GetFileName());
+			SaveMaterial(materialAnalizer.GetFullPath());
+		}
+
+		for (auto v  : _file.positions) WriteVector3(ofs, "v", v);
+		for (auto vn : _file.normals)   WriteVector3(ofs, "vn", vn); 
+		for (auto vt : _file.texcoords) WriteVector3(ofs, "vt", vt); 
+
+		bool has_pos    = _file.positions.Length() > 0;
+		bool has_normal = _file.normals.Length() > 0;
+		bool has_uv     = _file.texcoords.Length() > 0;
+
+		for (auto mesh : _file.meshes)
+		{
+			WriteString(ofs, "g", mesh.name);
+			WriteString(ofs, "usemtl", mesh.material_name);
+
+			for (auto& face : mesh.face)
+			{
+				ofs << "f ";
+				if (has_pos & has_normal & has_uv)
+				{
+					ofs << face.idx_position[0] << "/"
+						<< face.idx_texcoord[0] << "/"
+						<< face.idx_normal[0]   << "/" << " "
+
+						<< face.idx_position[1] << "/"
+						<< face.idx_texcoord[1] << "/"
+						<< face.idx_normal[1]   << "/" << " "
+
+						<< face.idx_position[2] << "/"
+						<< face.idx_texcoord[2] << "/"
+						<< face.idx_normal[2]   << std::endl;
+				}
+
+				else if (has_pos & has_normal )
+				{
+					ofs << face.idx_position[0] << "/"
+						<< face.idx_normal[0]  << "/" << " "
+
+						<< face.idx_position[1] << "/"
+						<< face.idx_normal[1]   << "/" << " "
+
+						<< face.idx_position[2] << "/"
+						<< face.idx_normal[2]   << std::endl;
+				}
+
+				else if (has_pos & has_uv)
+				{
+					ofs << face.idx_position[0] << "/"
+						<< face.idx_texcoord[0] << "/" << " "
+
+						<< face.idx_position[1] << "/"
+						<< face.idx_texcoord[1] << "/" << " "
+
+						<< face.idx_position[2] << "/"
+						<< face.idx_texcoord[2] << std::endl;
+				}
+
+				else if (has_pos)
+				{
+					ofs << face.idx_position[0] << "/" << " "
+						<< face.idx_position[1] << "/" << " "
+						<< face.idx_position[2] << "/" << std::endl;
+				}
+			}
+		}
+
+		return true;
 	}
 	bool ObjParser::ReadMaterial(const char * material_file_path)
 	{
@@ -334,6 +459,31 @@ namespace TS
 				current_material.alpha_map = ReadString(line);
 		}
 
+		return true;
+	}
+
+	bool ObjParser::SaveMaterial(const char * material_file_path)
+	{
+		std::ofstream ofs(material_file_path);
+
+		for(const auto& material : _file.materials)
+		{
+			WriteString(ofs, "newmtl", material.name);
+			WriteVector3(ofs, "Kd", material.diffuse);
+			WriteVector3(ofs, "Ka", material.ambient);
+			WriteVector3(ofs, "Ks", material.specluer);
+			WriteFloat(ofs, "Ns", material.specluerPower);
+			WriteFloat(ofs, "d", material.alpha);
+			WriteFloat(ofs, "illum", material.luminous);
+			WriteVector3(ofs, "Tf", material.tf);
+			WriteFloat(ofs, "Ni", material.ni);
+			WriteString(ofs, "map_Kd", material.diffuse_map);
+			WriteString(ofs, "map_Ka", material.ambient_map);
+			WriteString(ofs, "map_Ks", material.specluer_map);
+			WriteString(ofs, "map_Ns", material.hightlight_map);
+			WriteString(ofs, "map_Bump", material.bump_map);
+			WriteString(ofs, "map_d", material.alpha_map);
+		}
 		return true;
 	}
 }

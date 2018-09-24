@@ -37,7 +37,7 @@ namespace TS
         Chunk* FindEmptyChunk(size_t size);
 
         //! チャンクから必要なメモリを確保し新しいサブチャンクを作成する
-        static void MakeNextChunk(Chunk* chunk, size_t sz);
+        void MakeNextChunk(Chunk* chunk, size_t sz);
 
         //! チャンクの解放
         void FreeChunk(Chunk* chunk);
@@ -48,6 +48,7 @@ namespace TS
         static Chunk* ToHeader(void* pointer);
     private:
         unsigned char * _pMemory;
+		size_t			_memorySize;
         Chunk * _currentChunk;
         Chunk * _headChunk;
 

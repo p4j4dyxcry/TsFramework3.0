@@ -2,6 +2,7 @@
 //#include <initializer_list>
 #include "CppUnitTest.h"
 #include "../TsDx11.Core/Include/TsDx11Core.h"
+#include "../TsAssetInterface/Include/TsAssetInterface.h"
 #pragma comment(lib,"winmm.lib")
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -159,6 +160,13 @@ namespace UnitTest
 
 			RUN_ACTION(index = string.Rfind("60"));
 			IS_TRUE(index == 7);
+		}
+
+		TEST_METHOD(obj_loader)
+		{
+			TS::ObjParser parser;
+			parser.Parse("../UnitTest/test_data/cube.obj");
+			parser.Parse("../UnitTest/test_data/diamond.obj");
 		}
     };
 }

@@ -4,11 +4,11 @@
 namespace TS 
 {
 	const char Path::Separators[] = {'\\','/'};
-	inline StringA Path::Combine(const StringA & parent, const StringA & file)
+	StringA Path::Combine(const StringA & parent, const StringA & file)
 	{
 		return parent + "/" + file;
 	}
-	inline StringA Path::GetFileName(const StringA & filepath)
+	StringA Path::GetFileName(const StringA & filepath)
 	{
 		auto index = filepath.Rfind('/');
 
@@ -31,7 +31,7 @@ namespace TS
 
 		return StringA();
 	}
-	inline StringA Path::GetFullPath(const StringA & filepath)
+	StringA Path::GetFullPath(const StringA & filepath)
 	{
 		char szFullPath[MAX_PATH] = { '\0' };
 		char *szFilePart;
@@ -44,7 +44,7 @@ namespace TS
 
 		return szFullPath;
 	}
-	inline StringA Path::GetParent(const StringA & filepath)
+	StringA Path::GetParent(const StringA & filepath)
 	{
 		auto index = filepath.Rfind('/');
 
@@ -56,7 +56,7 @@ namespace TS
 
 		return filepath.SubString(0, index);
 	}
-	inline HashCode Path::GetHashCode(const StringA & str)
+	HashCode Path::GetHashCode(const StringA & str)
 	{
 		HashCode h = 0;
 		const char* val = str;
@@ -67,7 +67,7 @@ namespace TS
 		}
 		return h;
 	}
-	inline StringA Path::GetExtension(const StringA & filepath)
+	StringA Path::GetExtension(const StringA & filepath)
 	{
 		StringA result = GetFileName(filepath);
 
@@ -76,14 +76,14 @@ namespace TS
 			return "";
 		return result.SubString(index);
 	}
-	inline StringA Path::ToUpper(const StringA & filepath)
+	StringA Path::ToUpper(const StringA & filepath)
 	{
 		StringA result = filepath;
 		for (auto& c : result)
 			c = toupper(c);
 		return result;
 	}
-	inline StringA Path::ToLower(const StringA & filepath)
+	StringA Path::ToLower(const StringA & filepath)
 	{
 		StringA result = filepath;
 		for (auto& c : result)

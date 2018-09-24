@@ -6,7 +6,8 @@ namespace TS
 	struct Array
 	{
 	public:
-		Array(const T* data, size_t sz) :_data(data), _size(sz) {  }
+		Array(const T* data, size_t sz) :_data(const_cast<T*>(data)), _size(sz) {  }
+		//Array(T* data, size_t sz) :_data(data), _size(sz) {  }
 
 		/**
 		* \brief —v‘f‚ðŽæ“¾‚·‚é

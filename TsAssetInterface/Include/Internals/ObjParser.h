@@ -57,6 +57,7 @@ namespace TS
 		bool SaveAs(const char * filepath)override;
 	private:
 		bool ReadMaterial(const char * material_name);
+		bool SaveMaterial(const char * material_name);
 		obj_file _file;
 	};
 }

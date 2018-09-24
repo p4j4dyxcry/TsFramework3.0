@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="test_data">
+      <UniqueIdentifier>{c7c74493-eb20-4161-bc8b-46efea83b392}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -29,5 +32,18 @@
     <ClCompile Include="UnitTest.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Object Include="test_data\cube.obj">
+      <Filter>test_data</Filter>
+    </Object>
+    <Object Include="test_data\diamond.obj">
+      <Filter>test_data</Filter>
+    </Object>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="test_data\vp.mtl">
+      <Filter>test_data</Filter>
+    </None>
   </ItemGroup>
 </Project>

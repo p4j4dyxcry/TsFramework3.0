@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?> 
 <AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+  <Type Name="TS::Array&lt;*&gt;">
+    <DisplayString>{{[size] = {_size}}}</DisplayString>
+    <Expand>
+      <ArrayItems>
+        <Size>_size</Size>
+        <ValuePointer>_data</ValuePointer>
+      </ArrayItems>
+      <Item Name="size">_size</Item>
+    </Expand>
+  </Type>
+
   <Type Name="TS::ManagedArray&lt;*&gt;">
     <DisplayString>{{[size] = {_size}}}</DisplayString>
     <Expand>
@@ -22,11 +33,12 @@
     </Expand>
   </Type>
 
-  <Type Name="TS::TsString">
+  <Type Name="TS::String&lt;*&gt;">
     <DisplayString>{{[data] = {_data}}}</DisplayString>
     <Expand>
       <Item Name ="string">_data</Item>
       <Item Name="size">_size</Item>
     </Expand>
   </Type>
+
 </AutoVisualizer>
