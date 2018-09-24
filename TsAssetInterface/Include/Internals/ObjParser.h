@@ -12,8 +12,8 @@ namespace TS
 
 	struct obj_material
 	{
-		StringA name;
-		StringA file_path;
+		StringA name{ "" };
+		StringA file_path{ "" };
 
 		Vector3 diffuse{ -1 ,-1,-1 };
 		Vector3 ambient{ -1 ,-1,-1 };

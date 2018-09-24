@@ -4,7 +4,7 @@
 
 namespace TS 
 {
-	TS::FilePathAnalyzer::FilePathAnalyzer(const StringA & filePath)
+	TS::FilePathAnalyzer::FilePathAnalyzer(const StringA filePath)
 	{
 		analize(filePath);
 	}
@@ -35,7 +35,7 @@ namespace TS
 		return *this;
 	}
 
-	FilePathAnalyzer & TS::FilePathAnalyzer::ReExtencion(const StringA & extension)
+	FilePathAnalyzer & TS::FilePathAnalyzer::ReExtension(const StringA & extension)
 	{
 		return Rename(Path::GetFileNameWithoutExtension(_fileName) + extension);
 	}

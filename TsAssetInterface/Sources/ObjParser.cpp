@@ -182,7 +182,7 @@ namespace TS
 							  " " << param.z << std::endl;
 	}
 
-	void WriteString(std::ofstream& ofs, const char* element, const StringA& param)
+	void WriteString(std::ofstream& ofs, const char* element,const StringA& param)
 	{
 		if (HasValue(param))
 			ofs << element << " " << param.Data() << std::endl;
@@ -207,7 +207,7 @@ namespace TS
 		meshes.Reserve(16);
 		meshes.Add(obj_mesh());
 
-		obj_mesh& current_mesh = meshes[0];
+		obj_mesh* current_mesh = &meshes[0];
 		_file = obj_file();
 
 		Collection<unsigned> null_collection;
@@ -229,9 +229,9 @@ namespace TS
 			else if (FirstOf(line.ToArray(), "g "))
 			{
 				meshes.Add(obj_mesh());
-				current_mesh = meshes[meshes.Length() - 1];
-				current_mesh.name = ReadString(line);
-				current_mesh.material_name = use_material_name;
+				current_mesh = &meshes[meshes.Length() - 1];
+				current_mesh->name = ReadString(line);
+				current_mesh->material_name = use_material_name;
 
 			}
 			else if (FirstOf(line.ToArray(), "f "))
@@ -259,7 +259,7 @@ namespace TS
 							sscanf_s(data, "%d//%d//%d", &pos_indeces[i], &normal_indeces[i], &texcoord_indeces[i]);
 					}
 
-					BuildFace(current_mesh.face, face_count, 
+					BuildFace(current_mesh->face, face_count, 
 						ConvertGeometoryToTriangleList(pos_indeces, face_count),
 						ConvertGeometoryToTriangleList(normal_indeces, face_count),
 						ConvertGeometoryToTriangleList(texcoord_indeces, face_count));
@@ -274,7 +274,7 @@ namespace TS
 							sscanf_s(data, "%d//%d", &pos_indeces[i], &normal_indeces[i]);
 					}
 
-					BuildFace(current_mesh.face, face_count,
+					BuildFace(current_mesh->face, face_count,
 						ConvertGeometoryToTriangleList(pos_indeces, face_count),
 						ConvertGeometoryToTriangleList(normal_indeces, face_count),
 						null_collection);
@@ -289,7 +289,7 @@ namespace TS
 							sscanf_s(data, "%d//%d", &pos_indeces[i], &texcoord_indeces[i]);
 					}
 
-					BuildFace(current_mesh.face, face_count,
+					BuildFace(current_mesh->face, face_count,
 						ConvertGeometoryToTriangleList(pos_indeces, face_count),
 						null_collection,
 						ConvertGeometoryToTriangleList(texcoord_indeces, face_count));
@@ -303,7 +303,7 @@ namespace TS
 						sscanf_s(data, "%d",&pos_indeces[i]);
 					}
 
-					BuildFace(current_mesh.face, face_count,
+					BuildFace(current_mesh->face, face_count,
 						ConvertGeometoryToTriangleList(pos_indeces, face_count),
 						null_collection,
 						null_collection);
@@ -325,22 +325,22 @@ namespace TS
 		FilePathAnalyzer analizer(filepath);
 
 		FilePathAnalyzer materialAnalizer(filepath);
-		materialAnalizer.ReExtencion(".mtl");
+		materialAnalizer.ReExtension(".mtl");
 		if (_file.materials.Length() > 0) 
 		{
 			WriteString(ofs, "mtlib", materialAnalizer.GetFileName());
 			SaveMaterial(materialAnalizer.GetFullPath());
 		}
 
-		for (auto v  : _file.positions) WriteVector3(ofs, "v", v);
-		for (auto vn : _file.normals)   WriteVector3(ofs, "vn", vn); 
-		for (auto vt : _file.texcoords) WriteVector3(ofs, "vt", vt); 
+		for (auto v  : _file.positions) WriteVector3(ofs, "v", v  , true);
+		for (auto vn : _file.normals)   WriteVector3(ofs, "vn", vn, true);
+		for (auto vt : _file.texcoords) WriteVector3(ofs, "vt", vt, true);
 
 		bool has_pos    = _file.positions.Length() > 0;
 		bool has_normal = _file.normals.Length() > 0;
 		bool has_uv     = _file.texcoords.Length() > 0;
 
-		for (auto mesh : _file.meshes)
+		for (auto& mesh : _file.meshes)
 		{
 			WriteString(ofs, "g", mesh.name);
 			WriteString(ofs, "usemtl", mesh.material_name);
@@ -389,9 +389,9 @@ namespace TS
 
 				else if (has_pos)
 				{
-					ofs << face.idx_position[0] << "/" << " "
-						<< face.idx_position[1] << "/" << " "
-						<< face.idx_position[2] << "/" << std::endl;
+					ofs << face.idx_position[0] << " "
+						<< face.idx_position[1] << " "
+						<< face.idx_position[2] << std::endl;
 				}
 			}
 		}
@@ -401,7 +401,7 @@ namespace TS
 	bool ObjParser::ReadMaterial(const char * material_file_path)
 	{
 		ManagedArray<unsigned char> binary = ReadBinary(material_file_path);
-
+		FilePathAnalyzer analyzer(material_file_path);
 		if (binary == nullptr)
 		{
 			// file read error
@@ -411,9 +411,7 @@ namespace TS
 		FileReader stream(binary);
 
 		_file.materials.Add(obj_material());
-		obj_material& current_material = _file.materials[0];
-		current_material.file_path = material_file_path;
-
+		obj_material* current_material = nullptr;
 
 		while (stream.Eof() == false)
 		{
@@ -421,44 +419,42 @@ namespace TS
 			if (FirstOf(line.ToArray(), "newmtl "))
 			{
 				_file.materials.Add(obj_material());
-				current_material = _file.materials[_file.materials.Length() - 1];
-
-				current_material.name = ReadString(line);
-				current_material.file_path = material_file_path;
-				
+				current_material = &_file.materials[_file.materials.Length() - 1];
+				current_material->name = ReadString(line);
+				current_material->file_path = analyzer.GetFullPath();
 			}
 			else if (FirstOf(line.ToArray(), "Kd "))
-				current_material.diffuse = ReadVector3(line);
+				current_material->diffuse = ReadVector3(line);
 			else if (FirstOf(line.ToArray(), "Ka "))
-				current_material.ambient = ReadVector3(line);
+				current_material->ambient = ReadVector3(line);
 			else if (FirstOf(line.ToArray(), "Ks "))
-				current_material.specluer = ReadVector3(line);
+				current_material->specluer = ReadVector3(line);
 			else if (FirstOf(line.ToArray(), "Ns "))
-				current_material.specluerPower = ReadFloat(line);
+				current_material->specluerPower = ReadFloat(line);
 			else if (FirstOf(line.ToArray(), "d "))
-				current_material.alpha = ReadFloat(line);
+				current_material->alpha = ReadFloat(line);
 			else if (FirstOf(line.ToArray(), "Tr "))
-				current_material.alpha = 1 - ReadFloat(line);
+				current_material->alpha = 1 - ReadFloat(line);
 			else if (FirstOf(line.ToArray(), "Tf "))
-				current_material.tf = ReadVector3(line);
+				current_material->tf = ReadVector3(line);
 			else if (FirstOf(line.ToArray(), "ni "))
-				current_material.ni = ReadFloat(line);
+				current_material->ni = ReadFloat(line);
 			else if (FirstOf(line.ToArray(), "illum "))
-				current_material.luminous = ReadFloat(line);
+				current_material->luminous = ReadFloat(line);
 			else if (FirstOf(line.ToArray(), "map_Kd "))
-				current_material.diffuse_map = ReadString(line);
+				current_material->diffuse_map = ReadString(line);
 			else if (FirstOf(line.ToArray(), "map_Ka "))
-				current_material.ambient_map = ReadString(line);
+				current_material->ambient_map = ReadString(line);
 			else if (FirstOf(line.ToArray(), "map_Ks "))
-				current_material.specluer_map = ReadString(line);
+				current_material->specluer_map = ReadString(line);
 			else if (FirstOf(line.ToArray(), "map_Ns "))
-				current_material.hightlight_map = ReadString(line);
+				current_material->hightlight_map = ReadString(line);
 			else if (FirstOf(line.ToArray(), "Bump "))
-				current_material.bump_map = ReadString(line);
+				current_material->bump_map = ReadString(line);
 			else if (FirstOf(line.ToArray(), "map_Bump "))
-				current_material.bump_map = ReadString(line);
+				current_material->bump_map = ReadString(line);
 			else if (FirstOf(line.ToArray(), "map_d "))
-				current_material.alpha_map = ReadString(line);
+				current_material->alpha_map = ReadString(line);
 		}
 
 		return true;

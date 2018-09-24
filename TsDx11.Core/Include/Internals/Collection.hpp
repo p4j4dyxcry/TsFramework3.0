@@ -1,3 +1,4 @@
+#include "Collection.h"
 #pragma once
 namespace TS
 {
@@ -74,7 +75,7 @@ namespace TS
             return *this;
         if (_size + items.size() <= _capacity)
         {
-            memcpy_s(&_data[_size], sizeof(T) * items.size(), items.begin(), sizeof(T) * items.size());
+			copy_data(_size, items.size(), (T*)items.begin());
             _size += items.size();
         }
         else
@@ -85,7 +86,7 @@ namespace TS
                 newCapacity *= 2;
             Reserve(newCapacity);
 
-            memcpy_s(&_data[_size], sizeof(T) * items.size(), items.begin(), sizeof(T) * items.size());
+			copy_data(_size, items.size(), (T*)items.begin());
             _size += items.size();
         }
         return *this;
@@ -99,7 +100,7 @@ namespace TS
 
         if (_size + items._size <= _capacity)
         {
-            memcpy_s(&_data[_size], sizeof(T) * items._size, items._data, sizeof(T) * items._size);
+			copy_data(_size, items._size, items._data);
             _size += items._size;
         }
         else
@@ -109,8 +110,7 @@ namespace TS
             while (newCapacity < _size + items._size)
                 newCapacity *= 2;
             Reserve(newCapacity);
-
-            memcpy_s(&_data[_size], sizeof(T) * items._size, items._data, sizeof(T) * items._size);
+			copy_data(_size, items._size, items._data);
             _size += items._size;
         }
 
@@ -265,19 +265,27 @@ namespace TS
             _data[_size - i + start] = _data[_size - i];
     }
 
+	template<typename T>
+	inline void Collection<T>::copy_data(size_t start, size_t count, T * buffer)
+	{
+		for (size_t i = 0; i < count; ++i)
+			_data[start + i] = buffer[i];
+	}
+
     template <typename T>
     Collection<T>& Collection<T>::Reserve(size_t capacity)
     {
         if (_capacity < capacity)
         {
             _capacity = capacity;
-            T* temp = TS_NEWARRAY(T, _capacity);
-            if (_data != nullptr)
+			T* old_data = _data;
+			_data = TS_NEWARRAY(T, _capacity);
+
+            if (old_data != nullptr)
             {
-                memcpy_s(temp, sizeof(T) * _capacity, _data, sizeof(T) * _size);
-                TS_DELETE(_data);
+				copy_data(0, _size, old_data);
+                TS_DELETE(old_data);
             }
-            _data = temp;
         }
         return *this;
     }

@@ -28,8 +28,6 @@ namespace TS
 		if (index == -1)
 			return "";
 		return result.SubString(0,index);
-
-		return StringA();
 	}
 	StringA Path::GetFullPath(const StringA & filepath)
 	{

@@ -135,19 +135,19 @@ namespace TS
     template<typename T>
     inline String<T>& String<T>::operator=(const String<T>& ref)
     {
-        this->Release();
+		this->Release();
 
-        this->_data = ref._data;
-        this->_size = ref._size;
+		this->_data = ref._data;
+		this->_size = ref._size;
 
-        this->AddRef(ref._refarenceConter);
-        return *this;
+		this->AddRef(ref._refarenceConter);
+		return *this;
     }
 
     template<typename T>
     inline String<T>& String<T>::operator=(String<T>&& ref) noexcept
     {
-        this->Release();
+		this->Release();
 
         this->_data = ref._data;
         this->_size = ref._size;
@@ -313,7 +313,7 @@ namespace TS
     template<typename T>
     inline bool TS::String<T>::IsNullOrEmpty() const
     {
-        return this->_data == nullptr || this->_size == 0;
+        return this->_data == nullptr || this->_size == 0 || this->_data[0] == 0;
     }
 
     template<>
