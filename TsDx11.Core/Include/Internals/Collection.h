@@ -123,7 +123,7 @@ namespace TS
         //! Œã‚ë‹l‚ß
         void pack_back(size_t start, size_t end);
 
-		void copy_data(size_t start , size_t count , T* buffer);
+        void copy_data(size_t start , size_t count , T* buffer);
 
         size_t _capacity;
         size_t _size;

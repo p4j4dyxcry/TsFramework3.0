@@ -75,7 +75,7 @@ namespace TS
             return *this;
         if (_size + items.size() <= _capacity)
         {
-			copy_data(_size, items.size(), (T*)items.begin());
+            copy_data(_size, items.size(), (T*)items.begin());
             _size += items.size();
         }
         else
@@ -86,7 +86,7 @@ namespace TS
                 newCapacity *= 2;
             Reserve(newCapacity);
 
-			copy_data(_size, items.size(), (T*)items.begin());
+            copy_data(_size, items.size(), (T*)items.begin());
             _size += items.size();
         }
         return *this;
@@ -100,7 +100,7 @@ namespace TS
 
         if (_size + items._size <= _capacity)
         {
-			copy_data(_size, items._size, items._data);
+            copy_data(_size, items._size, items._data);
             _size += items._size;
         }
         else
@@ -110,7 +110,7 @@ namespace TS
             while (newCapacity < _size + items._size)
                 newCapacity *= 2;
             Reserve(newCapacity);
-			copy_data(_size, items._size, items._data);
+            copy_data(_size, items._size, items._data);
             _size += items._size;
         }
 
@@ -265,12 +265,12 @@ namespace TS
             _data[_size - i + start] = _data[_size - i];
     }
 
-	template<typename T>
-	inline void Collection<T>::copy_data(size_t start, size_t count, T * buffer)
-	{
-		for (size_t i = 0; i < count; ++i)
-			_data[start + i] = buffer[i];
-	}
+    template<typename T>
+    inline void Collection<T>::copy_data(size_t start, size_t count, T * buffer)
+    {
+        for (size_t i = 0; i < count; ++i)
+            _data[start + i] = buffer[i];
+    }
 
     template <typename T>
     Collection<T>& Collection<T>::Reserve(size_t capacity)
@@ -278,12 +278,12 @@ namespace TS
         if (_capacity < capacity)
         {
             _capacity = capacity;
-			T* old_data = _data;
-			_data = TS_NEWARRAY(T, _capacity);
+            T* old_data = _data;
+            _data = TS_NEWARRAY(T, _capacity);
 
             if (old_data != nullptr)
             {
-				copy_data(0, _size, old_data);
+                copy_data(0, _size, old_data);
                 TS_DELETE(old_data);
             }
         }
@@ -297,19 +297,19 @@ namespace TS
     };
 
     template<typename T>
-	T* end(Collection<T>& s)
+    T* end(Collection<T>& s)
     {
         return { s.Data() + s.Length() };
     };
 
     template<typename T>
-	T* begin(const Collection<T>& s)
+    T* begin(const Collection<T>& s)
     {
         return { s.Data() };
     };
 
     template<typename T>
-	T* end(const Collection<T>& s)
+    T* end(const Collection<T>& s)
     {
         return { s.Data() + s.Length() };
     };

@@ -13,9 +13,9 @@ namespace TS
         }
     };
 
-	/**
-	 * \brief アロケータ
-	 */
+    /**
+     * \brief アロケータ
+     */
     class Allocator : public IAllocator
     {
     public:
@@ -48,7 +48,7 @@ namespace TS
         static Chunk* ToHeader(void* pointer);
     private:
         unsigned char * _pMemory;
-		size_t			_memorySize;
+        size_t			_memorySize;
         Chunk * _currentChunk;
         Chunk * _headChunk;
 

@@ -24,22 +24,22 @@ namespace TS
 #ifndef SAFE_RELEASE
 #define SAFE_RELEASE( ptr )\
         {\
-	        if( (ptr) != nullptr )\
-	        {\
-		        (ptr)->Release();\
-		        (ptr) = nullptr;\
-	        }\
+            if( (ptr) != nullptr )\
+            {\
+                (ptr)->Release();\
+                (ptr) = nullptr;\
+            }\
         }
 #endif
 
 #ifndef SAFE_DELETE
 #define SAFE_DELETE( ptr )\
         {\
-	        if( ptr != nullptr )\
-	        {\
-		        TS_DELETE(ptr);\
-		        ptr = nullptr;\
-	        }\
+            if( ptr != nullptr )\
+            {\
+                TS_DELETE(ptr);\
+                ptr = nullptr;\
+            }\
         }
 #endif   
 

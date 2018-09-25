@@ -45,11 +45,11 @@ namespace TS
          * \return ©g‚ª–ß‚è’l‚Æ‚µ‚Ä•Ô‹p‚³‚ê‚é
          */
         BinaryReader& Seek(unsigned offset);
-		
-		bool Eof() 
-		{
-			return _current == _binary.Length();
-		}
+        
+        bool Eof() 
+        {
+            return _current == _binary.Length();
+        }
     protected:
         unsigned _current;
         Binary _binary;

@@ -2,33 +2,33 @@
 
 namespace TS
 {
-	template<typename T>
-	struct Array
-	{
-	public:
-		Array(const T* data, size_t sz) :_data(const_cast<T*>(data)), _size(sz) {  }
-		//Array(T* data, size_t sz) :_data(data), _size(sz) {  }
+    template<typename T>
+    struct Array
+    {
+    public:
+        Array(const T* data, size_t sz) :_data(const_cast<T*>(data)), _size(sz) {  }
+        //Array(T* data, size_t sz) :_data(data), _size(sz) {  }
 
-		/**
-		* \brief 要素を取得する
-		*/
-		T* Data() { return _data; }
-		const T* Data()const { return _data; }
-		
-		/**
-		* \brief 要素数を取得する
-		*/
-		size_t Length()const { return _size; }
+        /**
+        * \brief 要素を取得する
+        */
+        T* Data() { return _data; }
+        const T* Data()const { return _data; }
+        
+        /**
+        * \brief 要素数を取得する
+        */
+        size_t Length()const { return _size; }
 
-		operator void*()const { return _data; }
-		operator const void *() const { return _data; }
-		operator T*() { return _data; }
-		operator const T*() const { return _data; }
+        operator void*()const { return _data; }
+        operator const void *() const { return _data; }
+        operator T*() { return _data; }
+        operator const T*() const { return _data; }
 
-	protected:
-		T * _data;
-		size_t _size;
-	};
+    protected:
+        T * _data;
+        size_t _size;
+    };
 
     /**
     * \brief メモリ管理を自動的に行う配列クラス

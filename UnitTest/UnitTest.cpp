@@ -128,51 +128,51 @@ namespace UnitTest
             }
         }
 
-		TEST_METHOD(string_find)
-		{
-			TS::StringA string = "110306060";
-			
-			int index = 0;
+        TEST_METHOD(string_find)
+        {
+            TS::StringA string = "110306060";
+            
+            int index = 0;
 
-			RUN_ACTION(index = string.Find("7"));
-			IS_TRUE(index == -1);
+            RUN_ACTION(index = string.Find("7"));
+            IS_TRUE(index == -1);
 
-			RUN_ACTION(index = string.Find('7'));
-			IS_TRUE(index == -1);
+            RUN_ACTION(index = string.Find('7'));
+            IS_TRUE(index == -1);
 
-			RUN_ACTION(index = string.Find("6"));
-			IS_TRUE(index == 5);
+            RUN_ACTION(index = string.Find("6"));
+            IS_TRUE(index == 5);
 
-			RUN_ACTION(index = string.Find('6'));
-			IS_TRUE(index == 5);
+            RUN_ACTION(index = string.Find('6'));
+            IS_TRUE(index == 5);
 
-			RUN_ACTION(index = string.Find("06"));
-			IS_TRUE(index == 4);
+            RUN_ACTION(index = string.Find("06"));
+            IS_TRUE(index == 4);
 
-			RUN_ACTION(index = string.Find("1"));
-			IS_TRUE(index == 0);
+            RUN_ACTION(index = string.Find("1"));
+            IS_TRUE(index == 0);
 
-			RUN_ACTION(index = string.Rfind("1"));
-			IS_TRUE(index == 1);
+            RUN_ACTION(index = string.Rfind("1"));
+            IS_TRUE(index == 1);
 
-			RUN_ACTION(index = string.Find("60"));
-			IS_TRUE(index == 5);
+            RUN_ACTION(index = string.Find("60"));
+            IS_TRUE(index == 5);
 
-			RUN_ACTION(index = string.Rfind("60"));
-			IS_TRUE(index == 7);
-		}
+            RUN_ACTION(index = string.Rfind("60"));
+            IS_TRUE(index == 7);
+        }
 
-		TEST_METHOD(obj_loader)
-		{
-			TS::ObjParser parser;
-			parser.Parse("../UnitTest/test_data/cube.obj");
-			parser.SaveAs("../UnitTest/test_data/cube_edit.obj");
+        TEST_METHOD(obj_loader)
+        {
+            TS::ObjParser parser;
+            parser.Parse("../UnitTest/test_data/cube.obj");
+            parser.SaveAs("../UnitTest/test_data/cube_edit.obj");
 
-			parser.Parse("../UnitTest/test_data/diamond.obj");
-			parser.SaveAs("../UnitTest/test_data/diamond_edit.obj");
+            parser.Parse("../UnitTest/test_data/diamond.obj");
+            parser.SaveAs("../UnitTest/test_data/diamond_edit.obj");
 
-			parser.Parse("../UnitTest/test_data/magnolia.obj");
-			parser.SaveAs("../UnitTest/test_data/magnolia_edit.obj");
-		}
+            parser.Parse("../UnitTest/test_data/magnolia.obj");
+            parser.SaveAs("../UnitTest/test_data/magnolia_edit.obj");
+        }
     };
 }

@@ -68,18 +68,18 @@ namespace TS
 
         MemoryMetaData* meta = reinterpret_cast<MemoryMetaData*>(reinterpret_cast<char*>(ptr) - sizeof(MemoryMetaData));
 
-		if (IsDebugMode())
-		{
-			MemoryMetaData * p = _pHeadMetaData;
-			while (p != nullptr)
-			{
-				if (p == meta)
-					break;
-				p = p->pNextBlock;
-			}
-			if (p == nullptr)
-				throw;
-		}
+        if (IsDebugMode())
+        {
+            MemoryMetaData * p = _pHeadMetaData;
+            while (p != nullptr)
+            {
+                if (p == meta)
+                    break;
+                p = p->pNextBlock;
+            }
+            if (p == nullptr)
+                throw;
+        }
 
 
         void* pMemoryHead = meta;

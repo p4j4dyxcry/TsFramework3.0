@@ -31,26 +31,26 @@ namespace TS
          */
         int Find(const T* _pattern) const;
 
-		/**
-		 * \brief 文字検索
-		 * \param _pattern 検索文字列
-		 * \return 見つかった文字列へのIndex、見つからなかった場合は -1
-		 */
-		int Find(const T& _pattern) const;
+        /**
+         * \brief 文字検索
+         * \param _pattern 検索文字列
+         * \return 見つかった文字列へのIndex、見つからなかった場合は -1
+         */
+        int Find(const T& _pattern) const;
 
-		/**
-		 * \brief 文字列検索
-		 * \param _pattern 検索文字列
-		 * \return 見つかった文字列への最後のIndex、見つからなかった場合は -1
-		 */
-		int Rfind(const T* _pattern) const;
+        /**
+         * \brief 文字列検索
+         * \param _pattern 検索文字列
+         * \return 見つかった文字列への最後のIndex、見つからなかった場合は -1
+         */
+        int Rfind(const T* _pattern) const;
 
-		/**
-		 * \brief 文字検索
-		 * \param _pattern 検索文字列
-		 * \return 見つかった文字列へのIndex、見つからなかった場合は -1
-		 */
-		int Rfind(const T& _pattern) const;
+        /**
+         * \brief 文字検索
+         * \param _pattern 検索文字列
+         * \return 見つかった文字列へのIndex、見つからなかった場合は -1
+         */
+        int Rfind(const T& _pattern) const;
 
         /**
          * \brief 文字置換
@@ -113,14 +113,14 @@ namespace TS
         bool operator ==(const String<T>& string) const;
         bool operator !=(const String<T>& string) const;
 
-		bool operator ==(const T* string) const;
-		bool operator !=(const T* string) const;
+        bool operator ==(const T* string) const;
+        bool operator !=(const T* string) const;
 
         String<T>& operator =(const T* str);
         String<T> operator  +(const T* str) const;
         String<T>& operator +=(const T* str);
 
-		String():ManagedArray<T>(){}
+        String():ManagedArray<T>(){}
         String(const String<T>& ref);
         String(const String<T>&& ref) noexcept;
 
