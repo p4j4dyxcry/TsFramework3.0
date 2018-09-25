@@ -3,12 +3,20 @@
 namespace TS
 {
     using NameString = char[256];
-    class Color
+    struct Color
     {
-        float rgba[4]{};
+        union
+        {
+            unsigned char rgba[4]{};
+            struct
+            {
+                unsigned char r, g, b, a;
+            };
+        };
+
     };
 
-    class Face 
+    struct Face
     {
         unsigned index[3]{};
     };
@@ -65,4 +73,5 @@ namespace TS
         ManagedArray<BasicMaterial>      materials;
     };
 
+    TS::BasicTexture LoadTextureFromFile(const char * fileName);
 }

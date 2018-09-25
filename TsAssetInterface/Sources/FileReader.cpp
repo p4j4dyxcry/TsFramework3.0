@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "FileReader.h"
-
 namespace TS
 {
     FileReader FileReader::ReadLine()
