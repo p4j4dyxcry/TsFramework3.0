@@ -75,49 +75,42 @@ namespace TS
 
 
     template <typename T>
-    String<T>::String(const T* str)
+    String<T>::String(const T* str):String<T>()
     {
-        *this = str;
+        copy_all_internal(str, StringLength(str));
     }
 
     template <typename T>
-    String<T>::String(const String<T>& ref) : TS::String<T>(
-        ref._data, ref._size, ref._refarenceConter)
+    String<T>::String(const String<T>& ref) : TS::String<T>()
     {
+        if (this != &ref)
+            copy_all_internal(ref._data, ref._size);
     }
 
     template <typename T>
-    String<T>::String(const String<T>&& ref) noexcept : TS::String<T>(
-        ref._data, ref._size, ref._refarenceConter)
+    String<T>::String(const String<T>&& ref) noexcept : TS::String<T>()
     {
+        if(this != &ref)
+            copy_all_internal(ref._data, ref._size);
     }
 
     template<typename T>
     TS::String<T>& TS::String<T>::operator=(const T* str)
     {
-        this->Release();
-        this->_size = StringLength(str);
-
-        this->_data = TS_NEWARRAY(T, this->_size);
-        unsigned i = 0;
-        for (; i < this->_size; ++i)
-            this->_data[i] = str[i];
-
-        this->AddRef(nullptr);
-
-        return *this;
+        return copy_all_internal(str, StringLength(str));
     }
 
     template<typename T>
     TS::String<T> TS::String<T>::operator+(const T* str) const
     {
         const unsigned str_size =  StringLength(str);
-        const unsigned sz = (this->_size + str_size) - 1;
+        const unsigned sz = (_size + str_size) - 1;
 
-        String result(sz);
+        String result;
+        result.Resize(sz);
         unsigned i = 0;
-        for (; this->_data[i] != '\0'; ++i)
-            result[i] = this->_data[i];
+        for (; _data[i] != '\0'; ++i)
+            result[i] = _data[i];
 
         for (unsigned j = 0; j < str_size; ++j)
             result[i + j] = str[j];
@@ -128,45 +121,38 @@ namespace TS
     template<typename T>
     TS::String<T>& TS::String<T>::operator+=(const T* str)
     {
-        *this = *this + str;
-        return *this;
+        return AddRange(str);
     }
 
     template<typename T>
     inline String<T>& String<T>::operator=(const String<T>& ref)
     {
-        this->Release();
-
-        this->_data = ref._data;
-        this->_size = ref._size;
-
-        this->AddRef(ref._refarenceConter);
+        if (this != &ref)
+            return copy_all_internal(ref._data,ref._size);
         return *this;
     }
 
     template<typename T>
     inline String<T>& String<T>::operator=(String<T>&& ref) noexcept
     {
-        this->Release();
-
-        this->_data = ref._data;
-        this->_size = ref._size;
-
-        this->AddRef(ref._refarenceConter);
+        if(this != &ref)
+            return copy_all_internal(ref._data, ref._size);
         return *this;
     }
+
 
     template<typename T>
     TS::String<T> TS::String<T>::SubString(unsigned pos, unsigned npos) const
     {
         if (npos == 0)
-            npos = static_cast<unsigned>(this->_size) - pos - 1;
+            npos = static_cast<unsigned>(_size) - pos - 1;
 
-        String result(npos + 1);
+        String result;
+        result.Resize(npos + 1);
 
         unsigned i = 0;
         for (; i < npos; ++i)
-            result[i] = this->_data[pos + i];
+            result[i] = _data[pos + i];
         result[i] = '\0';
 
         return result;
@@ -183,8 +169,8 @@ namespace TS
     template<typename T>
     int TS::String<T>::Find(const T& _pattern) const
     {
-        for (size_t i = 0; i < this->_size; ++i)
-            if (this->_data[i] == _pattern)
+        for (size_t i = 0; i < _size; ++i)
+            if (_data[i] == _pattern)
                 return i;
         return -1;
     }
@@ -200,37 +186,47 @@ namespace TS
     template<typename T>
     int TS::String<T>::Rfind(const T& _pattern) const
     {
-        for (size_t i = 0; i < this->_size; ++i)
-            if (this->_data[(this->_size - 1) - i] == _pattern)
-                return (this->_size - 1) - i;
+        for (size_t i = 0; i < _size; ++i)
+            if (_data[(_size - 1) - i] == _pattern)
+                return (_size - 1) - i;
         return -1;
     }
 
     template<typename T>
     TS::String<T> TS::String<T>::Replace(const T original, const T _new) const
     {
-        String result(this->_size);
-        for (unsigned i = 0; i < this->_size; ++i)
+        String result;
+        result.Resize(_size);
+        for (unsigned i = 0; i < _size; ++i)
         {
-            if (this->_data[i] == original)
+            if (_data[i] == original)
                 result[i] = _new;
             else
-                result[i] = this->_data[i];
+                result[i] = _data[i];
         }
 
         return result;
     }
 
     template<typename T>
-    TS::String<T> TS::String<T>::Replace(unsigned start, unsigned size, const String<T>& str) const
+    TS::String<T> TS::String<T>::Replace(unsigned start, unsigned size, const T* str) const
     {
-        if (size > this->_size)
+        if (size > _size)
             throw;
 
-        if (start == 0)
-            return str + SubString(size);
+        String<T> result;
+        result.Reserve(_size * 2);
+        result.Resize(1);
 
-        return SubString(0, start) + str + SubString(start + size);
+        if (start == 0)
+            result.AddRange(str)
+                  .AddRange(SubString(size));
+        else
+            result.AddRange(SubString(0, start))
+                  .AddRange(str)
+                  .AddRange(SubString(start + size));
+
+        return result;
     }
 
     template<typename T>
@@ -243,7 +239,7 @@ namespace TS
         if (_index == -1)
             return *this;
 
-        auto result = *this;
+        String<T> result = _data;
         while (_index != -1)
         {
             result = result.Replace(_index, sz, _new);
@@ -269,15 +265,22 @@ namespace TS
         return sz;
     }
 
+    template <typename T>
+    String<T>::~String()
+    {
+        if (_data != nullptr)
+            TS_DELETE(_data);
+    }
+
     template<typename T>
     bool TS::String<T>::operator==(const String<T>& string) const
     {
-        if (this->_size != string._size)
+        if (_size != string._size)
             return false;
 
-        for (size_t i = 0; i < this->_size; ++i)
+        for (size_t i = 0; i < _size; ++i)
         {
-            if (this->_data[i] != string[i])
+            if (_data[i] != string[i])
                 return false;
         }
         return true;
@@ -293,12 +296,12 @@ namespace TS
     bool TS::String<T>::operator==(const T* string) const
     {
         size_t sz = StringLength(string);
-        if (this->_size != StringLength(string))
+        if (_size != StringLength(string))
             return false;
 
-        for (size_t i = 0; i < this->_size; ++i)
+        for (size_t i = 0; i < _size; ++i)
         {
-            if (this->_data[i] != string[i])
+            if (_data[i] != string[i])
                 return false;
         }
         return true;
@@ -313,7 +316,76 @@ namespace TS
     template<typename T>
     inline bool TS::String<T>::IsNullOrEmpty() const
     {
-        return this->_data == nullptr || this->_size == 0 || this->_data[0] == 0;
+        return _data == nullptr || _size == 0 || _data[0] == 0;
+    }
+
+
+    template <typename T>
+    String<T>& String<T>::Reserve(size_t capacity)
+    {
+        if (_capacity < capacity)
+        {
+            _capacity = capacity;
+            T* old_data = _data;
+            _data = TS_NEWARRAY(T, _capacity);
+
+            if (old_data != nullptr)
+            {
+                copy_internal(0, _size, old_data);
+                TS_DELETE(old_data);
+            }
+        }
+        return *this;
+    }
+
+    template <typename T>
+    String<T>& String<T>::Clear()
+    {
+        Resize(0);
+        return *this;
+    }
+
+    template <typename T>
+    String<T>& String<T>::Resize(size_t size)
+    {
+        Reserve(size);
+        _size = size;
+
+        if (_size != 0)
+            _data[_size - 1] = 0;
+
+        return *this;
+    }
+
+    template <typename T>
+    String<T>& String<T>::AddRange(const T* string)
+    {
+        const size_t sz = StringLength(string);
+       
+        if (sz == 0)
+            return *this;
+        
+        // ! èIí[Çë}ì¸Ç∑ÇÈ
+        if (_size == 0)
+            Resize(1);
+
+        if (_size + sz <= _capacity)
+        {
+            copy_internal(_size - 1, sz, string);
+            _size += sz - 1;
+        }
+        else
+        {
+            size_t newCapacity = _capacity == 0 ? 1 : _capacity;
+
+            while (newCapacity < _size + sz)
+                newCapacity *= 2;
+            Reserve(newCapacity);
+            copy_internal(_size - 1, sz, string);
+            _size += sz - 1;
+        }
+
+        return *this;
     }
 
     template<>
@@ -342,5 +414,23 @@ namespace TS
         vswprintf_s(table, _maxBuffer, pcFormat, valist);
         va_end(valist);
         return table;
+    }
+
+    template <typename T>
+    String<T>& String<T>::copy_internal(size_t start, size_t count, const T* buffer)
+    {
+        for (size_t i = 0; i < count; ++i)
+            _data[start + i] = buffer[i];
+        return *this;
+    }
+
+    template <typename T>
+    String<T>& String<T>::copy_all_internal(const T* data, size_t size)
+    {
+        const size_t sz = size;
+        Reserve(sz * 2);
+        Resize(sz);
+        copy_internal(0, sz, data);
+        return *this;
     }
 }

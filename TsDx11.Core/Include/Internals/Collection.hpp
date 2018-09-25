@@ -211,16 +211,22 @@ namespace TS
     template <typename T>
     Collection<T>& Collection<T>::operator=(const Collection<T>& c)
     {
-        Resize(0);
-        AddRange(c);
+        if( this != &c)
+        {
+            Resize(0);
+            AddRange(c);
+        }
         return *this;
     }
 
     template <typename T>
     Collection<T>& Collection<T>::operator=(Collection<T>&& c) noexcept
     {
-        Resize(0);
-        AddRange(c);
+        if (this != &c)
+        {
+            Resize(0);
+            AddRange(c);
+        }
         return *this;
     }
 

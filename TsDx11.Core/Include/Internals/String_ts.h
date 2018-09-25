@@ -7,14 +7,14 @@ namespace TS
      * \brief 文字列クラス
      */
     template<typename T>
-    class String : public ManagedArray<T>
+    class String
     {
     public:
         /**
          * \brief コンストラクタ
          * \param str 初期文字列
          */
-        String(const T* str );
+        String(const T* str);
 
         /**
          * \brief 分割されたサブ文字列の作成
@@ -55,7 +55,7 @@ namespace TS
         /**
          * \brief 文字置換
          * \param original 置換する文字
-         * \param _new 置換される文字 
+         * \param _new 置換される文字
          * \return 置換された文字列
          */
         String<T> Replace(T original, T _new) const;
@@ -67,7 +67,7 @@ namespace TS
          * \param str 置換後の文字列 sizeを超える文字列も許容される
          * \return 置換された文字列
          */
-        String<T> Replace(unsigned start, unsigned size, const String<T>& str) const;
+        String<T> Replace(unsigned start, unsigned size, const T* str) const;
 
         /**
          * \brief 文字列置換
@@ -76,20 +76,20 @@ namespace TS
          * \return 置換された文字列
          */
         String<T> Replace(const T* original, const T* _new) const;
-        
+
         /**
          * \brief 対象の文字列が含まれるか調べる
          * \param str 対象の文字列
          * \return 含まれる場合はtrue
          */
         bool Contain(const T* str) const;
-               
+
         /**
          * \brief 文字列が空かnullを判定
          * \return null or 空文字なら true
          */
         bool IsNullOrEmpty() const;
-        
+
         //! Static-------------------------------------------------------------
         /**
         * \brief 文字数を調べる
@@ -97,18 +97,55 @@ namespace TS
         * \return 文字数
         */
         static size_t StringLength(const T* str);
-        
+
         /**
          * \brief 書式から文字列を作成する
          * \param format 書式
-         * \param ... 
+         * \param ...
          * \return 生成された文字列
          */
-        static String<T> Format(const T* format, ...) ;
+        static String<T> Format(const T* format, ...);
+
+        /**
+        * \brief メモリを確保する、確保済み領域が十分な場合は何もしない
+        * \param capacity メモリ確保量
+        */
+        String<T>& Reserve(size_t capacity);
+
+        /**
+         * \brief 要素をクリアする
+         */
+        String<T>& Clear();
+
+        /**
+         * \brief 要素数を変更する
+         * \param size 
+         * \return 
+         */
+        String<T>& Resize(size_t size);
+
+        /**
+         * \brief 文字列を結合する
+         */
+        String<T>& AddRange(const T* string);
+
+        /**
+         * \brief 文字列を取得する
+         */
+        T* & Data() { return _data; }
+        const T* Data()const { return _data; }
+
+
+        /**
+         * \brief 文字列の長さを取得する(終端文字含む)
+         */
+        size_t Length()const { return _size; }
+
 
         // operator
     public:
-        using ManagedArray<T>::ManagedArray;
+
+        virtual ~ String();
 
         bool operator ==(const String<T>& string) const;
         bool operator !=(const String<T>& string) const;
@@ -120,12 +157,50 @@ namespace TS
         String<T> operator  +(const T* str) const;
         String<T>& operator +=(const T* str);
 
-        String():ManagedArray<T>(){}
+        String() :_capacity(0), _size(0), _data(nullptr){}
         String(const String<T>& ref);
         String(const String<T>&& ref) noexcept;
 
         String<T>& operator =(const String<T>& ref);
         String<T>& operator =(String<T>&& ref) noexcept;
+
+        operator void*()const { return _data; }
+        operator const void *() const { return _data; }
+        operator T*() { return _data; }
+        operator const T*() const { return _data; }
+
+    private:
+        String<T>& copy_internal(size_t start, size_t count, const T* buffer);
+        String<T>& copy_all_internal(const T* data, size_t size);
+    private:
+        size_t _capacity;
+        size_t _size;
+        T*   _data;
+    };
+
+
+    template<typename T>
+    T* begin(String<T>& s)
+    {
+        return { s.Data() };
+    };
+
+    template<typename T>
+    T* end(String<T>& s)
+    {
+        return { s.Data() + s.Length() };
+    };
+
+    template<typename T>
+    T* begin(const String<T>& s)
+    {
+        return { s.Data() };
+    };
+
+    template<typename T>
+    T* end(const String<T>& s)
+    {
+        return { s.Data() + s.Length() };
     };
 
     using StringA = String<char>;

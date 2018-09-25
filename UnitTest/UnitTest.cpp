@@ -48,17 +48,6 @@ namespace UnitTest
             }
             Log("ts::allocator - %d \n", timeGetTime() - t);
         }
-        
-        TEST_METHOD(string_replace)
-        {
-            //! 文字列置換テスト
-            TS::StringA string = "abc012abc012abc012";
-            const TS::StringA success = "fbcdefgfbcdefgfbcdefg";
-            RUN_ACTION(string = string.Replace("012", "defg"));
-            RUN_ACTION(string = string.Replace('a', 'f'));
-            Log("%s \n", static_cast<char*>(string));
-            Assert::IsTrue(string == success);            
-        }
 
         TEST_METHOD(collection_test)
         {
@@ -126,6 +115,17 @@ namespace UnitTest
             {
                 IS_TRUE(data.Length() == 1024);
             }
+        }
+
+        TEST_METHOD(string_replace)
+        {
+            //! 文字列置換テスト
+            TS::StringA string = "abc012abc012abc012";
+            const TS::StringA success = "fbcdefgfbcdefgfbcdefg";
+            RUN_ACTION(string = string.Replace("012", "defg"));
+            RUN_ACTION(string = string.Replace('a', 'f'));
+            Log("%s \n", static_cast<char*>(string));
+            IS_TRUE(string == success);
         }
 
         TEST_METHOD(string_find)

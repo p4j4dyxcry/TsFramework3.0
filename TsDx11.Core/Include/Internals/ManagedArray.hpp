@@ -34,24 +34,30 @@ namespace TS
     template <typename T>
     ManagedArray<T>& ManagedArray<T>::operator=(const ManagedArray<T>& ref)
     {
-        Release();
+        if(this != &ref)
+        {
+            Release();
 
-        this->_data = ref._data;
-        this->_size = ref._size;
+            this->_data = ref._data;
+            this->_size = ref._size;
 
-        AddRef(ref._refarenceConter);
+            AddRef(ref._refarenceConter);
+        }
         return *this;
     }
 
     template <typename T>
     ManagedArray<T>& ManagedArray<T>::operator=(ManagedArray<T>&& ref) noexcept
     {
-        Release();
+        if (this != &ref)
+        {
+            Release();
 
-        this->_data = ref._data;
-        this->_size = ref._size;
+            this->_data = ref._data;
+            this->_size = ref._size;
 
-        AddRef(ref._refarenceConter);
+            AddRef(ref._refarenceConter);
+        }
         return *this;
     }
     template <typename T>
@@ -80,17 +86,6 @@ namespace TS
         if (_refarenceConter == nullptr)
             _refarenceConter = TS_NEW(RefCounter)();
         _refarenceConter->AddRef();
-    }
-    template <typename T>
-    ManagedArray<T> ManagedArray<T>::Join(const T& data)
-    {
-        ManagedArray<T> result(this->_size + 1);
-        for (size_t i = 0; i < this->_size; ++i)
-        {
-            result[i] = this->_data[i];
-        }
-        result[this->_size] = data;
-        return result;
     }
 
     template <typename T>

@@ -54,14 +54,6 @@ namespace TS
         RefCounter * _refarenceConter{};
 
     public:
-
-        /**
-         * \brief 要素を結合した新しい配列を作成する
-         * \param data 新しい要素
-         * \return 作成された新しい配列
-         */
-        ManagedArray<T> Join(const T& data);
-
         ManagedArray();
         ManagedArray(const T* data , size_t sz , RefCounter* pRefCounter = nullptr);
         ManagedArray(size_t sz);
