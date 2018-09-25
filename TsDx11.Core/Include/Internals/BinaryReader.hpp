@@ -9,21 +9,29 @@ namespace TS
     template <typename T>
     T BinaryReader::Read()
     {
-        T data;
         const size_t sz = sizeof(T);
-        memcpy_s(&data, sz, &_binary.Data()[_current], sz);
+        T* ptr = reinterpret_cast<T*>(&_binary.Data()[_current]);
         _current += static_cast<unsigned>(sz);
-        return data;
+        return *ptr;
     }
 
     template <typename T>
-    ManagedArray<T> BinaryReader::ReadArray(unsigned dataCount)
+    Collection<T> BinaryReader::ReadArray(unsigned dataCount)
     {
         const size_t sz = sizeof(T) * dataCount;
-        ManagedArray<T> datas(dataCount);
+        Collection<T> datas(dataCount);
         memcpy_s(datas, sz, &_binary.Data()[_current], sz);
         _current += static_cast<unsigned>(sz);
         return datas;
+    }
+
+    template <typename T>
+    BinaryReader& BinaryReader::ReadArray(T* output, unsigned dataCount)
+    {
+        const size_t sz = sizeof(T) * dataCount;
+        memcpy_s(output, sz, &_binary.Data()[_current], sz);
+        _current += static_cast<unsigned>(sz);
+        return *this;
     }
 
     inline StringA BinaryReader::ReadString()
@@ -42,6 +50,12 @@ namespace TS
     inline BinaryReader& BinaryReader::Seek(unsigned offset)
     {
         _current = offset;
+        return *this;
+    }
+
+    inline BinaryReader& BinaryReader::Skip(unsigned offset)
+    {
+        _current += offset;
         return *this;
     }
 }

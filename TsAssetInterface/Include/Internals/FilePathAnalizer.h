@@ -7,7 +7,7 @@ namespace TS
 	public:
 		FilePathAnalyzer() {};
 
-		FilePathAnalyzer(const StringA filePath);;
+		FilePathAnalyzer(const StringA& filePath);;
 
 		const StringA& GetFileName()const;
 

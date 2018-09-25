@@ -7,42 +7,11 @@ namespace TS
 	public:
 		FileReader(const Binary& binary):BinaryReader(binary){}
 
-		FileReader ReadLine()
-		{
-			unsigned start = _current;
+	    FileReader ReadLine();
 
-			if (_binary[_current] == '\n' ||
-				_binary[_current] == '\r' ||
-				_binary[_current] == '\r\n')
-			{
-				start++;
-			}
-			
-			while (true)
-			{
-				if (Eof()) break;
-				_current++;
+	    Array<unsigned char> ToArray() const;
 
-				if (_binary[_current] == '\n' ||
-					_binary[_current] == '\r' ||
-					_binary[_current] == '\r\n')
-				{
-					_current++; break; 
-				}
-			}
-
-			return FileReader(Binary(&_binary[start], _current - start));
-		}
-		Array<unsigned char> ToArray()const
-		{
-			return Binary(&_binary[_current], _binary.Length() - _current);
-		}
-
-		unsigned Current()const
-		{
-			return _current;
-		}
-
+	    unsigned Current() const;
 	};
 }
 

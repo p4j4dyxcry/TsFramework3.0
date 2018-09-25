@@ -19,12 +19,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Include\Internals\BitStream.h" />
     <ClInclude Include="Include\Internals\FileReader.h" />
     <ClInclude Include="Include\Internals\Directory.h" />
     <ClInclude Include="Include\Internals\FilePathAnalizer.h" />
     <ClInclude Include="Include\Internals\I3DModelParser.h" />
     <ClInclude Include="Include\Internals\ObjParser.h" />
     <ClInclude Include="Include\Internals\pch.h" />
+    <ClInclude Include="Include\Internals\PngLoader.h" />
     <ClInclude Include="Include\Internals\structs.h" />
     <ClInclude Include="Include\Internals\Path.h" />
     <ClInclude Include="Include\TsAssetInterface.h" />
@@ -32,6 +34,7 @@
   <ItemGroup>
     <ClCompile Include="Sources\Directory.cpp" />
     <ClCompile Include="Sources\FilePathAnalizer.cpp" />
+    <ClCompile Include="Sources\FileReader.cpp" />
     <ClCompile Include="Sources\ObjParser.cpp" />
     <ClCompile Include="Sources\Path.cpp" />
     <ClCompile Include="Sources\pch.cpp">
@@ -40,6 +43,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Sources\PngLoader.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

@@ -4,7 +4,7 @@
 
 namespace TS 
 {
-	TS::FilePathAnalyzer::FilePathAnalyzer(const StringA filePath)
+	TS::FilePathAnalyzer::FilePathAnalyzer(const StringA& filePath)
 	{
 		analize(filePath);
 	}

@@ -1,15 +1,12 @@
 #pragma once
 namespace TS
 {
-    namespace
-    {
-        static int skip_table[65535]{};
-    }
-
     template <typename T>
     int BoyerMooreStringSearch(const T * original , int original_length, const T * pattern, int pattern_length)
     {
         int original_current_index = pattern_length - 1;		
+
+        static int skip_table[65535]{};
 
         for (int i = 0; i < pattern_length; i++)
             skip_table[static_cast<int>(pattern[i])] = (pattern_length - 1) - i;
@@ -44,6 +41,8 @@ namespace TS
     int ReversBoyerMooreStringSearch(const T * original, int original_length, const T * pattern, int pattern_length)
     {
         int original_current_index = (original_length - 2) - (pattern_length - 1);	
+
+        static int skip_table[65535]{};
 
         for (int i = 0; i < pattern_length; i++)
             skip_table[static_cast<int>(pattern[i])] = i + 1;
@@ -389,7 +388,7 @@ namespace TS
     }
 
     template<>
-    inline TS::String<char> TS::String<char>::Format(const char* pcFormat, ...)
+    inline TS::StringA TS::StringA::Format(const char* pcFormat, ...)
     {
         va_list valist;
 
@@ -403,7 +402,7 @@ namespace TS
     }
 
     template<>
-    inline TS::String<wchar_t> TS::String<wchar_t>::Format(const wchar_t* pcFormat, ...)
+    inline TS::StringW TS::StringW::Format(const wchar_t* pcFormat, ...)
     {
         va_list valist;
 

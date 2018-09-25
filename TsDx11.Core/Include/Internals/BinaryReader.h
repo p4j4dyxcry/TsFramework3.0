@@ -31,7 +31,10 @@ namespace TS
          * \return 読み込んだデータ配列
          */
         template<typename T>
-        ManagedArray<T> ReadArray(unsigned dataCount);
+        Collection<T> ReadArray(unsigned dataCount);
+
+        template<typename T>
+        BinaryReader& ReadArray(T* datas, unsigned dataCount);
 
         /**
          * \brief 最初に見つかった'\0'までを文字列として読み込み、読み込んだ分カレントを進める
@@ -45,8 +48,10 @@ namespace TS
          * \return 自身が戻り値として返却される
          */
         BinaryReader& Seek(unsigned offset);
+
+        BinaryReader& Skip(unsigned offset);
         
-        bool Eof() 
+        bool Eof() const
         {
             return _current == _binary.Length();
         }
