@@ -168,11 +168,20 @@ namespace UnitTest
             parser.Parse("../UnitTest/test_data/cube.obj");
             parser.SaveAs("../UnitTest/test_data/cube_edit.obj");
 
+            parser.Parse("../UnitTest/test_data/cube_edit_edit.obj");
+            parser.SaveAs("../UnitTest/test_data/cube_edit_edit.obj");
+
             parser.Parse("../UnitTest/test_data/diamond.obj");
             parser.SaveAs("../UnitTest/test_data/diamond_edit.obj");
 
+            parser.Parse("../UnitTest/test_data/diamond_edit_edit.obj");
+            parser.SaveAs("../UnitTest/test_data/diamond_edit_edit.obj");
+
             parser.Parse("../UnitTest/test_data/magnolia.obj");
             parser.SaveAs("../UnitTest/test_data/magnolia_edit.obj");
+
+            parser.Parse("../UnitTest/test_data/magnolia_edit_edit.obj");
+            parser.SaveAs("../UnitTest/test_data/magnolia_edit_edit.obj");
         }
     };
 }

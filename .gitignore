@@ -329,3 +329,4 @@ ASALocalRun/
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
 UnitTest/test_data/magnolia_edit.mtl
+/UnitTest/test_data/*.mtl
