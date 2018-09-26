@@ -1,9 +1,7 @@
 #include "pch.h"
 #include "FileReader.h"
 #include "Path.h"
-#include "Directory.h"
 #include "FilePathAnalizer.h"
-#include "structs.h"
 #include "ObjParser.h"
 #include <fstream>
 
@@ -14,7 +12,7 @@ namespace TS
 		unsigned index = 0;
 		while (tag[index] != '\0')
 		{
-			if (binary[index] != (unsigned char)(tag[index]))
+			if (binary[index] != static_cast<unsigned char>(tag[index]))
 				return false;
 			index++;
 		}
@@ -41,7 +39,7 @@ namespace TS
 	{
 		float result;
 		SeekNextWhiteSpace(source);
-		const char * data = (const char *)(source.ToArray().Data());
+		const char * data = reinterpret_cast<const char *>(source.ToArray().Data());
 		sscanf_s(data,
 			"%f",
 			&result);
@@ -52,7 +50,7 @@ namespace TS
 	{
 		Vector2 vector;
 		SeekNextWhiteSpace(source);
-		const char * data = (const char *)(source.ToArray().Data());
+		const char * data = reinterpret_cast<const char *>(source.ToArray().Data());
 		sscanf_s(data,
 			"%f %f",
 			&vector.x,
@@ -64,7 +62,7 @@ namespace TS
 	{
 		Vector3 vector;
 		SeekNextWhiteSpace(source);
-		const char * data = (const char *)(source.ToArray().Data());
+		const char * data = reinterpret_cast<const char *>(source.ToArray().Data());
 		sscanf_s(data,
 			"%f %f %f",
 			&vector.x,
@@ -78,7 +76,7 @@ namespace TS
 		SeekNextWhiteSpace(reader);
 		auto data = reader.ToArray();
 		data.Data()[data.Length() - 1] = '\0';
-		return (const char *)data.Data();
+		return reinterpret_cast<const char *>(data.Data());
 	}
 
 	unsigned CountOfFaceVertex(FileReader& reader)
@@ -93,7 +91,7 @@ namespace TS
 		// space ‚Ì”‚ª–Ê‚ğ\¬‚·‚é‚½‚ß‚Ì’¸“_”‚ğ”»’f‚·‚é
 		for (unsigned i = 0 ; i < data.Length() - 1 ; ++i)
 		{
-			if (data[i + 1] == '\n' || data[i + 1] == '\r' || data[i + 1] == '\r\n')
+			if (data[i + 1] == '\n' || data[i + 1] == '\r' )
 				break;
 
 			if (data[i] == ' ' && data[i + 1] != ' ')
@@ -331,13 +329,13 @@ namespace TS
 			SaveMaterial(materialAnalizer.GetFullPath());
 		}
 
-		for (auto v  : _file.positions) WriteVector3(ofs, "v", v  , true);
-		for (auto vn : _file.normals)   WriteVector3(ofs, "vn", vn, true);
-		for (auto vt : _file.texcoords) WriteVector3(ofs, "vt", vt, true);
+		for (const auto& v  : _file.positions) WriteVector3(ofs, "v", v  , true);
+		for (const auto& vn : _file.normals)   WriteVector3(ofs, "vn", vn, true);
+		for (const auto& vt : _file.texcoords) WriteVector3(ofs, "vt", vt, true);
 
-		bool has_pos    = _file.positions.Length() > 0;
-		bool has_normal = _file.normals.Length() > 0;
-		bool has_uv     = _file.texcoords.Length() > 0;
+		const bool has_pos    = _file.positions.Length() > 0;
+		const bool has_normal = _file.normals.Length() > 0;
+		const bool has_uv     = _file.texcoords.Length() > 0;
 
 		for (auto& mesh : _file.meshes)
 		{

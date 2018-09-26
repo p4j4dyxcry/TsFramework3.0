@@ -111,7 +111,7 @@ namespace TS
 
         result.materials.Reserve(raw_data.materials.Length());
 
-        for(const auto raw_data_material : raw_data.materials)
+        for(const auto& raw_data_material : raw_data.materials)
         {
 
             BasicMaterial material;

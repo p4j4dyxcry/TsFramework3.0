@@ -1,11 +1,10 @@
 #include "pch.h"
-#include "Path.h"
 #include "Directory.h"
 
 namespace TS 
 {
 	TS::Directory::Directory(const StringA & directory, bool enableSubgolder)
-		:_filters(),_directory(directory)
+		:_directory(directory), _filters(),_seachInSubDirectory(enableSubgolder)
 	{
 	}
 	Directory & Directory::RegisterFilter(const Collection<StringA>& ignores)
@@ -18,9 +17,9 @@ namespace TS
 		Collection<StringA> fileList;
 		WIN32_FIND_DATAA tFindFileData;
 		// 最初に一致するファイルを取得
-		HANDLE hFile = ::FindFirstFileA(_directory + "*", &tFindFileData);
+	    const HANDLE hFile = FindFirstFileA(_directory + "*", &tFindFileData);
 
-		if (INVALID_HANDLE_VALUE == hFile) {
+		if (hFile == INVALID_HANDLE_VALUE) {
 			return fileList;
 		}
 		do {
@@ -40,7 +39,6 @@ namespace TS
 
 				Directory subdirectory( _directory + filename,true);
 				subdirectory.RegisterFilter(_filters);
-				Collection<StringA>&& subFolderFiles = subdirectory.GetFiles();
 				fileList.AddRange(subdirectory.GetFiles());
 			}
 			else
@@ -61,10 +59,10 @@ namespace TS
 			}
 
 			// 次に一致するファイルの検索
-		} while (::FindNextFileA(hFile, &tFindFileData));
+		} while (FindNextFileA(hFile, &tFindFileData));
 
 		// 検索ハンドルを閉じる
-		::FindClose(hFile);
+		FindClose(hFile);
 		return fileList;
 	}
 }
