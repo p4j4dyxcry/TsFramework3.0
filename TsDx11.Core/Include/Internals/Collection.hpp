@@ -309,13 +309,13 @@ namespace TS
     };
 
     template<typename T>
-    T* begin(const Collection<T>& s)
+    const T* begin(const Collection<T>& s)
     {
         return { s.Data() };
     };
 
     template<typename T>
-    T* end(const Collection<T>& s)
+    const T* end(const Collection<T>& s)
     {
         return { s.Data() + s.Length() };
     };

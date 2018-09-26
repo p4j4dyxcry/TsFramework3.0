@@ -43,7 +43,7 @@ namespace TS
 	void TS::FilePathAnalyzer::analize(const StringA & filePath)
 	{
 		_filePath = filePath;
-		_extension = Path::GetExtension(filePath);
+		_extension = Path::ToLower(Path::GetExtension(filePath));
 		_fullPath = Path::GetFullPath(filePath);
 		_fileName = Path::GetFileName(filePath);
 		_fullDirectory = Path::GetParent(_fullPath);

@@ -2,8 +2,7 @@
 
 namespace TS
 {
-    using NameString = char[256];
-    struct Color
+    struct u8Color
     {
         union
         {
@@ -23,55 +22,52 @@ namespace TS
 
     struct BasicMaterial
     {
-        NameString  name{};
-        float diffuse[4]{};
+        StringA  name{};
+        float diffuse [4]{};
         float specular[4]{};
+        float ambient [4]{};
 
-        HashCode diffuse_texture{};
-        HashCode specular_texture{};
-        HashCode normal_texture{};
+        StringA diffuse_texture{};
+        StringA specular_texture{};
+        StringA normal_texture{};
     };
 
     struct BasicMesh
     {              
-        NameString  name{};
-        ManagedArray<Vector3> postions{};
-        ManagedArray<Vector3> normals{};
-        ManagedArray<Vector3> tangents{};
-        ManagedArray<Vector3> binormals{};
-        ManagedArray<Vector3> colors{};
-        ManagedArray<Vector2> uvs{};
-        ManagedArray<Face>    indices{};
+        StringA  name{};
+        Collection<Vector3> postions{};
+        Collection<Vector3> normals{};
+        Collection<Vector3> colors{};
+        Collection<Vector2> uvs{};
+        Collection<Face>    indices{};
 
-        HashCode material{};
+        StringA material_name{};
     };
 
     struct BasicTexture
     {
-        NameString  name{};
-        unsigned    width{};
-        unsigned    height{};
+        StringA             name{};
+        unsigned            width{};
+        unsigned            height{};
 
-        ManagedArray<Color> colors{};
+        Collection<u8Color> colors{};
     };
 
     struct BasicMeshTransform
     {
-        BasicMesh * pMesh{};
-        BasicMesh * pParent{};
+        BasicMesh * pMesh   {};
+        BasicMesh * pParent {};
         BasicMesh * pSubling{};
 
         Vector3     translate{};
-        Vector3     scale{};
-        Vector3     rotate{};
+        Vector3     scale    {};
+        Vector3     rotate   {};
     };
     
     struct BasicModel
     {
-        ManagedArray<BasicMesh>          meshes;
-        ManagedArray<BasicMeshTransform> transforms;
-        ManagedArray<BasicMaterial>      materials;
+        Collection<BasicMesh>          meshes;
+        Collection<BasicMeshTransform> transforms;
+        Collection<BasicMaterial>      materials;
     };
-
-    TS::BasicTexture LoadTextureFromFile(const char * fileName);
 }

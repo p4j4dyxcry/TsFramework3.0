@@ -1,5 +1,7 @@
 #pragma once
 
+#include "I3DModelParser.h"
+
 namespace TS 
 {
 	struct obj_face
@@ -8,6 +10,16 @@ namespace TS
 		int3 idx_position{ -1,-1,-1 };
 		int3 idx_normal  { -1,-1,-1 };
 		int3 idx_texcoord{ -1,-1,-1 };
+
+        bool has_normal()
+        {
+            return idx_normal[0] > -1;
+        }
+
+        bool has_uv()
+        {
+            return idx_texcoord[0] > -1;
+        }
 	};
 
 	struct obj_material
@@ -55,6 +67,12 @@ namespace TS
 	public:
 		bool Parse (const char * filepath)override;
 		bool SaveAs(const char * filepath)override;
+
+        obj_file& Get()
+        {
+            return _file;
+        }
+
 	private:
 		bool ReadMaterial(const char * material_name);
 		bool SaveMaterial(const char * material_name);
