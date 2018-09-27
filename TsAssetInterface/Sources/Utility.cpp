@@ -90,18 +90,18 @@ namespace TS
                 
                 for(unsigned int i=0; i<3 ; ++i)
                 {
-                    face.index[i] = raw_data_mesh_face.idx_position[i];
+                    face.index[i] = raw_data_mesh_face.idx_position[i] - 1;
 
                     if(raw_data_mesh_face.has_normal())
                     {
                         mesh.normals.Resize(raw_data.positions.Length());
-                        mesh.normals[face.index[i]] = mesh.normals[raw_data_mesh_face.idx_normal[i]];
+                        mesh.normals[face.index[i]] = raw_data.normals[raw_data_mesh_face.idx_normal[i] - 1];
                     }
 
                     if( raw_data_mesh_face.has_uv() )
                     {
                         mesh.uvs.Resize(raw_data.positions.Length());
-                        mesh.uvs[face.index[i]] = mesh.uvs[raw_data_mesh_face.idx_texcoord[i]];
+                        mesh.uvs[face.index[i]] = raw_data.texcoords[raw_data_mesh_face.idx_texcoord[i] - 1];
                     }
                 }
                 mesh.indices.Add(face);

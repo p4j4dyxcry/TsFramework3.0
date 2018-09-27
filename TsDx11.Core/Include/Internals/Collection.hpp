@@ -1,4 +1,3 @@
-#include "Collection.h"
 #pragma once
 namespace TS
 {
@@ -42,10 +41,9 @@ namespace TS
     template <typename T>
     Collection<T>& Collection<T>::Swap(size_t index1, size_t index2)
     {
-#if _DEBUG
-        if (index1 > _size || index2 > _size)
-            throw;
-#endif
+        if (index1 >= _size || index2 >= _size)
+            throw ExceptionMessage::IndexOfOutrange;
+
         T temp = _data[index1];
         _data[index1] = _data[index2];
         _data[index2] = temp;
@@ -55,10 +53,8 @@ namespace TS
     template <typename T>
     Collection<T>& Collection<T>::Insert(size_t index, const T& value)
     {
-#if _DEBUG
-        if (index > _size)
-            throw;
-#endif
+        if (index >= _size)
+            throw ExceptionMessage::IndexOfOutrange;
         {
             Reserve(_size + 1);
             pack_back(index, index + 1);
@@ -129,11 +125,7 @@ namespace TS
             }
         }
 
-#if _DEBUG
-        throw;
-#else
-        return *this;
-#endif
+        throw ExceptionMessage::NotFound;
     }
 
     template <typename T>
@@ -146,10 +138,9 @@ namespace TS
     Collection<T>& Collection<T>::RemoveRange(size_t start, size_t count)
     {
         const size_t end = start + count;
-#if _DEBUG
-        if (_size < end)
-            throw;
-#endif
+
+        if (_size <= end)
+            throw ExceptionMessage::IndexOfOutrange;
         {
             pack_front(start, end);
             _size -= count;
@@ -240,18 +231,18 @@ namespace TS
     template <typename T>
     T& Collection<T>::operator[](size_t index)
     {
-#if _DEBUG
-        if (index > _size) throw;
-#endif
+        if (index >= _size) 
+            throw ExceptionMessage::IndexOfOutrange;
+
         return _data[index];
     }
 
     template <typename T>
     const T& Collection<T>::operator[](size_t index) const
     {
-#if _DEBUG
-        if (index > _size) throw;
-#endif
+        if (index >= _size)
+            throw ExceptionMessage::IndexOfOutrange;
+
         return _data[index];
     }
 

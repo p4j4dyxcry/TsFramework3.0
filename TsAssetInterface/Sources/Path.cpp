@@ -24,7 +24,7 @@ namespace TS
 	{
 		StringA result = GetFileName(filepath);
 
-		auto index = result.Find('.');
+	    const auto index = result.Find('.');
 		if (index == -1)
 			return "";
 		return result.SubString(0,index);
@@ -69,7 +69,7 @@ namespace TS
 	{
 		StringA result = GetFileName(filepath);
 
-		auto index = result.Find('.');
+		const auto index = result.Find('.');
 		if (index == -1)
 			return "";
 		return result.SubString(index);

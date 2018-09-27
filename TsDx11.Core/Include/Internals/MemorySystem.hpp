@@ -36,6 +36,12 @@ namespace TS
         const size_t memorySize = sizeof(T) * itemCount + sizeof(MemoryMetaData);
 
         auto pMemory = static_cast<char*>(_pAllocator->Alloc(memorySize));
+
+        if(pMemory == nullptr)
+        {
+            throw ExceptionMessage::AllocFailed;
+        }
+
         MemoryMetaData* block = new(pMemory)MemoryMetaData;
         pMemory += sizeof(MemoryMetaData);
         

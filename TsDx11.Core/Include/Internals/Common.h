@@ -183,17 +183,22 @@ namespace TS
     {
     public:
         static ErrorResult Success;
-
         static ErrorResult Make(HRESULT hResult);
-
         static ErrorResult Make(const TS::TsChar* message = _T(""), const ErrorLevel error_level = ErrorLevel::Error);
-
         static ErrorResult Assert(bool _true, const TS::TsChar* message = _T("Assert に失敗しました"));
         static void SetLogger(ILogger* logger);
 
     private:
         static ILogger* _loger;
     };
+
+    namespace ExceptionMessage
+    {
+        static const char * IndexOfOutrange = "配列のアクセスに無効な添え字が使われました。";
+        static const char * NotFound        = "指定されたデータが見つかりませんでした。";
+        static const char * InvalidArgs     = "無効な引数が指定されました。";
+        static const char * AllocFailed     = "メモリ確保に失敗しました。";
+    }
 
 
     //-------------------------------------------------------

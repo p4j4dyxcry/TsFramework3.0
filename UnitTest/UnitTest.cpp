@@ -183,5 +183,26 @@ namespace UnitTest
             parser.Parse("../UnitTest/test_data/magnolia_edit_edit.obj");
             parser.SaveAs("../UnitTest/test_data/magnolia_edit_edit.obj");
         }
+
+        TEST_METHOD(convert_obj_test)
+        {
+            auto model = TS::BasicModel();
+            
+            RUN_ACTION(model = TS::LoadModelFromFile("../UnitTest/test_data/cube.obj"));
+
+            IS_TRUE(model.meshes.Length() == 1);
+            IS_TRUE(model.meshes[0].postions.Length() == 8);
+            IS_TRUE(model.meshes[0].normals.Length()  == 8);
+            IS_TRUE(model.meshes[0].uvs.Length() == 0);
+            IS_TRUE(model.meshes[0].indices.Length()     == 12);
+
+            RUN_ACTION(model = TS::LoadModelFromFile("../UnitTest/test_data/diamond.obj"));
+
+            IS_TRUE(model.meshes.Length() == 1);
+            IS_TRUE(model.meshes[0].postions.Length() == 6);
+            IS_TRUE(model.meshes[0].normals.Length() == 0);
+            IS_TRUE(model.meshes[0].uvs.Length() == 0);
+            IS_TRUE(model.meshes[0].indices.Length() == 9);
+        }
     };
 }
