@@ -1,5 +1,7 @@
 #pragma once
 
+#include "ManagedArray.h"
+
 namespace TS
 {
     using Binary = Array<unsigned char>;
@@ -53,7 +55,7 @@ namespace TS
         
         bool Eof() const
         {
-            return _current == _binary.Length();
+            return _current == _binary.Length() - 1;
         }
     protected:
         unsigned _current;

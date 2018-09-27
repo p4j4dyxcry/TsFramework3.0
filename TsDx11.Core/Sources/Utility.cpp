@@ -1,6 +1,7 @@
 ﻿#include "pch.h"
-#include <fstream>
-#include "TsDx11Core.Internal.h"
+
+#include "GfxCommon.h"
+#include "Utility.h"
 
 
 TS::ErrorResult TS::_getRefreshRato(unsigned& outNumerator, unsigned& outDenominator, const unsigned width, const unsigned height)
@@ -60,7 +61,7 @@ TS::ErrorResult TS::_getRefreshRato(unsigned& outNumerator, unsigned& outDenomin
 
     // now fill the display mode list structures
     hr = adapterOutput->GetDisplayModeList(DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_ENUM_MODES_INTERLACED, &numModes,
-        displayModeList);
+        displayModeList.Data());
     erroData = Error::Make(hr);
     if (erroData.IsError())
     {
@@ -288,52 +289,3 @@ TS::HashCode TS::_getHashCode(const BlendStateDesc& desc)
 {
     return static_cast<HashCode>(desc.Mode);
 }
-
-TS::ManagedArray<unsigned char> TS::ReadBinary(const char * filepath)
-{
-	std::ifstream ifs(filepath, std::ifstream::in | std::ifstream::binary);
-
-	if (ifs.fail())
-	{
-		Error::Make(_T("File Read error")).Log();
-		return { nullptr, 0 };
-	}
-
-	const unsigned begin = static_cast<unsigned>(ifs.tellg());
-	ifs.seekg(0, ifs.end);
-
-	const unsigned end = static_cast<unsigned>(ifs.tellg());
-	size_t binarySize = (end - begin);
-	ifs.clear();
-	ifs.seekg(0, ifs.beg);
-	void* binary = TS_NEWARRAY(unsigned char, binarySize);
-	ifs.read(static_cast<char*>(binary), binarySize);
-
-	return ManagedArray<unsigned char>(static_cast<unsigned char*>(binary), binarySize);
-}
-
-TS::ManagedArray<unsigned char> TS::ReadBinary(const wchar_t * filepath)
-{
-	std::ifstream ifs(filepath, std::ifstream::in | std::ifstream::binary);
-
-	if (ifs.fail())
-	{
-		Error::Make(_T("File Read error")).Log();
-		return { nullptr, 0 };
-	}
-
-	const unsigned begin = static_cast<unsigned>(ifs.tellg());
-	ifs.seekg(0, ifs.end);
-
-	const unsigned end = static_cast<unsigned>(ifs.tellg());
-	size_t binarySize = (end - begin);
-	ifs.clear();
-	ifs.seekg(0, ifs.beg);
-	void* binary = TS_NEWARRAY(unsigned char, binarySize);
-	ifs.read(static_cast<char*>(binary), binarySize);
-
-	return ManagedArray<unsigned char>(static_cast<unsigned char*>(binary), binarySize);
-	return TS::ManagedArray<unsigned char>();
-}
-
-

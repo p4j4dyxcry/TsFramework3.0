@@ -1,7 +1,5 @@
 #include "stdafx.h"
-//#include <initializer_list>
 #include "CppUnitTest.h"
-#include "../TsDx11.Core/Include/TsDx11Core.h"
 #include "../TsAssetInterface/Include/TsAssetInterface.h"
 #pragma comment(lib,"winmm.lib")
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
@@ -124,7 +122,7 @@ namespace UnitTest
             const TS::StringA success = "fbcdefgfbcdefgfbcdefg";
             RUN_ACTION(string = string.Replace("012", "defg"));
             RUN_ACTION(string = string.Replace('a', 'f'));
-            Log("%s \n", static_cast<char*>(string));
+            Log("%s \n", string.Data());
             IS_TRUE(string == success);
         }
 

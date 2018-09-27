@@ -139,7 +139,7 @@ namespace TS
     {
         const size_t end = start + count;
 
-        if (_size <= end)
+        if (_size < end)
             throw ExceptionMessage::IndexOfOutrange;
         {
             pack_front(start, end);

@@ -2,23 +2,23 @@
 namespace TS
 {
     template <typename T>
-    int BoyerMooreStringSearch(const T * original , int original_length, const T * pattern, int pattern_length)
+    int BoyerMooreStringSearch(const T * original, int original_length, const T * pattern, int pattern_length)
     {
-        int original_current_index = pattern_length - 1;		
+        int original_current_index = pattern_length - 1;
 
         static int skip_table[65535]{};
 
         for (int i = 0; i < pattern_length; i++)
             skip_table[static_cast<int>(pattern[i])] = (pattern_length - 1) - i;
 
-        while(original_current_index < original_length)
+        while (original_current_index < original_length)
         {
             int pattern_current_index = pattern_length - 1;
 
             while (0 <= pattern_current_index)
             {
                 if (original[original_current_index] ==
-                    pattern [pattern_current_index])
+                    pattern[pattern_current_index])
                 {
                     --original_current_index;
                     --pattern_current_index;
@@ -40,14 +40,14 @@ namespace TS
     template <typename T>
     int ReversBoyerMooreStringSearch(const T * original, int original_length, const T * pattern, int pattern_length)
     {
-        int original_current_index = (original_length - 2) - (pattern_length - 1);	
+        int original_current_index = (original_length - 2) - (pattern_length - 1);
 
         static int skip_table[65535]{};
 
         for (int i = 0; i < pattern_length; i++)
             skip_table[static_cast<int>(pattern[i])] = i + 1;
 
-        while ( 0 <= original_current_index)
+        while (0 <= original_current_index)
         {
             int pattern_current_index = 0;
 
@@ -74,35 +74,35 @@ namespace TS
 
 
     template <typename T>
-    String<T>::String(const T* str):String<T>()
+    String<T>::String(const T* str) :String<T>()
     {
         copy_all_internal(str, StringLength(str));
     }
 
     template <typename T>
-    String<T>::String(const String<T>& ref) : TS::String<T>()
+    String<T>::String(const String<T>& ref) : String<T>()
     {
         if (this != &ref)
             copy_all_internal(ref._data, ref._size);
     }
 
     template <typename T>
-    String<T>::String(const String<T>&& ref) noexcept : TS::String<T>()
+    String<T>::String(const String<T>&& ref) noexcept : String<T>()
     {
-        if(this != &ref)
+        if (this != &ref)
             copy_all_internal(ref._data, ref._size);
     }
 
     template<typename T>
-    TS::String<T>& TS::String<T>::operator=(const T* str)
+    String<T>& String<T>::operator=(const T* str)
     {
         return copy_all_internal(str, StringLength(str));
     }
 
     template<typename T>
-    TS::String<T> TS::String<T>::operator+(const T* str) const
+    String<T> String<T>::operator+(const T* str) const
     {
-        const unsigned str_size =  StringLength(str);
+        const unsigned str_size = StringLength(str);
         const unsigned sz = (_size + str_size) - 1;
 
         String result;
@@ -118,30 +118,46 @@ namespace TS
     }
 
     template<typename T>
-    TS::String<T>& TS::String<T>::operator+=(const T* str)
+    String<T>& String<T>::operator+=(const T* str)
     {
         return AddRange(str);
     }
 
     template<typename T>
-    inline String<T>& String<T>::operator=(const String<T>& ref)
+    String<T>& String<T>::operator=(const String<T>& ref)
     {
         if (this != &ref)
-            return copy_all_internal(ref._data,ref._size);
-        return *this;
-    }
-
-    template<typename T>
-    inline String<T>& String<T>::operator=(String<T>&& ref) noexcept
-    {
-        if(this != &ref)
             return copy_all_internal(ref._data, ref._size);
         return *this;
     }
 
+    template<typename T>
+    String<T>& String<T>::operator=(String<T>&& ref) noexcept
+    {
+        if (this != &ref)
+            return copy_all_internal(ref._data, ref._size);
+        return *this;
+    }
+
+    template <typename T>
+    T& String<T>::operator[](unsigned index)
+    {
+        if (index >= _size)
+            throw ExceptionMessage::IndexOfOutrange;
+        return _data[index];
+    }
+
+    template <typename T>
+    const T& String<T>::operator[](unsigned index) const
+    {
+        if (index >= _size)
+            throw ExceptionMessage::IndexOfOutrange;
+        return _data[index];
+    }
+
 
     template<typename T>
-    TS::String<T> TS::String<T>::SubString(unsigned pos, unsigned npos) const
+    String<T> String<T>::SubString(unsigned pos, unsigned npos) const
     {
         if (npos == 0)
             npos = static_cast<unsigned>(_size) - pos - 1;
@@ -158,7 +174,7 @@ namespace TS
     }
 
     template<typename T>
-    int TS::String<T>::Find(const T* _pattern) const
+    int String<T>::Find(const T* _pattern) const
     {
         const int pattern_length = StringLength(_pattern) - 1;
 
@@ -166,7 +182,7 @@ namespace TS
     }
 
     template<typename T>
-    int TS::String<T>::Find(const T& _pattern) const
+    int String<T>::Find(const T& _pattern) const
     {
         for (size_t i = 0; i < _size; ++i)
             if (_data[i] == _pattern)
@@ -175,7 +191,7 @@ namespace TS
     }
 
     template<typename T>
-    int TS::String<T>::Rfind(const T* _pattern) const
+    int String<T>::Rfind(const T* _pattern) const
     {
         const int pattern_length = StringLength(_pattern) - 1;
 
@@ -183,7 +199,7 @@ namespace TS
     }
 
     template<typename T>
-    int TS::String<T>::Rfind(const T& _pattern) const
+    int String<T>::Rfind(const T& _pattern) const
     {
         for (size_t i = 0; i < _size; ++i)
             if (_data[(_size - 1) - i] == _pattern)
@@ -192,7 +208,7 @@ namespace TS
     }
 
     template<typename T>
-    TS::String<T> TS::String<T>::Replace(const T original, const T _new) const
+    String<T> String<T>::Replace(const T original, const T _new) const
     {
         String result;
         result.Resize(_size);
@@ -208,7 +224,7 @@ namespace TS
     }
 
     template<typename T>
-    TS::String<T> TS::String<T>::Replace(unsigned start, unsigned size, const T* str) const
+    String<T> String<T>::Replace(unsigned start, unsigned size, const T* str) const
     {
         if (size > _size)
             throw;
@@ -219,17 +235,17 @@ namespace TS
 
         if (start == 0)
             result.AddRange(str)
-                  .AddRange(SubString(size));
+            .AddRange(SubString(size));
         else
             result.AddRange(SubString(0, start))
-                  .AddRange(str)
-                  .AddRange(SubString(start + size));
+            .AddRange(str)
+            .AddRange(SubString(start + size));
 
         return result;
     }
 
     template<typename T>
-    TS::String<T> TS::String<T>::Replace(const T* original, const T* _new) const
+    String<T> String<T>::Replace(const T* original, const T* _new) const
     {
         const int sz = StringLength(original) - 1;
 
@@ -248,13 +264,13 @@ namespace TS
     }
 
     template<typename T>
-    bool TS::String<T>::Contain(const T* str) const
+    bool String<T>::Contain(const T* str) const
     {
         return Find(str) != -1;
     }
 
     template<typename T>
-    size_t TS::String<T>::StringLength(const T* str)
+    size_t String<T>::StringLength(const T* str)
     {
         size_t sz = 0;
         while (str[sz++] != '\0')
@@ -272,7 +288,7 @@ namespace TS
     }
 
     template<typename T>
-    bool TS::String<T>::operator==(const String<T>& string) const
+    bool String<T>::operator==(const String<T>& string) const
     {
         if (_size != string._size)
             return false;
@@ -286,13 +302,13 @@ namespace TS
     }
 
     template<typename T>
-    bool TS::String<T>::operator!=(const String<T>& string) const
+    bool String<T>::operator!=(const String<T>& string) const
     {
         return !(*this == string);
     }
 
     template<typename T>
-    bool TS::String<T>::operator==(const T* string) const
+    bool String<T>::operator==(const T* string) const
     {
         size_t sz = StringLength(string);
         if (_size != StringLength(string))
@@ -307,13 +323,13 @@ namespace TS
     }
 
     template<typename T>
-    bool TS::String<T>::operator!=(const T* string) const
+    bool String<T>::operator!=(const T* string) const
     {
         return !(*this == string);
     }
 
     template<typename T>
-    inline bool TS::String<T>::IsNullOrEmpty() const
+    bool String<T>::IsNullOrEmpty() const
     {
         return _data == nullptr || _size == 0 || _data[0] == 0;
     }
@@ -360,10 +376,10 @@ namespace TS
     String<T>& String<T>::AddRange(const T* string)
     {
         const size_t sz = StringLength(string);
-       
+
         if (sz == 0)
             return *this;
-        
+
         // ! èIí[Çë}ì¸Ç∑ÇÈ
         if (_size == 0)
             Resize(1);
@@ -388,7 +404,7 @@ namespace TS
     }
 
     template<>
-    inline TS::StringA TS::StringA::Format(const char* pcFormat, ...)
+    inline StringA StringA::Format(const char* pcFormat, ...)
     {
         va_list valist;
 
@@ -402,7 +418,7 @@ namespace TS
     }
 
     template<>
-    inline TS::StringW TS::StringW::Format(const wchar_t* pcFormat, ...)
+    inline StringW StringW::Format(const wchar_t* pcFormat, ...)
     {
         va_list valist;
 

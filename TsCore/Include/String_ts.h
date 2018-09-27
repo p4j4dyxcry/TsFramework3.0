@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Common.h"
+
 namespace TS
 {
 
@@ -141,8 +143,7 @@ namespace TS
          */
         size_t Length()const { return _size; }
 
-
-        // operator
+        //! operator
     public:
 
         virtual ~ String();
@@ -164,9 +165,9 @@ namespace TS
         String<T>& operator =(const String<T>& ref);
         String<T>& operator =(String<T>&& ref) noexcept;
 
-        operator void*()const { return _data; }
-        operator const void *() const { return _data; }
-        operator T*() { return _data; }
+        T& operator[](unsigned index);
+        const T& operator[](unsigned index) const;
+
         operator const T*() const { return _data; }
 
     private:

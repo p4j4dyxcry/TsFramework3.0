@@ -1,4 +1,7 @@
 #pragma once
+
+#include "IAllocator.h"
+
 namespace TS
 {
     struct Chunk

@@ -1,5 +1,4 @@
 #pragma once
-
 namespace TS
 {
     template<typename T>
@@ -7,27 +6,47 @@ namespace TS
     {
     public:
         Array(const T* data, size_t sz) :_data(const_cast<T*>(data)), _size(sz) {  }
-        //Array(T* data, size_t sz) :_data(data), _size(sz) {  }
 
         /**
         * \brief —v‘f‚ðŽæ“¾‚·‚é
         */
-        T* Data() { return _data; }
-        const T* Data()const { return _data; }
+        T* Data( )const { return _data; }
         
         /**
         * \brief —v‘f”‚ðŽæ“¾‚·‚é
         */
         size_t Length()const { return _size; }
 
-        operator void*()const { return _data; }
-        operator const void *() const { return _data; }
-        operator T*() { return _data; }
-        operator const T*() const { return _data; }
+        T& operator[](unsigned index)
+        {
+            if (index >= _size)
+                throw ExceptionMessage::IndexOfOutrange;
+
+            return _data[index];
+        }
+
+        const T& operator[](unsigned index)const
+        {
+            if (index >= _size)
+                throw ExceptionMessage::IndexOfOutrange;
+
+            return _data[index];
+        }
 
     protected:
         T * _data;
         size_t _size;
+    };
+
+    class RefCounter
+    {
+    private:
+        unsigned m_referenceCount;
+    public:
+        RefCounter(): m_referenceCount(0) {}
+        RefCounter* AddRef() { ++(m_referenceCount); return this; }
+        RefCounter* SubRef() { --(m_referenceCount); return this; }
+        unsigned    GetRef()const { return m_referenceCount; }
     };
 
     /**
@@ -35,27 +54,13 @@ namespace TS
     * \tparam T
     */
     template<typename T>
-    struct ManagedArray : Array<T>
+    struct ManagedArray : public Array<T>
     {
     protected:
-
-        class RefCounter
-        {
-        private:
-            unsigned m_referenceCount;
-        public:
-            RefCounter()
-                : m_referenceCount(0) {}
-            RefCounter* AddRef() { ++(m_referenceCount); return this; }
-            RefCounter* SubRef() { --(m_referenceCount); return this; }
-            unsigned    GetRef()const { return m_referenceCount; }
-        };
 
         RefCounter * _refarenceConter{};
 
     public:
-        ManagedArray();
-        ManagedArray(const T* data , size_t sz , RefCounter* pRefCounter = nullptr);
         ManagedArray(size_t sz);
         ManagedArray(const ManagedArray<T>& ref);
         ManagedArray(const ManagedArray<T>&& ref) noexcept;
@@ -64,6 +69,9 @@ namespace TS
         ManagedArray<T>& operator =(ManagedArray<T>&& ref) noexcept;
 
     protected:
+
+        void copy_ref_internal(T* data, size_t sz, RefCounter* pRef);
+
         void Release();
         void AddRef(RefCounter*);
 

@@ -1,5 +1,5 @@
 #pragma once
-
+#include "Common.h"
 namespace TS
 {
     /**
@@ -130,4 +130,4 @@ namespace TS
         T*   _data;
     };
 }
-#include "Collection.hpp"
+#include "Collection_ts.hpp"

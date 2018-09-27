@@ -187,7 +187,7 @@ namespace TS
         }
         if (pInputElementEntry == nullptr)
         {
-            return { nullptr,0 };
+            return ManagedArray<InputElementDesc>(0);
         }
 
         const auto ContainSystemSemantices = [](char* _name)
@@ -238,7 +238,7 @@ namespace TS
         }
         cntvariable -= systemSemantices;
 
-        ManagedArray<TS::InputElementDesc> descs(TS_NEWARRAY(TS::InputElementDesc, cntvariable) , cntvariable);
+        ManagedArray<TS::InputElementDesc> descs(cntvariable);
         for (int i = 0; i < cntvariable; i++)
         {
             descs[i] = {

@@ -190,7 +190,7 @@ namespace TS
 		FilePathAnalyzer analizer1(filepath);
 		ManagedArray<unsigned char> binary = ReadBinary(filepath);
 
-		if (binary == nullptr)
+		if (binary.Data() == nullptr)
 		{
 			// file read error
 			return false;
@@ -399,7 +399,7 @@ namespace TS
 	{
 		ManagedArray<unsigned char> binary = ReadBinary(material_file_path);
 		FilePathAnalyzer analyzer(material_file_path);
-		if (binary == nullptr)
+		if (binary.Data() == nullptr)
 		{
 			// file read error
 			return false;

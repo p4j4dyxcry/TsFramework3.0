@@ -19,7 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Sources\Allocator.cpp" />
     <ClCompile Include="Sources\Buffers.cpp" />
     <ClCompile Include="Sources\Common.cpp" />
     <ClCompile Include="Sources\DeviceContext.cpp" />
@@ -31,7 +30,6 @@
     <ClCompile Include="Sources\Math\Vector2.cpp" />
     <ClCompile Include="Sources\Math\Vector3.cpp" />
     <ClCompile Include="Sources\Math\Vector4.cpp" />
-    <ClCompile Include="Sources\MemorySystem.cpp" />
     <ClCompile Include="Sources\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -41,38 +39,22 @@
     <ClCompile Include="Sources\ShaderReflection.cpp" />
     <ClCompile Include="Sources\ShaderResource.cpp" />
     <ClCompile Include="Sources\ShaderResourceFactory.cpp" />
-    <ClInclude Include="Include\Internals\Allocator.h" />
-    <ClInclude Include="Include\Internals\Collection.h" />
-    <ClInclude Include="Include\Internals\Collection.hpp" />
-    <ClInclude Include="Include\Internals\MemorySystem.hpp" />
     <ClCompile Include="Sources\Utility.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Include\Internals\BinaryReader.h" />
-    <ClInclude Include="Include\Internals\BinaryReader.hpp" />
     <ClInclude Include="Include\Internals\Buffers.h" />
-    <ClInclude Include="Include\Internals\Common.h" />
     <ClInclude Include="Include\Internals\Buffers.Generic.h" />
     <ClInclude Include="Include\Internals\DeviceContext.h" />
     <ClInclude Include="Include\Internals\GfxCommon.h" />
     <ClInclude Include="Include\Internals\GfxSystem.h" />
-    <ClInclude Include="Include\Internals\IAllocator.h" />
-    <ClInclude Include="Include\Internals\String_ts.h" />
-    <ClInclude Include="Include\Internals\String_ts.hpp" />
     <ClInclude Include="Sources\ID3DResourcesHolder.h" />
     <ClInclude Include="Include\Internals\DeviceHolder.h" />
-    <ClInclude Include="Include\Internals\LruCache.h" />
-    <ClInclude Include="Include\Internals\LruCache.hpp" />
     <ClInclude Include="Include\Internals\TsMath.h" />
     <ClInclude Include="Include\Internals\Matrix4.h" />
     <ClInclude Include="Include\Internals\Quaternion.h" />
     <ClInclude Include="Include\Internals\Vector2.h" />
     <ClInclude Include="Include\Internals\Vector3.h" />
     <ClInclude Include="Include\Internals\Vector4.h" />
-    <ClInclude Include="Include\Internals\ManagedArray.h" />
-    <ClInclude Include="Include\Internals\ManagedArray.hpp" />
-    <ClInclude Include="Include\Internals\MemorySystem.h" />
-    <ClInclude Include="Include\Internals\New.h" />
     <ClInclude Include="Include\Internals\pch.h" />
     <ClInclude Include="Include\Internals\ShaderReflection.h" />
     <ClInclude Include="Include\Internals\ShaderResource.h" />
@@ -88,6 +70,11 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </Natvis>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TsCore\TsCore.vcxproj">
+      <Project>{4739aee3-6821-4be2-af71-a20cc19ace80}</Project>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

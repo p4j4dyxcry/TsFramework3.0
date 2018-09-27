@@ -43,39 +43,39 @@ namespace TS
         return *this;
     }
 
-	ManagedArray<unsigned char> DeviceHolder::LoadCompiledShader(const TsChar* filename)
+    ManagedArray<unsigned char> DeviceHolder::LoadCompiledShader(const TsChar* filename)
     {
         return _loadCompiledShader(filename);
     }
 
     VertexShader DeviceHolder::CreateVertexShader(const Binary& binary) const
     {
-        return _createVertexShaderFromMemory(_d3d11Device.get(), binary, binary.Length());
+        return _createVertexShaderFromMemory(_d3d11Device.get(), binary.Data(), binary.Length());
     }
 
     PixelShader DeviceHolder::CreatePixelShader(const Binary& binary) const
     {
-        return _createPixelShaderFromMemory(_d3d11Device.get(), binary, binary.Length());
+        return _createPixelShaderFromMemory(_d3d11Device.get(), binary.Data(), binary.Length());
     }
 
     GeometryShader DeviceHolder::CreateGeometryShader(const Binary& binary) const
     {
-        return _createGeometryShaderFromMemory(_d3d11Device.get(), binary, binary.Length());
+        return _createGeometryShaderFromMemory(_d3d11Device.get(), binary.Data(), binary.Length());
     }
 
     HullShader DeviceHolder::CreateHullShader(const Binary& binary) const
     {
-        return _createHullShaderFromMemory(_d3d11Device.get(), binary, binary.Length());
+        return _createHullShaderFromMemory(_d3d11Device.get(), binary.Data(), binary.Length());
     }
 
     DomainShader DeviceHolder::CreateDomainShader(const Binary& binary) const
     {
-        return _createDomainShaderFromMemory(_d3d11Device.get(), binary, binary.Length());
+        return _createDomainShaderFromMemory(_d3d11Device.get(), binary.Data(), binary.Length());
     }
 
     ComputeShader DeviceHolder::CreateComputeShader(const Binary& binary) const
     {
-        return _createComputeShaderFromMemory(_d3d11Device.get(), binary, binary.Length());
+        return _createComputeShaderFromMemory(_d3d11Device.get(), binary.Data(), binary.Length());
     }
 
     InputLayout DeviceHolder::CreateInputLayout(Binary& binary, InputElementDesc* desc, unsigned layoutCount) const

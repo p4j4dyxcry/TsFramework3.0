@@ -1,9 +1,6 @@
 ﻿#pragma once
 
-#include <Windows.h>
-#include <memory>
-#include <unordered_map>
-#include <list>
+#include "../../TsCore/Include/TsCore.h"
 
 #include <d3d11.h>
 #include <DirectXMath.h>

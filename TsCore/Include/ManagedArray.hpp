@@ -1,4 +1,5 @@
 #pragma once
+#include "New.h"
 namespace TS
 {    
     template <typename T>
@@ -8,41 +9,29 @@ namespace TS
     }
 
     template <typename T>
-    ManagedArray<T>::ManagedArray(const T* data, size_t sz, RefCounter* pRefCounter)
-        : Array<T>(data,sz),_refarenceConter(pRefCounter)
-    {
-        AddRef(_refarenceConter);
-    }
-
-    template <typename T>
-    ManagedArray<T>::ManagedArray(size_t sz) : ManagedArray( TS_NEWARRAY(T,sz), sz , nullptr)
+    ManagedArray<T>::ManagedArray(size_t sz) : Array<T>(TS_NEWARRAY(T,sz),sz),_refarenceConter(nullptr)
     {
     }
 
     template <typename T>
-    ManagedArray<T>::ManagedArray(const ManagedArray<T>& ref) : ManagedArray<T>(
-        ref._data, ref._size, ref._refarenceConter)
+    ManagedArray<T>::ManagedArray(const ManagedArray<T>& ref) : Array<T>(nullptr, 0), _refarenceConter(nullptr)
     {
+        if (this != &ref)
+            copy_ref_internal(ref._data, ref._size, ref._refarenceConter);
     }
 
     template <typename T>
-    ManagedArray<T>::ManagedArray(const ManagedArray<T>&& ref) noexcept : ManagedArray<T>(
-        ref._data, ref._size, ref._refarenceConter)
+    ManagedArray<T>::ManagedArray(const ManagedArray<T>&& ref) noexcept : Array<T>(nullptr, 0), _refarenceConter(nullptr)
     {
+        if (this != &ref)
+            copy_ref_internal(ref._data, ref._size, ref._refarenceConter);
     }
 
     template <typename T>
     ManagedArray<T>& ManagedArray<T>::operator=(const ManagedArray<T>& ref)
     {
         if(this != &ref)
-        {
-            Release();
-
-            this->_data = ref._data;
-            this->_size = ref._size;
-
-            AddRef(ref._refarenceConter);
-        }
+            copy_ref_internal(ref._data, ref._size, ref._refarenceConter);
         return *this;
     }
 
@@ -50,16 +39,10 @@ namespace TS
     ManagedArray<T>& ManagedArray<T>::operator=(ManagedArray<T>&& ref) noexcept
     {
         if (this != &ref)
-        {
-            Release();
-
-            this->_data = ref._data;
-            this->_size = ref._size;
-
-            AddRef(ref._refarenceConter);
-        }
+            copy_ref_internal(ref._data, ref._size, ref._refarenceConter);
         return *this;
     }
+
     template <typename T>
     void ManagedArray<T>::Release()
     {
@@ -89,7 +72,13 @@ namespace TS
     }
 
     template <typename T>
-    ManagedArray<T>::ManagedArray():Array<T>(nullptr,0), _refarenceConter(nullptr)
+    void ManagedArray<T>::copy_ref_internal(T* data, size_t sz, RefCounter* pRef)
     {
+        Release();
+
+        this->_data = data;
+        this->_size = sz;
+
+        AddRef(pRef);
     }
 }
