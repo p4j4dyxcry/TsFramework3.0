@@ -207,7 +207,7 @@ namespace TS
 		obj_mesh* current_mesh = &meshes[0];
 		_file = obj_file();
 
-		Collection<unsigned> null_collection;
+		const Collection<unsigned> null_collection;
 
 		while (stream.Eof() == false)
 		{
@@ -242,9 +242,9 @@ namespace TS
 				unsigned normal_indeces[max_face];
 				unsigned texcoord_indeces[max_face];
 
-				bool using_pos       = _file.positions.IsEmpty() == false;
-				bool using_normal    = _file.normals.IsEmpty() == false;
-				bool using_texcoords = _file.texcoords.IsEmpty() == false;
+				const bool using_pos       = _file.positions.IsEmpty() == false;
+				const bool using_normal    = _file.normals.IsEmpty() == false;
+				const bool using_texcoords = _file.texcoords.IsEmpty() == false;
 
 				if (using_pos & using_normal & using_texcoords)
 				{
