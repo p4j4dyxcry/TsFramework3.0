@@ -117,7 +117,7 @@ DXGI_SWAP_CHAIN_DESC TS::_makeSwapChainDesc(HWND hwnd, unsigned w, unsigned h)
     return swapchainDesc;
 }
 
-TsSharedPtr<ID3D11Buffer> TS::_createD3DBuffer(ID3D11Device * device, void * pMemory, size_t pMemorySize, D3D11_CPU_ACCESS_FLAG cpuAccessFlag, D3D11_BIND_FLAG bindFlag)
+TS::SharedPtr<ID3D11Buffer> TS::_createD3DBuffer(ID3D11Device * device, void * pMemory, size_t pMemorySize, D3D11_CPU_ACCESS_FLAG cpuAccessFlag, D3D11_BIND_FLAG bindFlag)
 {
     D3D11_BUFFER_DESC bufferDesc;
     bufferDesc.ByteWidth = (unsigned )pMemorySize;
@@ -141,12 +141,12 @@ TsSharedPtr<ID3D11Buffer> TS::_createD3DBuffer(ID3D11Device * device, void * pMe
     return _makeD3DShared(pBuffer);
 }
 
-TsSharedPtr<ID3D11Buffer> TS::_createVertexBuffer(ID3D11Device* device, void* pVertex, unsigned vertexCount, size_t stride)
+TS::SharedPtr<ID3D11Buffer> TS::_createVertexBuffer(ID3D11Device* device, void* pVertex, unsigned vertexCount, size_t stride)
 {
     return _createD3DBuffer(device, pVertex, stride * vertexCount, static_cast<D3D11_CPU_ACCESS_FLAG>(0), D3D11_BIND_VERTEX_BUFFER);
 }
 
-TsSharedPtr<ID3D11Buffer> TS::_createIndexBuffer(ID3D11Device* device, void* pMemory, unsigned indexCount)
+TS::SharedPtr<ID3D11Buffer> TS::_createIndexBuffer(ID3D11Device* device, void* pMemory, unsigned indexCount)
 {
     return _createD3DBuffer(device, pMemory, sizeof(unsigned) * indexCount, static_cast<D3D11_CPU_ACCESS_FLAG>(0), D3D11_BIND_INDEX_BUFFER);
 }

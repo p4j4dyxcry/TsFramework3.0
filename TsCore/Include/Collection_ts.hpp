@@ -1,6 +1,30 @@
 #pragma once
 namespace TS
 {
+    template<typename T>
+    T* begin(Collection<T>& s)
+    {
+        return { s.Data() };
+    };
+
+    template<typename T>
+    T* end(Collection<T>& s)
+    {
+        return { s.Data() + s.Length() };
+    };
+
+    template<typename T>
+    const T* begin(const Collection<T>& s)
+    {
+        return { s.Data() };
+    };
+
+    template<typename T>
+    const T* end(const Collection<T>& s)
+    {
+        return { s.Data() + s.Length() };
+    };
+
     template <typename T>
     Collection<T>& Collection<T>::Resize(size_t size)
     {
@@ -287,27 +311,49 @@ namespace TS
         return *this;
     }
 
-    template<typename T>
-    T* begin(Collection<T>& s)
+    template<typename T> template<typename U>
+    Collection<U> Collection<T>::Select(collection_func<U, T&> func)
     {
-        return { s.Data() };
-    };
+        Collection<U> result(_capacity);
 
-    template<typename T>
-    T* end(Collection<T>& s)
-    {
-        return { s.Data() + s.Length() };
-    };
+        for (auto& i : *this)
+            result.Add(func(i));
+        return result;
+    }
 
-    template<typename T>
-    const T* begin(const Collection<T>& s)
+    template <typename T>
+    Collection<T&> Collection<T>::Where(collection_func<bool, T&> func)
     {
-        return { s.Data() };
-    };
+        Collection<T> result(_capacity);
 
-    template<typename T>
-    const T* end(const Collection<T>& s)
+        for (auto& i : *this)
+            if (func(i)) result.Add(i);
+        return result;
+    }
+
+    template <typename T>
+    bool Collection<T>::Any(collection_func<bool, T&> func)
     {
-        return { s.Data() + s.Length() };
-    };
+        Collection<T> result(_capacity);
+
+        for (auto& i : *this)
+            if (func(i)) return true;
+        return false;
+    }
+
+    template <typename T>
+    T Collection<T>::FirstOrDefault(collection_func<bool, T&> func)const
+    {
+        for (auto& i : *this)
+            if (func(i)) return i;
+        return T();
+    }
+
+    template <typename T>
+    T& Collection<T>::First(collection_func<bool, T&> func)
+    {
+        for (auto& i : *this)
+            if (func(i)) return i;
+        throw ExceptionMessage::NotFound;
+    }
 }

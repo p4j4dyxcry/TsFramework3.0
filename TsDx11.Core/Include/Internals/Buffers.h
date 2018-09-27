@@ -5,17 +5,17 @@ namespace TS
     class Buffer : public ID3DResourcesHolder
     {
     public:
-        Buffer(TsSharedPtr<ID3D11Buffer> buffer);
-        TsSharedPtr<ID3D11Buffer> GetD3DBuffer() const;
-        TsSharedPtr<ID3D11Resource> GetD3D11Resource()const override;
+        Buffer(TS::SharedPtr<ID3D11Buffer> buffer);
+        TS::SharedPtr<ID3D11Buffer> GetD3DBuffer() const;
+        TS::SharedPtr<ID3D11Resource> GetD3D11Resource()const override;
     protected:
-        TsSharedPtr<ID3D11Buffer> _buffer;
+        TS::SharedPtr<ID3D11Buffer> _buffer;
     };
 
     class IConstantBuffer : public Buffer
     {
     public:
-        IConstantBuffer(TsSharedPtr<ID3D11Buffer>& buffer, ShaderType shaderType, unsigned slot);
+        IConstantBuffer(TS::SharedPtr<ID3D11Buffer>& buffer, ShaderType shaderType, unsigned slot);
         unsigned GetSlot() const;
         ShaderType GetShaderType() const;
     private:

@@ -5,10 +5,10 @@ namespace TS
     class DeviceHolder
     {
     public:
-        TsSharedPtr<ID3D11Device>& GetD3D11Device();
-        DeviceHolder& SetD3DDevice(TsSharedPtr<ID3D11Device> pDev);
-        DeviceHolder& SetSwapChain(TsSharedPtr<IDXGISwapChain> pSwapChain);
-        TsSharedPtr<IDXGISwapChain>& GetD3DSwapChain();
+        TS::SharedPtr<ID3D11Device>& GetD3D11Device();
+        DeviceHolder& SetD3DDevice(TS::SharedPtr<ID3D11Device> pDev);
+        DeviceHolder& SetSwapChain(TS::SharedPtr<IDXGISwapChain> pSwapChain);
+        TS::SharedPtr<IDXGISwapChain>& GetD3DSwapChain();
         DeviceContext& ImmediateContext();
         DeviceContext& DefferedContext();
         DeviceHolder& Present(unsigned syncInterval = 0, unsigned flags = 0);
@@ -26,8 +26,8 @@ namespace TS
         Buffer CreateBuffer(Binary& binary, D3D11_CPU_ACCESS_FLAG cpuAccessFlag, D3D11_BIND_FLAG bindFlag) const;
         VertexBuffer CreateVertexBuffer(void* const &pVertex , unsigned count , size_t stride) const;
     private:
-        TsSharedPtr<ID3D11Device> _d3d11Device;
-        TsSharedPtr<IDXGISwapChain>_swapChain;
+        TS::SharedPtr<ID3D11Device> _d3d11Device;
+        TS::SharedPtr<IDXGISwapChain>_swapChain;
         DeviceContext  _immediateContext;    
         DeviceContext  _defferedContext;      
     };

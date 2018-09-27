@@ -202,14 +202,11 @@ namespace TS
         static const char * InvalidArgs     = "無効な引数が指定されました。";
         static const char * AllocFailed     = "メモリ確保に失敗しました。";
     }
-
-
-    //-------------------------------------------------------
-    //! 基本型
-
-    #define TsSharedPtr  std::shared_ptr
-    #define TsWeakptr    std::weak_ptr   
-    #define TsMakeShared std::make_shared
-
     using HashCode = unsigned long long;
+
+    template<typename T>
+    using SharedPtr = std::shared_ptr<T>;
+
+    template<typename T>
+    using WeakPtr = std::weak_ptr<T>;
 }

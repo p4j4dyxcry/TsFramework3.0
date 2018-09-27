@@ -1,12 +1,12 @@
 ﻿#include "pch.h"
 #include "TsDx11Core.Internal.h"
 
-TS::DeviceContext::DeviceContext(TsSharedPtr<ID3D11DeviceContext> id3_d11_device_context)
+TS::DeviceContext::DeviceContext(TS::SharedPtr<ID3D11DeviceContext> id3_d11_device_context)
     : _deviceContext(std::move(id3_d11_device_context)),_mapCount(0)
 {
 }
 
-TS::DeviceContext& TS::DeviceContext::SetD3DDeviceContext(TsSharedPtr<ID3D11DeviceContext> pDeviceContext)
+TS::DeviceContext& TS::DeviceContext::SetD3DDeviceContext(TS::SharedPtr<ID3D11DeviceContext> pDeviceContext)
 {
     _deviceContext = std::move(pDeviceContext);
     return *this;

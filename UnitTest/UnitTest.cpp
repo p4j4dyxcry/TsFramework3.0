@@ -113,6 +113,10 @@ namespace UnitTest
             {
                 IS_TRUE(data.Length() == 1024);
             }
+
+            auto a = data.Select<int>([](int& xa) {return 2; })
+                         .Where([](int& x) {return x > 0; })
+                         .Any();
         }
 
         TEST_METHOD(string_replace)

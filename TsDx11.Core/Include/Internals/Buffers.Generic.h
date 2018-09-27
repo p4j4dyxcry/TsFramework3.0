@@ -6,7 +6,7 @@ namespace TS
     class ConstantBuffer : public IConstantBuffer
     {
     public:
-        ConstantBuffer(TsSharedPtr<ID3D11Buffer> buffer,T& data, ShaderType shaderType, unsigned slot) : IConstantBuffer(buffer, shaderType, slot)
+        ConstantBuffer(TS::SharedPtr<ID3D11Buffer> buffer,T& data, ShaderType shaderType, unsigned slot) : IConstantBuffer(buffer, shaderType, slot)
         {
             _data = data;
         }

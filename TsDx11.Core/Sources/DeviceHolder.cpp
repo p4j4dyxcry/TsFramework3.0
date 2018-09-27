@@ -3,25 +3,25 @@
 
 namespace TS
 {
-    TsSharedPtr<ID3D11Device>& DeviceHolder::GetD3D11Device()
+    TS::SharedPtr<ID3D11Device>& DeviceHolder::GetD3D11Device()
     {
         Error::Assert(_d3d11Device != nullptr);
         return _d3d11Device;
     }
 
-    DeviceHolder& DeviceHolder::SetD3DDevice(TsSharedPtr<ID3D11Device> pDev)
+    DeviceHolder& DeviceHolder::SetD3DDevice(TS::SharedPtr<ID3D11Device> pDev)
     {
         _d3d11Device = pDev;
         return *this;
     }
 
-    DeviceHolder& DeviceHolder::SetSwapChain(TsSharedPtr<IDXGISwapChain> pSwapChain)
+    DeviceHolder& DeviceHolder::SetSwapChain(TS::SharedPtr<IDXGISwapChain> pSwapChain)
     {
         _swapChain = pSwapChain;
         return *this;
     }
 
-    TsSharedPtr<IDXGISwapChain>& DeviceHolder::GetD3DSwapChain()
+    TS::SharedPtr<IDXGISwapChain>& DeviceHolder::GetD3DSwapChain()
     {
         return _swapChain;
     }

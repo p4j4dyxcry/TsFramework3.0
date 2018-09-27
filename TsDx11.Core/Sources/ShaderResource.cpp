@@ -10,7 +10,7 @@ namespace TS
 
     }
 
-    RenderTarget& RenderTarget::Initialize(TextureDesc& desc, TsSharedPtr<ID3D11Device>& device)
+    RenderTarget& RenderTarget::Initialize(TextureDesc& desc, TS::SharedPtr<ID3D11Device>& device)
     {
         _desc = desc;
         auto pDevice = device;
@@ -53,7 +53,7 @@ namespace TS
         return *this;
     }
 
-    RenderTarget& RenderTarget::Initialize(TsSharedPtr<IDXGISwapChain>& pSwapChain, TsSharedPtr<ID3D11Device>& device)
+    RenderTarget& RenderTarget::Initialize(TS::SharedPtr<IDXGISwapChain>& pSwapChain, TS::SharedPtr<ID3D11Device>& device)
     {
         ID3D11Texture2D * pTexture;
         HRESULT hr = pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<LPVOID*>(&pTexture));
@@ -86,12 +86,12 @@ namespace TS
         return *this;
     }
 
-    TsSharedPtr<ID3D11RenderTargetView> RenderTarget::GetD3DRenderTargetView() const
+    TS::SharedPtr<ID3D11RenderTargetView> RenderTarget::GetD3DRenderTargetView() const
     {
         return _rtv;
     }
 
-    TsSharedPtr<ID3D11ShaderResourceView> RenderTarget::GetD3DShaderResourceView() const
+    TS::SharedPtr<ID3D11ShaderResourceView> RenderTarget::GetD3DShaderResourceView() const
     {
         return _srv;
     }
@@ -101,7 +101,7 @@ namespace TS
         return _desc.Format;
     }
 
-    TsSharedPtr<ID3D11Resource> RenderTarget::GetD3D11Resource() const
+    TS::SharedPtr<ID3D11Resource> RenderTarget::GetD3D11Resource() const
     {
         return _texture;
     }
@@ -127,7 +127,7 @@ namespace TS
     {
     }
 
-    DepthStencilTarget& DepthStencilTarget::Initialize(TextureDesc& desc, TsSharedPtr<ID3D11Device>& device)
+    DepthStencilTarget& DepthStencilTarget::Initialize(TextureDesc& desc, TS::SharedPtr<ID3D11Device>& device)
     {
         _desc = desc;
 
@@ -170,12 +170,12 @@ namespace TS
         return *this;
     }
 
-    TsSharedPtr<ID3D11DepthStencilView> DepthStencilTarget::GetD3DDepthStencilView() const
+    TS::SharedPtr<ID3D11DepthStencilView> DepthStencilTarget::GetD3DDepthStencilView() const
     {
         return _dsv;
     }
 
-    TsSharedPtr<ID3D11ShaderResourceView> DepthStencilTarget::GetD3DShaderResourceView() const
+    TS::SharedPtr<ID3D11ShaderResourceView> DepthStencilTarget::GetD3DShaderResourceView() const
     {
         return _srv;
     }
@@ -185,7 +185,7 @@ namespace TS
         return _desc.Format;
     }
 
-    TsSharedPtr<ID3D11Resource> DepthStencilTarget::GetD3D11Resource() const
+    TS::SharedPtr<ID3D11Resource> DepthStencilTarget::GetD3D11Resource() const
     {
         return _texture;
     }
@@ -207,7 +207,7 @@ namespace TS
     {
     }
 
-    DepthStencilState& DepthStencilState::Initialize(DepthStencilStateDesc& desc, TsSharedPtr<ID3D11Device>& device)
+    DepthStencilState& DepthStencilState::Initialize(DepthStencilStateDesc& desc, TS::SharedPtr<ID3D11Device>& device)
     {
         _desc = desc;
         D3D11_DEPTH_STENCIL_DESC d3dDesc;
@@ -222,7 +222,7 @@ namespace TS
         return *this;
     }
 
-    TsSharedPtr<ID3D11DepthStencilState> DepthStencilState::GetDepthStencilState() const
+    TS::SharedPtr<ID3D11DepthStencilState> DepthStencilState::GetDepthStencilState() const
     {
         return _depthStencilState;
     }
@@ -240,7 +240,7 @@ namespace TS
 
     }
 
-    RasterizerState& RasterizerState::Initialize(RasterizerStateDesc& desc, TsSharedPtr<ID3D11Device>& device)
+    RasterizerState& RasterizerState::Initialize(RasterizerStateDesc& desc, TS::SharedPtr<ID3D11Device>& device)
     {
         _desc = desc;
         D3D11_RASTERIZER_DESC rasterDesc;
@@ -264,7 +264,7 @@ namespace TS
         return *this;
     }
 
-    TsSharedPtr<ID3D11RasterizerState> RasterizerState::GetD3DRasterizerState() const
+    TS::SharedPtr<ID3D11RasterizerState> RasterizerState::GetD3DRasterizerState() const
     {
         return _rasterizerState;
     }
@@ -286,7 +286,7 @@ namespace TS
     {
     }
 
-    BlendState& BlendState::Initialize(BlendStateDesc& blendDesc, TsSharedPtr<ID3D11Device>& device)
+    BlendState& BlendState::Initialize(BlendStateDesc& blendDesc, TS::SharedPtr<ID3D11Device>& device)
     {
         _desc = blendDesc;
         D3D11_BLEND_DESC desc;
@@ -353,7 +353,7 @@ namespace TS
         return *this;
     }
 
-    TsSharedPtr<ID3D11BlendState> BlendState::GetD3DBlendState() const
+    TS::SharedPtr<ID3D11BlendState> BlendState::GetD3DBlendState() const
     {
         return _blendState;
     }
@@ -370,7 +370,7 @@ namespace TS
     {
     }
 
-    SamplerState& SamplerState::Initialize(SamplerStateDesc& desc, TsSharedPtr<ID3D11Device>& device)
+    SamplerState& SamplerState::Initialize(SamplerStateDesc& desc, TS::SharedPtr<ID3D11Device>& device)
     {
         _desc = desc;
         ID3D11SamplerState * pSS;
@@ -380,7 +380,7 @@ namespace TS
         return *this;
     }
 
-    TsSharedPtr<ID3D11SamplerState> SamplerState::GetD3DBlendState() const
+    TS::SharedPtr<ID3D11SamplerState> SamplerState::GetD3DBlendState() const
     {
         return _samplerState;
     }

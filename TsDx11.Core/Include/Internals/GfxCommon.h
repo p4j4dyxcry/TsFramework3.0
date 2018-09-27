@@ -27,10 +27,10 @@ namespace TS
     class D3DSharedWrapper
     {
     public:
-        D3DSharedWrapper(TsSharedPtr<T> shader = nullptr) { _ptr = shader; }
-        TsSharedPtr<T> Get() { return _ptr; }
+        D3DSharedWrapper(TS::SharedPtr<T> shader = nullptr) { _ptr = shader; }
+        TS::SharedPtr<T> Get() { return _ptr; }
     private:
-        TsSharedPtr<T> _ptr;
+        TS::SharedPtr<T> _ptr;
     };
 
     using VertexShader = D3DSharedWrapper<ID3D11VertexShader>;
@@ -63,7 +63,7 @@ namespace TS
     struct ID3DResourcesHolder
     {
         virtual ~ID3DResourcesHolder() = default;
-        virtual TsSharedPtr<ID3D11Resource> GetD3D11Resource()const = 0;
+        virtual TS::SharedPtr<ID3D11Resource> GetD3D11Resource()const = 0;
     };
 
     enum class ComparisonFunc : unsigned

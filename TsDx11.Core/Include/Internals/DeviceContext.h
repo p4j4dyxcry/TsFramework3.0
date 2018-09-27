@@ -5,9 +5,9 @@ namespace TS
     class DeviceContext
     {
     public:
-        DeviceContext(TsSharedPtr<ID3D11DeviceContext> pDeviceContext = nullptr);
+        DeviceContext(TS::SharedPtr<ID3D11DeviceContext> pDeviceContext = nullptr);
 
-        DeviceContext& SetD3DDeviceContext(TsSharedPtr<ID3D11DeviceContext> pDeviceContext);
+        DeviceContext& SetD3DDeviceContext(TS::SharedPtr<ID3D11DeviceContext> pDeviceContext);
 
         DeviceContext& SetConstantBuffer(IConstantBuffer& constantBuffer);
         DeviceContext& SetIndexBuffer(IndexBufer& buffer);
@@ -48,7 +48,7 @@ namespace TS
         static const unsigned RenderTargetCount = 8;
         RenderTarget _renderTaegets[RenderTargetCount];
         DepthStencilTarget _depthStencilTarget;
-        TsSharedPtr<ID3D11DeviceContext> _deviceContext;
+        TS::SharedPtr<ID3D11DeviceContext> _deviceContext;
         unsigned _mapCount;
     };
 }

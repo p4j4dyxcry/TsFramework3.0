@@ -1,21 +1,21 @@
 ﻿#include "pch.h"
 #include "TsDx11Core.Internal.h"
 
-TS::Buffer::Buffer(TsSharedPtr<ID3D11Buffer> buffer) : _buffer(std::move(buffer))
+TS::Buffer::Buffer(TS::SharedPtr<ID3D11Buffer> buffer) : _buffer(std::move(buffer))
 {
 }
 
-TsSharedPtr<ID3D11Buffer> TS::Buffer::GetD3DBuffer() const
-{
-    return _buffer;
-}
-
-TsSharedPtr<ID3D11Resource> TS::Buffer::GetD3D11Resource()const
+TS::SharedPtr<ID3D11Buffer> TS::Buffer::GetD3DBuffer() const
 {
     return _buffer;
 }
 
-TS::IConstantBuffer::IConstantBuffer(TsSharedPtr<ID3D11Buffer>& pBuffer, ShaderType shaderType, unsigned slot)
+TS::SharedPtr<ID3D11Resource> TS::Buffer::GetD3D11Resource()const
+{
+    return _buffer;
+}
+
+TS::IConstantBuffer::IConstantBuffer(TS::SharedPtr<ID3D11Buffer>& pBuffer, ShaderType shaderType, unsigned slot)
     :Buffer(pBuffer),_shaderType(shaderType),_slot(slot)
 {
 

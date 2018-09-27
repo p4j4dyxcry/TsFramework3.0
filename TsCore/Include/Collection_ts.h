@@ -2,6 +2,9 @@
 #include "Common.h"
 namespace TS
 {
+    template<typename TResult, typename TArg>
+    using collection_func = TResult(*)(TArg);
+
     /**
      * \brief コレクションクラス
      */
@@ -90,6 +93,38 @@ namespace TS
          */
         size_t Length() const;
 
+
+        /**
+         * \brief 射影する
+         * \tparam U 射影する型
+         */
+        template<typename U>
+        Collection<U> Select(collection_func<U, T&> func);
+
+        /**
+        * \brief 条件がtrueのものだけでコレクションを作成する
+        */
+        Collection<T> Where(collection_func<bool, T&> func);
+
+        /**
+        * \brief 条件がtrueのものがあればtrue
+        */
+        bool Any(collection_func<bool, T&> func);
+
+        /**
+        * \brief 要素が存在すれば true
+        */
+        bool Any() const { return !IsEmpty(); };
+
+        /**
+         * \brief 最初に見つかった条件に一致するデータを取得　無ければデフォルト
+         */
+        T FirstOrDefault(collection_func<bool, T&> func)const;
+
+        /**
+        * \brief 最初に見つかった条件に一致するデータを取得　無ければ例外をスロー
+        */
+        T& First(collection_func<bool, T&> func);
 
         /**
          * \brief 配列の先頭ポインタを取得する
