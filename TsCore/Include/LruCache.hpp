@@ -12,7 +12,7 @@ namespace TS
     {
         auto it = _dictionary.find(key);
 
-        _list.push_front(Pair(key, value));
+        _list.push_front(std::pair<TKey, TValue>(key, value));
         if (it != _dictionary.end())
         {
             _list.erase(it->second);

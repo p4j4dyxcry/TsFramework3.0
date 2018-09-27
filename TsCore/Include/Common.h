@@ -207,11 +207,9 @@ namespace TS
     //-------------------------------------------------------
     //! 基本型
 
-#define TsSharedPtr  std::shared_ptr
-#define TsWeakptr    std::weak_ptr   
-#define TsMakeShared std::make_shared
-#define TsList       std::list
-#define TsMap        std::unordered_map
+    #define TsSharedPtr  std::shared_ptr
+    #define TsWeakptr    std::weak_ptr   
+    #define TsMakeShared std::make_shared
 
     using HashCode = unsigned long long;
 }

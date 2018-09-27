@@ -1,6 +1,8 @@
 ﻿#pragma once
 
 #include "Common.h"
+#include <list>
+#include <unordered_map>
 
 namespace TS
 {
@@ -49,12 +51,8 @@ namespace TS
 
         TValue& operator[](const TKey& key);
     private:
-        using Pair = std::pair<TKey, TValue>;
-        using Iterator = typename std::list<Pair>::iterator;
-
-    private:
-        TsList<Pair> _list;
-        TsMap<TKey, Iterator> _dictionary;
+        std::list<std::pair<TKey, TValue>> _list;
+        std::unordered_map<TKey, typename std::list<std::pair<TKey, TValue>>::iterator> _dictionary;
         size_t _capacity;
     };
 }
