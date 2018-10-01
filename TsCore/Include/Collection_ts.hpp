@@ -322,7 +322,7 @@ namespace TS
     }
 
     template <typename T>
-    Collection<T&> Collection<T>::Where(collection_func<bool, T&> func)
+    Collection<T> Collection<T>::Where(collection_func<bool, T&> func)
     {
         Collection<T> result(_capacity);
 
