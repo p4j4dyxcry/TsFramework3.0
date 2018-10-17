@@ -12,6 +12,10 @@ namespace TS
 	    Array<unsigned char> ToArray() const;
 
 	    unsigned Current() const;
+
+        bool Contain(const char* tag) const;
+
+        int Find(const char * tag)const;
 	};
 }
 

@@ -23,14 +23,17 @@
     <ClInclude Include="Include\Internals\Directory.h" />
     <ClInclude Include="Include\Internals\FilePathAnalizer.h" />
     <ClInclude Include="Include\Internals\I3DModelParser.h" />
+    <ClInclude Include="Include\Internals\MqoPaeser.h" />
     <ClInclude Include="Include\Internals\ObjParser.h" />
     <ClInclude Include="Include\Internals\pch.h" />
     <ClInclude Include="Include\Internals\structs.h" />
     <ClInclude Include="Include\Internals\Path.h" />
     <ClInclude Include="Include\Internals\Utility.h" />
     <ClInclude Include="Include\TsAssetInterface.h" />
+    <ClInclude Include="Sources\ParserUtil.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Sources\MqoParser.cpp" />
     <ClCompile Include="Sources\Directory.cpp" />
     <ClCompile Include="Sources\FilePathAnalizer.cpp" />
     <ClCompile Include="Sources\FileReader.cpp" />

@@ -152,8 +152,14 @@ namespace TS
             obj_parser.Parse(filename);
             build_from_obj(result, obj_parser.Get());
         }
+
+        if(analizer.GetExtension() == ".mqo")
+        {
+            
+        }
+
+        // ... any extensions 3d model
         
         return result;
     }
-
 }

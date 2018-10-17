@@ -39,6 +39,7 @@ namespace TS
         unsigned counter = _current;
         while (counter < _binary.Length() && _binary[counter++] != '\0')
         {
+            // ! empty loop
         }
 
         StringA string;

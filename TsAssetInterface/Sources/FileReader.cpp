@@ -37,5 +37,21 @@ namespace TS
     {
         return _current;
     }
+
+    bool FileReader::Contain(const char* tag) const
+    {
+        return Find(tag) != -1;
+    }
+
+    int FileReader::Find(const char* tag) const
+    {
+        unsigned index = 0;
+        auto binary = ToArray();
+
+        return BoyerMooreStringSearch(reinterpret_cast<const char *>(&binary.Data()[Current()]),
+            binary.Length() - Current(),
+            tag,
+            StringA::StringLength(tag));
+    }
 }
 

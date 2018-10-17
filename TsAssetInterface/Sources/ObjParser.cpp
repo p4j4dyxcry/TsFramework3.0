@@ -2,87 +2,17 @@
 #include "FileReader.h"
 #include "Path.h"
 #include "FilePathAnalizer.h"
+#include "ParserUtil.h"
 #include "ObjParser.h"
 #include <fstream>
 
+
 namespace TS 
 {
-	bool FirstOf(const Binary& binary, const char * tag)
-	{
-		unsigned index = 0;
-		while (tag[index] != '\0')
-		{
-			if (binary[index] != static_cast<unsigned char>(tag[index]))
-				return false;
-			index++;
-		}
-		return true;
-	}
-
-	void SeekNextWhiteSpace(FileReader& reader)
-	{
-		auto data = reader.ToArray();
-		unsigned index = 0;
-		while(index < data.Length())
-		{
-			if (data[index++] == ' ')
-			{
-				while (data[index] == ' ') 
-					index++;
-				reader.Seek(reader.Current() + index);
-				break;
-			}
-		}
-	}
-
-	float ReadFloat(FileReader& source)
-	{
-		float result;
-		SeekNextWhiteSpace(source);
-		const char * data = reinterpret_cast<const char *>(source.ToArray().Data());
-		sscanf_s(data,
-			"%f",
-			&result);
-		return result;
-	};
-	   
-	Vector2 ReadVector2(FileReader& source)
-	{
-		Vector2 vector;
-		SeekNextWhiteSpace(source);
-		const char * data = reinterpret_cast<const char *>(source.ToArray().Data());
-		sscanf_s(data,
-			"%f %f",
-			&vector.x,
-			&vector.y);
-		return vector;
-	};
-
-	Vector3 ReadVector3(FileReader& source)
-	{
-		Vector3 vector;
-		SeekNextWhiteSpace(source);
-		const char * data = reinterpret_cast<const char *>(source.ToArray().Data());
-		sscanf_s(data,
-			"%f %f %f",
-			&vector.x,
-			&vector.y,
-			&vector.z);
-		return vector;
-	};
-
-	StringA ReadString(FileReader& reader)
-	{
-		SeekNextWhiteSpace(reader);
-		auto data = reader.ToArray();
-		data.Data()[data.Length() - 1] = '\0';
-		return reinterpret_cast<const char *>(data.Data());
-	}
-
 	unsigned CountOfFaceVertex(FileReader& reader)
 	{
 		reader.Seek(0);
-		SeekNextWhiteSpace(reader);
+		SkipWhiteSpace(reader);
 		auto data = reader.ToArray();
 		reader.Seek(0);
 
@@ -133,21 +63,6 @@ namespace TS
 			}
 			target.Add(f);
 		}
-	}
-
-	Collection<unsigned> ConvertGeometoryToTriangleList(const unsigned* indexList,const unsigned indexCount)
-	{
-		Collection<unsigned> converted_indeces;
-		converted_indeces.Reserve(indexCount * 3);
-		const unsigned* h = &indexList[0];
-		const unsigned* m = &indexList[0] + 1;
-		for (unsigned i = 0; i < indexCount - 2; ++i)
-		{
-			converted_indeces.Add(*h);
-			converted_indeces.Add(*(m++));
-			converted_indeces.Add(*m);
-		}
-		return converted_indeces;
 	}
 
 	bool HasValue(float value)
@@ -250,8 +165,8 @@ namespace TS
 				{
 					for (unsigned i = 0; i < face_count; ++i)
 					{
-						SeekNextWhiteSpace(line);
-						const char * data = (const char *)(line.ToArray().Data());
+						SkipWhiteSpace(line);
+						const char * data = reinterpret_cast<const char *>(line.ToArray().Data());
 						if (sscanf_s(data, "%d/%d/%d", &pos_indeces[i], &normal_indeces[i], &texcoord_indeces[i]) != 3)
 							sscanf_s(data, "%d//%d//%d", &pos_indeces[i], &normal_indeces[i], &texcoord_indeces[i]);
 					}
@@ -265,8 +180,8 @@ namespace TS
 				{
 					for (unsigned i = 0; i < face_count; ++i)
 					{
-						SeekNextWhiteSpace(line);
-						const char * data = (const char *)(line.ToArray().Data());
+						SkipWhiteSpace(line);
+						const char * data = reinterpret_cast<const char *>(line.ToArray().Data());
 						if (sscanf_s(data, "%d/%d", &pos_indeces[i], &normal_indeces[i]) != 2)
 							sscanf_s(data, "%d//%d", &pos_indeces[i], &normal_indeces[i]);
 					}
@@ -280,8 +195,8 @@ namespace TS
 				{
 					for (unsigned i = 0; i < face_count; ++i)
 					{
-						SeekNextWhiteSpace(line);
-						const char * data = (const char *)(line.ToArray().Data());
+						SkipWhiteSpace(line);
+						const char * data = reinterpret_cast<const char *>(line.ToArray().Data());
 						if (sscanf_s(data, "%d/%d", &pos_indeces[i], &texcoord_indeces[i]) == 0)
 							sscanf_s(data, "%d//%d", &pos_indeces[i], &texcoord_indeces[i]);
 					}
@@ -295,8 +210,8 @@ namespace TS
 				{
 					for (unsigned i = 0; i < face_count; ++i)
 					{
-						SeekNextWhiteSpace(line);
-						const char * data = (const char *)(line.ToArray().Data());
+						SkipWhiteSpace(line);
+						const char * data = reinterpret_cast<const char *>(line.ToArray().Data());
 						sscanf_s(data, "%d",&pos_indeces[i]);
 					}
 
