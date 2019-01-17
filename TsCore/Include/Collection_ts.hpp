@@ -342,6 +342,12 @@ namespace TS
     }
 
     template <typename T>
+    bool Collection<T>::All(collection_func<bool, T&> func)
+    {
+        return Any(func) == false;
+    }
+
+    template <typename T>
     T Collection<T>::FirstOrDefault(collection_func<bool, T&> func)const
     {
         for (auto& i : *this)

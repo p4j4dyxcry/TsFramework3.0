@@ -112,6 +112,11 @@ namespace TS
         bool Any(collection_func<bool, T&> func);
 
         /**
+        * \brief ğŒ‚ªtrue‚Ì‚à‚Ì‚ª‚ ‚ê‚Îtrue
+        */
+        bool All(collection_func<bool, T&> func);
+
+        /**
         * \brief —v‘f‚ª‘¶İ‚·‚ê‚Î true
         */
         bool Any() const { return !IsEmpty(); };
