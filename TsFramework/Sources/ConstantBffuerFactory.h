@@ -12,7 +12,7 @@ namespace TS
         {
             T data;
             TS::SharedPtr<ID3D11Buffer> buffer = _createConstantBuffer(_holder.GetD3D11Device().get(), &data);
-            return ConstantBuffer<T>(buffer, data, type, data.RegisterIndex());
+            return ConstantBuffer<T>(buffer, data, type, data.GetRegisterdIndex());
         }
     private:
         DeviceHolder & _holder;

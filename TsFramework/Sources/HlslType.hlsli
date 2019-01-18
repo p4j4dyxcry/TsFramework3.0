@@ -11,7 +11,7 @@
 
         #define TS_HLSL_MATRIX TS::Matrix4
 
-        template<unsigned N = 0> struct ts_cbuffer_register { unsigned RegisterIndex() { return N; } };
+        template<unsigned N = 0> struct ts_cbuffer_register { unsigned GetRegisterdIndex() { return N; } };
 
         #define TS_HLSL_REGISTER_B(register_id) : public ts_cbuffer_register<register_id>
         #define TS_HLSL_SEMANTICS(semantics_name)
