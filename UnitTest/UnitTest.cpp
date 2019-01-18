@@ -18,6 +18,28 @@ namespace UnitTest
         Logger::WriteMessage(message);
     }
 
+    class TestTimer
+    {
+    public:
+        TestTimer()
+        {
+            Restart();
+        }     
+
+        void PrintElapsedTime(const char * message) const
+        {
+            Log("%s - %d \n",message, timeGetTime() - _startTime);
+        }
+
+        void Restart()
+        {
+            _startTime = timeGetTime();
+        }
+
+    private:
+        DWORD _startTime;
+    };
+
     #define RUN_ACTION(...) Log("RUN_ACTION = [%s]\n",#__VA_ARGS__);__VA_ARGS__
     #define IS_TRUE(...) Log("%s\n",#__VA_ARGS__);Assert::IsTrue(__VA_ARGS__)
 
@@ -28,23 +50,23 @@ namespace UnitTest
         TEST_METHOD(allocator_benchmark)
         {
             // アロケータ速度テスト
-            auto t = timeGetTime();
+            auto timer = TestTimer();
             for( int i=0; i < 10000000 ; ++i )
             {
                 void* p = malloc(sizeof(int));
                 free(p);
             }
-            Log("malloc - %d \n", timeGetTime() - t);
+            timer.PrintElapsedTime("malloc");
 
             //! カスタムアロケータ
             auto allocator = TS::Allocator(1024);
-            t = timeGetTime();
+            timer.Restart();
             for (int i = 0; i < 10000000; ++i)
             {
                 void* p = allocator.Alloc(sizeof(int));
                 allocator.Free(p);
             }
-            Log("ts::allocator - %d \n", timeGetTime() - t);
+            timer.PrintElapsedTime("ts::allocator");
         }
 
         TEST_METHOD(collection_test)
@@ -139,14 +161,14 @@ namespace UnitTest
             RUN_ACTION(index = string.Find("7"));
             IS_TRUE(index == -1);
 
-            RUN_ACTION(index = string.Find('7'));
+            RUN_ACTION(index = string.Rfind('7'));
             IS_TRUE(index == -1);
 
             RUN_ACTION(index = string.Find("6"));
             IS_TRUE(index == 5);
 
-            RUN_ACTION(index = string.Find('6'));
-            IS_TRUE(index == 5);
+            RUN_ACTION(index = string.Rfind('6'));
+            IS_TRUE(index == 7);
 
             RUN_ACTION(index = string.Find("06"));
             IS_TRUE(index == 4);
@@ -170,19 +192,19 @@ namespace UnitTest
             parser.Parse("../UnitTest/test_data/cube.obj");
             parser.SaveAs("../UnitTest/test_data/cube_edit.obj");
 
-            parser.Parse("../UnitTest/test_data/cube_edit_edit.obj");
+            parser.Parse("../UnitTest/test_data/cube_edit.obj");
             parser.SaveAs("../UnitTest/test_data/cube_edit_edit.obj");
 
             parser.Parse("../UnitTest/test_data/diamond.obj");
             parser.SaveAs("../UnitTest/test_data/diamond_edit.obj");
 
-            parser.Parse("../UnitTest/test_data/diamond_edit_edit.obj");
+            parser.Parse("../UnitTest/test_data/diamond_edit.obj");
             parser.SaveAs("../UnitTest/test_data/diamond_edit_edit.obj");
 
             parser.Parse("../UnitTest/test_data/magnolia.obj");
             parser.SaveAs("../UnitTest/test_data/magnolia_edit.obj");
 
-            parser.Parse("../UnitTest/test_data/magnolia_edit_edit.obj");
+            parser.Parse("../UnitTest/test_data/magnolia_edit.obj");
             parser.SaveAs("../UnitTest/test_data/magnolia_edit_edit.obj");
         }
 
