@@ -13,13 +13,13 @@ namespace TS
         Compute = 0x10,
     };
 
-    inline bool operator&(const TS::ShaderType& lhs, const TS::ShaderType& rhs)
+    inline ShaderType operator&(const TS::ShaderType& lhs, const TS::ShaderType& rhs)
     {
-        return static_cast<unsigned>(lhs) & static_cast<unsigned>(rhs);
+        return static_cast<ShaderType>(static_cast<unsigned>(lhs) & static_cast<unsigned>(rhs));
     }
-    inline bool operator|(const TS::ShaderType& lhs, const TS::ShaderType& rhs)
+    inline ShaderType operator|(const TS::ShaderType& lhs, const TS::ShaderType& rhs)
     {
-        return static_cast<unsigned>(lhs) | static_cast<unsigned>(rhs);
+        return static_cast<ShaderType>(static_cast<unsigned>(lhs) | static_cast<unsigned>(rhs));
     }
 
 

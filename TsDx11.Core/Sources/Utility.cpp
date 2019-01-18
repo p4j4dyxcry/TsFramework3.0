@@ -224,7 +224,7 @@ TS::ManagedArray<unsigned char> TS::_loadCompiledShader(const TsChar* filepath )
 
 bool TS::_containShaderType(ShaderType shaderType, ShaderType targetShader)
 {
-    return shaderType & targetShader;
+    return (shaderType & targetShader) != ShaderType::Unknown;
 }
 
 D3D11_MAP TS::DeviceContextMapModeToD3D(DeviceContextMapMode d3d11Map)
