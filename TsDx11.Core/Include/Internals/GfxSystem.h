@@ -15,7 +15,7 @@ namespace TS
     public:
         GfxSystem();
         ErrorResult Initialize(Dx11CoreInitializeData& initializeData);
-        DeviceHolder& Holder();
+        DeviceHolder& GetDeviceHolder();
         ShaderResourceFactory& ResourceFactory();
     private:
         DeviceHolder _device;

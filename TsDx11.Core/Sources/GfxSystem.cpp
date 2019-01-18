@@ -19,7 +19,7 @@ namespace TS
         return error;
     }
 
-    DeviceHolder& GfxSystem::Holder()
+    DeviceHolder& GfxSystem::GetDeviceHolder()
     {
         return _device;
     }
@@ -70,4 +70,3 @@ namespace TS
         return Error::Success;
     }
 }
-

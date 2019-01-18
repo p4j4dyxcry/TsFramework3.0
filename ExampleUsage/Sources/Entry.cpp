@@ -86,19 +86,21 @@ int main()
 
     GfxSystem core;
     core.Initialize(initialize);
-    auto _vertexBuffer = core.Holder().CreateVertexBuffer(points, ARRAYSIZE(points), sizeof(Vector3));
 
-    GfxPipline pipline(core.Holder(),core.ResourceFactory());
-    pipline.LoadVertexShader(L"../Debug/VertexShader.cso");
-    pipline.LoadPixelShader(L"../Debug/PixelShader.cso");
+    auto gfxDeviceHolder = core.GetDeviceHolder();
+
+    auto _vertexBuffer = gfxDeviceHolder.CreateVertexBuffer(points, ARRAYSIZE(points), sizeof(Vector3));
+
+    GfxPipline pipline(gfxDeviceHolder,core.ResourceFactory());
+    pipline.LoadVertexShader(L"../x64/Debug/VertexShader.cso");
+    pipline.LoadPixelShader (L"../x64/Debug/PixelShader.cso");
     pipline.SetupDefault();
 
-    ConstantBffuerFactory cBufferFactor(core.Holder());
+    ConstantBffuerFactory cBufferFactor(gfxDeviceHolder);
     auto cbuffer = cBufferFactor.CreateConstantBuffer<TransformCBuffer>(ShaderType::Pixel);
     MSG tMsg;
-    cbuffer.UpdateBuffer(core.Holder().ImmediateContext());
-    core.Holder()
-        .ImmediateContext()
+    cbuffer.UpdateBuffer(gfxDeviceHolder.ImmediateContext());
+    gfxDeviceHolder.ImmediateContext()
         .SetConstantBuffer(cbuffer);
     
     while (true)
@@ -117,13 +119,12 @@ int main()
         else
         {
             pipline.Apply();
-            core.Holder()
-                .ImmediateContext()
+            gfxDeviceHolder.ImmediateContext()
                 .SetVertexBuffer(_vertexBuffer)
                 .SetTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP)
                 .Draw(4);
 
-            core.Holder().Present();
+            gfxDeviceHolder.Present();
         }
     }
 
